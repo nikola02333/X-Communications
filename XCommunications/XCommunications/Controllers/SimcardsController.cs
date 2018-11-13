@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
+using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Controllers
 {
@@ -13,58 +14,54 @@ namespace XCommunications.Controllers
     [ApiController]
     public class SimcardsController : ControllerBase
     {
-        private readonly XCommunicationsContext _context;
+        private readonly XCommunicationsContext context;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SimcardsController(XCommunicationsContext context)
+        public SimcardsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/Simcards
         [HttpGet]
-        public IEnumerable<Simcard> GetSimcard()
+        public IEnumerable<Simcard> GetSimcards()
         {
-            return _context.Simcard;
+            return unitOfWork.SimcardRepository.GetAll();
         }
 
         // GET: api/Simcards/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetSimcard([FromRoute] int id)
+        public IActionResult GetSimcard(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Simcard sim = context.Simcard.Find(id);
 
-            var simcard = await _context.Simcard.FindAsync(id);
-
-            if (simcard == null)
+            if (sim == null)
             {
                 return NotFound();
             }
 
-            return Ok(simcard);
+            return Ok(sim);
         }
 
         // PUT: api/Simcards/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSimcard([FromRoute] int id, [FromBody] Simcard simcard)
+        public IActionResult PutSimcard(int id, Simcard sim)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != simcard.Imsi)
+            if (id != sim.Imsi)
             {
                 return BadRequest();
             }
 
-            _context.Entry(simcard).State = EntityState.Modified;
+            context.Entry(sim).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,57 +80,41 @@ namespace XCommunications.Controllers
 
         // POST: api/Simcards
         [HttpPost]
-        public async Task<IActionResult> PostSimcard([FromBody] Simcard simcard)
+        public IActionResult PostSimcard(Simcard sim)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Simcard.Add(simcard);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (SimcardExists(simcard.Imsi))
-                {
-                    return new StatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            unitOfWork.SimcardRepository.Add(sim);
+            unitOfWork.Commit();
 
-            return CreatedAtAction("GetSimcard", new { id = simcard.Imsi }, simcard);
+            return CreatedAtRoute(new { id = sim.Imsi }, sim);
         }
 
         // DELETE: api/Simcards/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSimcard([FromRoute] int id)
+        public IActionResult SimcardWorker(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Simcard sim = context.Simcard.Find(id);
 
-            var simcard = await _context.Simcard.FindAsync(id);
-            if (simcard == null)
+            if (sim == null)
             {
                 return NotFound();
             }
 
-            _context.Simcard.Remove(simcard);
-            await _context.SaveChangesAsync();
+            context.Simcard.Remove(sim);
+            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.Imsi == id));
 
-            return Ok(simcard);
+            context.SaveChanges();
+
+            return Ok(sim);
         }
 
         private bool SimcardExists(int id)
         {
-            return _context.Simcard.Any(e => e.Imsi == id);
+            return context.Simcard.Count(w => w.Imsi == id) > 0;
         }
     }
 }

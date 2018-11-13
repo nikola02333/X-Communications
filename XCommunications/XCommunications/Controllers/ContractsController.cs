@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
+using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Controllers
 {
@@ -13,30 +14,26 @@ namespace XCommunications.Controllers
     [ApiController]
     public class ContractsController : ControllerBase
     {
-        private readonly XCommunicationsContext _context;
+        private readonly XCommunicationsContext context;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ContractsController(XCommunicationsContext context)
+        public ContractsController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/Contracts
         [HttpGet]
         public IEnumerable<Contract> GetContract()
         {
-            return _context.Contract;
+            return unitOfWork.ContractRepository.GetAll();
         }
 
         // GET: api/Contracts/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetContract([FromRoute] int id)
+        public IActionResult GetContract(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var contract = await _context.Contract.FindAsync(id);
+            Contract contract = context.Contract.Find(id);
 
             if (contract == null)
             {
@@ -48,7 +45,7 @@ namespace XCommunications.Controllers
 
         // PUT: api/Contracts/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContract([FromRoute] int id, [FromBody] Contract contract)
+        public IActionResult PutContract(int id, Contract contract)
         {
             if (!ModelState.IsValid)
             {
@@ -60,11 +57,11 @@ namespace XCommunications.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(contract).State = EntityState.Modified;
+            context.Entry(contract).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,57 +80,42 @@ namespace XCommunications.Controllers
 
         // POST: api/Contracts
         [HttpPost]
-        public async Task<IActionResult> PostContract([FromBody] Contract contract)
+        public IActionResult PostContract(Contract contract)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Contract.Add(contract);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ContractExists(contract.Id))
-                {
-                    return new StatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            unitOfWork.ContractRepository.Add(contract);
+            unitOfWork.Commit();
 
-            return CreatedAtAction("GetContract", new { id = contract.Id }, contract);
+            return CreatedAtRoute(new { id = contract.Id }, contract);
         }
 
         // DELETE: api/Contracts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteContract([FromRoute] int id)
+        public IActionResult DeleteContract(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Contract contract = context.Contract.Find(id);
 
-            var contract = await _context.Contract.FindAsync(id);
             if (contract == null)
             {
                 return NotFound();
             }
 
-            _context.Contract.Remove(contract);
-            await _context.SaveChangesAsync();
+            context.Contract.Remove(contract);
+            context.Customer.RemoveRange(context.Customer.Where(s => s.Id == contract.CustomerId));
+            context.Worker.RemoveRange(context.Worker.Where(s => s.Id == contract.WorkerId));
+
+            context.SaveChanges();
 
             return Ok(contract);
         }
 
         private bool ContractExists(int id)
         {
-            return _context.Contract.Any(e => e.Id == id);
+            return context.Contract.Count(w => w.Id == id) > 0;
         }
     }
 }

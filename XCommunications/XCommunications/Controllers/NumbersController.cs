@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
+using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Controllers
 {
@@ -13,30 +14,26 @@ namespace XCommunications.Controllers
     [ApiController]
     public class NumbersController : ControllerBase
     {
-        private readonly XCommunicationsContext _context;
+        private readonly XCommunicationsContext context;
+        private readonly IUnitOfWork unitOfWork;
 
-        public NumbersController(XCommunicationsContext context)
+        public NumbersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/Numbers
         [HttpGet]
-        public IEnumerable<Number> GetNumber()
+        public IEnumerable<Number> GetNumbers()
         {
-            return _context.Number;
+            return unitOfWork.NumberRepository.GetAll();
         }
 
         // GET: api/Numbers/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetNumber([FromRoute] int id)
+        public IActionResult GetNumber(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var number = await _context.Number.FindAsync(id);
+            Number number = context.Number.Find(id);
 
             if (number == null)
             {
@@ -48,7 +45,7 @@ namespace XCommunications.Controllers
 
         // PUT: api/Numbers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNumber([FromRoute] int id, [FromBody] Number number)
+        public IActionResult PutNumber(int id, Number number)
         {
             if (!ModelState.IsValid)
             {
@@ -60,11 +57,11 @@ namespace XCommunications.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(number).State = EntityState.Modified;
+            context.Entry(number).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,57 +80,39 @@ namespace XCommunications.Controllers
 
         // POST: api/Numbers
         [HttpPost]
-        public async Task<IActionResult> PostNumber([FromBody] Number number)
+        public IActionResult PostNumber(Number number)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Number.Add(number);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (NumberExists(number.Id))
-                {
-                    return new StatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            unitOfWork.NumberRepository.Add(number);
+            unitOfWork.Commit();
 
-            return CreatedAtAction("GetNumber", new { id = number.Id }, number);
+            return CreatedAtRoute(new { id = number.Id }, number);
         }
 
         // DELETE: api/Numbers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteNumber([FromRoute] int id)
+        public IActionResult DeleteNumber(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Number number = context.Number.Find(id);
 
-            var number = await _context.Number.FindAsync(id);
             if (number == null)
             {
                 return NotFound();
             }
 
-            _context.Number.Remove(number);
-            await _context.SaveChangesAsync();
+            context.Number.Remove(number);
+            context.SaveChanges();
 
             return Ok(number);
         }
 
         private bool NumberExists(int id)
         {
-            return _context.Number.Any(e => e.Id == id);
+            return context.Number.Count(w => w.Id == id) > 0;
         }
     }
 }

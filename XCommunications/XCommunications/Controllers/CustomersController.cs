@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
+using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Controllers
 {
@@ -13,30 +14,26 @@ namespace XCommunications.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly XCommunicationsContext _context;
+        private readonly XCommunicationsContext context;
+        private readonly IUnitOfWork unitOfWork;
 
-        public CustomersController(XCommunicationsContext context)
+        public CustomersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/Customers
         [HttpGet]
-        public IEnumerable<Customer> GetCustomer()
+        public IEnumerable<Customer> GetCustomers()
         {
-            return _context.Customer;
+            return unitOfWork.CustomerRepository.GetAll();
         }
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCustomer([FromRoute] int id)
+        public IActionResult GetCustomer(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var customer = await _context.Customer.FindAsync(id);
+            Customer customer = context.Customer.Find(id);
 
             if (customer == null)
             {
@@ -48,7 +45,7 @@ namespace XCommunications.Controllers
 
         // PUT: api/Customers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer([FromRoute] int id, [FromBody] Customer customer)
+        public IActionResult PutCustomer(int id, Customer customer)
         {
             if (!ModelState.IsValid)
             {
@@ -60,11 +57,11 @@ namespace XCommunications.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(customer).State = EntityState.Modified;
+            context.Entry(customer).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,57 +80,42 @@ namespace XCommunications.Controllers
 
         // POST: api/Customers
         [HttpPost]
-        public async Task<IActionResult> PostCustomer([FromBody] Customer customer)
+        public IActionResult PostCustomer(Customer customer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Customer.Add(customer);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (CustomerExists(customer.Id))
-                {
-                    return new StatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            unitOfWork.CustomerRepository.Add(customer);
+            unitOfWork.Commit();
 
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
+            return CreatedAtRoute(new { id = customer.Id }, customer);
         }
 
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer([FromRoute] int id)
+        public IActionResult DeleteCustomer(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            Customer customer = context.Customer.Find(id);
 
-            var customer = await _context.Customer.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
 
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
+            context.Customer.Remove(customer);
+            context.Contract.RemoveRange(context.Contract.Where(s => s.CustomerId == customer.Id));
+            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.IdentificationCard == customer.Id));
+
+            context.SaveChanges();
 
             return Ok(customer);
         }
 
         private bool CustomerExists(int id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return context.Customer.Count(w => w.Id == id) > 0;
         }
     }
 }

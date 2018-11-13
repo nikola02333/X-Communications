@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
+using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Controllers
 {
@@ -13,62 +14,58 @@ namespace XCommunications.Controllers
     [ApiController]
     public class RegistratedUsersController : ControllerBase
     {
-        private readonly XCommunicationsContext _context;
+        private readonly XCommunicationsContext context;
+        private readonly IUnitOfWork unitOfWork;
 
-        public RegistratedUsersController(XCommunicationsContext context)
+        public RegistratedUsersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/RegistratedUsers
         [HttpGet]
-        public IEnumerable<RegistratedUser> GetRegistratedUser()
+        public IEnumerable<RegistratedUser> GetRegistrated()
         {
-            return _context.RegistratedUser;
+            return unitOfWork.RegistratedRepository.GetAll();
         }
 
         // GET: api/RegistratedUsers/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetRegistratedUser([FromRoute] int id)
+        public IActionResult GetRegistrated(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            RegistratedUser user = context.RegistratedUser.Find(id);
 
-            var registratedUser = await _context.RegistratedUser.FindAsync(id);
-
-            if (registratedUser == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(registratedUser);
+            return Ok(user);
         }
 
         // PUT: api/RegistratedUsers/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRegistratedUser([FromRoute] int id, [FromBody] RegistratedUser registratedUser)
+        public IActionResult PutRegistrated(int id, RegistratedUser user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != registratedUser.Id)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(registratedUser).State = EntityState.Modified;
+            context.Entry(user).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RegistratedUserExists(id))
+                if (!RegistratedExists(id))
                 {
                     return NotFound();
                 }
@@ -83,57 +80,43 @@ namespace XCommunications.Controllers
 
         // POST: api/RegistratedUsers
         [HttpPost]
-        public async Task<IActionResult> PostRegistratedUser([FromBody] RegistratedUser registratedUser)
+        public IActionResult PostRegistrated(RegistratedUser user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.RegistratedUser.Add(registratedUser);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (RegistratedUserExists(registratedUser.Id))
-                {
-                    return new StatusCodeResult(StatusCodes.Status409Conflict);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            unitOfWork.RegistratedRepository.Add(user);
+            unitOfWork.Commit();
 
-            return CreatedAtAction("GetRegistratedUser", new { id = registratedUser.Id }, registratedUser);
+            return CreatedAtRoute(new { id = user.Id }, user);
         }
 
         // DELETE: api/RegistratedUsers/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRegistratedUser([FromRoute] int id)
+        public IActionResult DeleteRegistrated(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            RegistratedUser user = context.RegistratedUser.Find(id);
 
-            var registratedUser = await _context.RegistratedUser.FindAsync(id);
-            if (registratedUser == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.RegistratedUser.Remove(registratedUser);
-            await _context.SaveChangesAsync();
+            context.RegistratedUser.Remove(user);
+            context.Simcard.RemoveRange(context.Simcard.Where(s => s.Imsi == user.Imsi));
+            context.Customer.RemoveRange(context.Customer.Where(s => s.Id == user.IdentificationCard));
+            context.Worker.RemoveRange(context.Worker.Where(s => s.Id == user.Worker));
 
-            return Ok(registratedUser);
+            context.SaveChanges();
+
+            return Ok(user);
         }
 
-        private bool RegistratedUserExists(int id)
+        private bool RegistratedExists(int id)
         {
-            return _context.RegistratedUser.Any(e => e.Id == id);
+            return context.RegistratedUser.Count(w => w.Id == id) > 0;
         }
     }
 }
