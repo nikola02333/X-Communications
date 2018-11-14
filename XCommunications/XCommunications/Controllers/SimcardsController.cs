@@ -14,8 +14,8 @@ namespace XCommunications.Controllers
     [ApiController]
     public class SimcardsController : ControllerBase
     {
-        private readonly XCommunicationsContext context;
-        private readonly IUnitOfWork unitOfWork;
+        private XCommunicationsContext context = new XCommunicationsContext();
+        private IUnitOfWork unitOfWork;
 
         public SimcardsController(IUnitOfWork unitOfWork)
         {

@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using XCommunications.Models;
+using XCommunications.Patterns.Repository;
+using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications
 {
@@ -37,6 +39,7 @@ namespace XCommunications
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<IUnitOfWork, UnitOfWork>();      // Dependency Injection
 
             var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));

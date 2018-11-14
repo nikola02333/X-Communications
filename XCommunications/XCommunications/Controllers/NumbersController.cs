@@ -14,8 +14,8 @@ namespace XCommunications.Controllers
     [ApiController]
     public class NumbersController : ControllerBase
     {
-        private readonly XCommunicationsContext context;
-        private readonly IUnitOfWork unitOfWork;
+        private XCommunicationsContext context = new XCommunicationsContext();
+        private IUnitOfWork unitOfWork;
 
         public NumbersController(IUnitOfWork unitOfWork)
         {
