@@ -106,7 +106,7 @@ namespace XCommunications.Controllers
 
             context.Customer.Remove(customer);
             context.Contract.RemoveRange(context.Contract.Where(s => s.CustomerId == customer.Id));
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.IdentificationCard == customer.Id));
+            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.CustomerId == customer.Id));
 
             context.SaveChanges();
 

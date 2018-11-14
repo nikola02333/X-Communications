@@ -12,7 +12,7 @@ namespace XCommunications.Patterns.UnitOfWork
     {
         private readonly XCommunicationsContext dbContext;
 
-        public IRepository<Worker> WorkerRepository => new Repository<Worker>(dbContext); 
+        public IRepository<Worker> WorkerRepository => new Repository<Worker>(dbContext);
         public IRepository<Number> NumberRepository => new Repository<Number>(dbContext);
         public IRepository<Simcard> SimcardRepository => new Repository<Simcard>(dbContext);
         public IRepository<Customer> CustomerRepository => new Repository<Customer>(dbContext);
@@ -31,9 +31,9 @@ namespace XCommunications.Patterns.UnitOfWork
 
         public void Discard()
         {
-            foreach(var entity in dbContext.ChangeTracker.Entries().Where(e => e.State!=EntityState.Unchanged))
+            foreach (var entity in dbContext.ChangeTracker.Entries().Where(e => e.State != EntityState.Unchanged))
             {
-                switch(entity.State)
+                switch (entity.State)
                 {
                     case EntityState.Added:
                         entity.State = EntityState.Detached;

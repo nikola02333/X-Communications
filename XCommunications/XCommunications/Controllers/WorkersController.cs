@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
 using XCommunications.Patterns.UnitOfWork;
-using System.Web.Http; 
+using System.Web.Http;
 
 namespace XCommunications.Controllers
 {
@@ -20,7 +20,7 @@ namespace XCommunications.Controllers
 
         public WorkersController(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork=unitOfWork;
+            this.unitOfWork = unitOfWork;
         }
 
         // GET: api/Workers
@@ -106,7 +106,7 @@ namespace XCommunications.Controllers
             }
 
             context.Worker.Remove(worker);
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.Worker == worker.Id));
+            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.WorkerId == worker.Id));
             context.Contract.RemoveRange(context.Contract.Where(s => s.WorkerId == worker.Id));
 
             context.SaveChanges();

@@ -106,8 +106,9 @@ namespace XCommunications.Controllers
 
             context.RegistratedUser.Remove(user);
             context.Simcard.RemoveRange(context.Simcard.Where(s => s.Imsi == user.Imsi));
-            context.Customer.RemoveRange(context.Customer.Where(s => s.Id == user.IdentificationCard));
-            context.Worker.RemoveRange(context.Worker.Where(s => s.Id == user.Worker));
+            context.Customer.RemoveRange(context.Customer.Where(s => s.Id == user.CustomerId));
+            context.Worker.RemoveRange(context.Worker.Where(s => s.Id == user.WorkerId));
+            context.Number.RemoveRange(context.Number.Where(s => s.Id == user.NumberId));
 
             context.SaveChanges();
 

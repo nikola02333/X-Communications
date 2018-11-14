@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace XCommunications.Patterns.Repository
 {
-    public interface IRepository<T> where T:class
+    public interface IRepository<T> where T : class
     {
         // create object to db
         void Add(T entity);

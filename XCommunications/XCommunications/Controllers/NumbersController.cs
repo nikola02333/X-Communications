@@ -105,6 +105,7 @@ namespace XCommunications.Controllers
             }
 
             context.Number.Remove(number);
+            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.NumberId == number.Id));
             context.SaveChanges();
 
             return Ok(number);

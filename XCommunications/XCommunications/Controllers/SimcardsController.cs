@@ -105,7 +105,7 @@ namespace XCommunications.Controllers
             }
 
             context.Simcard.Remove(sim);
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.Imsi == id));
+            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.Imsi == sim.Imsi));
 
             context.SaveChanges();
 

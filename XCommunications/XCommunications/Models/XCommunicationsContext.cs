@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace XCommunications.Models
 {
@@ -28,7 +26,7 @@ namespace XCommunications.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer("Server=INTERNSHIP12\\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;");
             }
         }
@@ -101,11 +99,17 @@ namespace XCommunications.Models
                     .HasColumnName("ID")
                     .ValueGeneratedNever();
 
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
                 entity.Property(e => e.Imsi).HasColumnName("IMSI");
 
-                entity.HasOne(d => d.IdentificationCardNavigation)
+                entity.Property(e => e.NumberId).HasColumnName("NumberID");
+
+                entity.Property(e => e.WorkerId).HasColumnName("WorkerID");
+
+                entity.HasOne(d => d.Customer)
                     .WithMany(p => p.RegistratedUser)
-                    .HasForeignKey(d => d.IdentificationCard)
+                    .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RegistratedUser_Customer");
 
@@ -115,9 +119,15 @@ namespace XCommunications.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RegistratedUser_SIMCard");
 
-                entity.HasOne(d => d.WorkerNavigation)
+                entity.HasOne(d => d.Number)
                     .WithMany(p => p.RegistratedUser)
-                    .HasForeignKey(d => d.Worker)
+                    .HasForeignKey(d => d.NumberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RegistratedUser_Number");
+
+                entity.HasOne(d => d.Worker)
+                    .WithMany(p => p.RegistratedUser)
+                    .HasForeignKey(d => d.WorkerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RegistratedUser_Worker");
             });
