@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using XCommunications.Models;
 using XCommunications.Patterns.UnitOfWork;
 using System.Web.Http;
+using XCommunications.Context;
 
 namespace XCommunications.Controllers
 {
@@ -81,7 +82,7 @@ namespace XCommunications.Controllers
 
         // POST: api/Workers
         [HttpPost]
-        public IActionResult PostWorker(Worker worker)
+        public IActionResult PostWorker([FromBody] Worker worker)       // [FromBody] when there's no ids
         {
             if (!ModelState.IsValid)
             {

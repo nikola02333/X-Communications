@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using XCommunications.Models;
 
-namespace XCommunications.Models
+namespace XCommunications.Context
 {
     public partial class XCommunicationsContext : DbContext
     {

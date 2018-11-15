@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using XCommunications.Context;
 using XCommunications.Models;
 using XCommunications.Patterns.Repository;
 using XCommunications.Patterns.UnitOfWork;
@@ -37,13 +38,12 @@ namespace XCommunications
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddScoped<IUnitOfWork, UnitOfWork>();      // Dependency Injection
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("https://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+                options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddScoped<IUnitOfWork, UnitOfWork>();      // Dependency Injection
 
             var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
