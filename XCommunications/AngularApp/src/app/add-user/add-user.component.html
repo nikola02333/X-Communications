@@ -35,15 +35,25 @@
               >
               <div class="alert alert-danger" *ngIf=" lastName.touched && !lastName.valid">Last name is required </div>
           </div>
-
-       
         </div>
-  
-    
+        <div class="form-group">
+          <div  class="col-4">
+            <label for="lastName">Social security:</label>
+          
+            <input type="text" class="form-control"
+            id="address"
+            required
+            ngModel
+            name="address"
+            #address="ngModel"
+            >
+            <div class="alert alert-danger" *ngIf=" address.touched && !address.valid">Social security  is required </div>
+        </div>
+
+      </div>
         <div  class="col-4">
-                <button type="submit"  class="btn btn-success">Submit</button>
-                <button type="submit" class="btn btn-danger">cancel</button>
-                
+                <button type="submit"  [disabled]="!address.valid || !lastName.valid || !firstName2.valid" class="btn btn-success">Submit</button>
+                <button type="reset" class="btn btn-danger" routerLink=''>cancel</button>
         </div>
       </form>
   </div>

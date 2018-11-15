@@ -1,26 +1,18 @@
-<p>
-  delete-user works!
-</p>
+
 <div class="container">
     <h1>Delete user </h1>
     <form (ngSubmit)="onSubmit()" #f="ngForm" >
       
       <div class="form-group" class= "col-md-7">
-        <label  for="name" >Add user number you want to delete</label>
+        <label  for="name" >Enter Social security number of user you want to delete</label>
         <input type="text" 
         ngModel
         name="firstName"
         #firstName2="ngModel"
          class="form-control"  
          id="firstname" required>
-         <div class="alert alert-danger" *ngIf=" firstName2.touched && !firstName2.valid">name is required </div>
-        
-      
-        
+         <div class="alert alert-danger" *ngIf=" firstName2.touched && !firstName2.valid">Social security number is required </div>
       </div>
- 
-      
-  
           <div class= "col-md-4">
               <button type="submit"  class="btn btn-success">Submit</button>
               <button type="submit" class="btn btn-danger">cancel</button>
