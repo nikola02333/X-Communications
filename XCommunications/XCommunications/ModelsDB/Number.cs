@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace XCommunications.Models
+namespace XCommunications.ModelsDB
 {
     public partial class Number
     {

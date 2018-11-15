@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace XCommunications.Models
+namespace XCommunications.ModelsDB
 {
-    public partial class Worker
+    public partial class Customer
     {
-        public Worker()
+        public Customer()
         {
             Contract = new HashSet<Contract>();
             RegistratedUser = new HashSet<RegistratedUser>();
@@ -14,8 +14,6 @@ namespace XCommunications.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Operater { get; set; }
 
         public ICollection<Contract> Contract { get; set; }
         public ICollection<RegistratedUser> RegistratedUser { get; set; }

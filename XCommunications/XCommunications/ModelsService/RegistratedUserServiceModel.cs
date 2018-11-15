@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace XCommunications.Models
+namespace XCommunications.ModelsService
 {
-    public partial class RegistratedUser
+    public class RegistratedUserServiceModel
     {
         public int Id { get; set; }
         public int Imsi { get; set; }
@@ -11,9 +13,6 @@ namespace XCommunications.Models
         public int WorkerId { get; set; }
         public int NumberId { get; set; }
 
-        public Customer Customer { get; set; }
-        public Simcard ImsiNavigation { get; set; }
-        public Number Number { get; set; }
-        public Worker Worker { get; set; }
+        public RegistratedUserServiceModel() { }
     }
 }

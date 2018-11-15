@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using XCommunications.Context;
-using XCommunications.Models;
+using XCommunications.ModelsDB;
 using XCommunications.Patterns.Repository;
 using XCommunications.Patterns.UnitOfWork;
 

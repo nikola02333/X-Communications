@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using XCommunications.Models;
+using XCommunications.ModelsDB;
 using XCommunications.Patterns.Repository;
 
 namespace XCommunications.Patterns.UnitOfWork
