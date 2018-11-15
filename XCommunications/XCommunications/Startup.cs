@@ -42,7 +42,7 @@ namespace XCommunications
             services.AddScoped<IUnitOfWork, UnitOfWork>();      // Dependency Injection
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("https://localhost:4200/").AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("https://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
 
             var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
