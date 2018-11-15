@@ -38,13 +38,13 @@ namespace XCommunications
             });
 
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+          
             services.AddScoped<IUnitOfWork, UnitOfWork>();      // Dependency Injection
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificorigin", builder => builder.WithOrigins("https://localhost:4200"));
+                options.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
-
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
         }
@@ -60,11 +60,11 @@ namespace XCommunications
             {
                 app.UseHsts();
             }
-
+            app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            app.UseCors("AllowSpecificOrigin");
+           
         }
     }
 }
