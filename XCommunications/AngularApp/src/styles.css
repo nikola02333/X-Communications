@@ -1,2 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+/*.image{
+    height:40em; background-size:cover; width:auto;
+    background-image:url('orig.png');
+    background-position:50% 50%;
+  }*/
+  /*body { margin:0; 
+        background-image:  url('orig.png');   
+    }*/ 

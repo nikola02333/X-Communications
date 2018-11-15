@@ -81,13 +81,13 @@ namespace XCommunications.Controllers
 
         // POST: api/Customers
         [HttpPost]
-        public IActionResult PostCustomer(Customer customer)
+        public IActionResult PostCustomer([FromBody]Customer customer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            
             unitOfWork.CustomerRepository.Add(customer);
             unitOfWork.Commit();
 

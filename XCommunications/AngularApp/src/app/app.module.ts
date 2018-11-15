@@ -10,11 +10,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgBoostrapDropdownDirective } from './directives/ng-boostrap-dropdown.directive';
+import { DeleteUserComponent } from './delete-user/delete-user.component';
+import { ListAllUsersComponent } from './list-all-users/list-all-users.component';
+import { UserServiceService } from './Services/user-service.service';
+import { HttpModule } from '@angular/http';
+import {HttpClient, HttpClientModule } from '@angular/common/http'
 
 const appRoutes: Routes =[
               {path : '' ,component: HomeComponent},
               {path : 'User' ,component: AddUserComponent},
-
+              {path : 'UserDelete' ,component: DeleteUserComponent},
+              {path : 'UserList' ,component: ListAllUsersComponent},
+              
               { path: '**', redirectTo: '' }
 
 ];
@@ -24,16 +31,23 @@ const appRoutes: Routes =[
     AppComponent,
     HomeComponent,
     AddUserComponent,
-     NgBoostrapDropdownDirective
+     NgBoostrapDropdownDirective,
+     DeleteUserComponent,
+     ListAllUsersComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes),
+     
     AppRoutingModule,
     FormsModule,
         ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+      
+        
+    
   ],
-  providers: [],
+  providers: [UserServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
