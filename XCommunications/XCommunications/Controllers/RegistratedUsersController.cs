@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
-using XCommunications.Models;
+using XCommunications.ModelsController;
+using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
+using XCommunications.Services;
 
 namespace XCommunications.Controllers
 {
@@ -15,26 +18,28 @@ namespace XCommunications.Controllers
     [ApiController]
     public class RegistratedUsersController : ControllerBase
     {
-        private XCommunicationsContext context = new XCommunicationsContext();
-        private IUnitOfWork unitOfWork;
+        private IMapper mapper;
+        private RegistratedUsersService service = new RegistratedUsersService();
 
-        public RegistratedUsersController(IUnitOfWork unitOfWork)
+        public RegistratedUsersController(RegistratedUsersService service, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         // GET: api/RegistratedUsers
         [HttpGet]
-        public IEnumerable<RegistratedUser> GetRegistrated()
+        public IEnumerable<RegistratedUserControllerModel> GetRegistrated()
         {
-            return unitOfWork.RegistratedRepository.GetAll();
+            return service.GetAll().Select(x => mapper.Map<RegistratedUserControllerModel>(x));
         }
 
         // GET: api/RegistratedUsers/5
         [HttpGet("{id}")]
         public IActionResult GetRegistrated(int id)
         {
-            RegistratedUser user = context.RegistratedUser.Find(id);
+            RegistratedUserControllerModel user = mapper.Map<RegistratedUserControllerModel>(service.Get(id));
+
 
             if (user == null)
             {
@@ -46,79 +51,53 @@ namespace XCommunications.Controllers
 
         // PUT: api/RegistratedUsers/5
         [HttpPut("{id}")]
-        public IActionResult PutRegistrated(int id, RegistratedUser user)
+        public IActionResult PutRegistrated(int id, RegistratedUserControllerModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
+            // DOGOVORITI SE DA LI CEMO GENERISATI ID ILI DA GA DODAJEMO !!!
+            //if (id != user.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            bool exists = mapper.Map<bool>(service.Put(mapper.Map<RegistratedUserServiceModel>(user)));
+
+            if (exists)
             {
-                return BadRequest();
+                return NoContent();
             }
 
-            context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RegistratedExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/RegistratedUsers
         [HttpPost]
-        public IActionResult PostRegistrated(RegistratedUser user)
+        public IActionResult PostRegistrated([FromBody] RegistratedUserControllerModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.RegistratedRepository.Add(user);
-            unitOfWork.Commit();
+            service.Add(mapper.Map<RegistratedUserServiceModel>(user));
 
-            return CreatedAtRoute(new { id = user.Id }, user);
+            return NoContent();
         }
 
         // DELETE: api/RegistratedUsers/5
         [HttpDelete("{id}")]
         public IActionResult DeleteRegistrated(int id)
         {
-            RegistratedUser user = context.RegistratedUser.Find(id);
-
-            if (user == null)
+            if (!service.Delete(id))
             {
                 return NotFound();
             }
 
-            context.RegistratedUser.Remove(user);
-            context.Simcard.RemoveRange(context.Simcard.Where(s => s.Imsi == user.Imsi));
-            context.Customer.RemoveRange(context.Customer.Where(s => s.Id == user.CustomerId));
-            context.Worker.RemoveRange(context.Worker.Where(s => s.Id == user.WorkerId));
-            context.Number.RemoveRange(context.Number.Where(s => s.Id == user.NumberId));
-
-            context.SaveChanges();
-
-            return Ok(user);
-        }
-
-        private bool RegistratedExists(int id)
-        {
-            return context.RegistratedUser.Count(w => w.Id == id) > 0;
+            return NoContent();
         }
     }
 }

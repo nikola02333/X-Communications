@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.ModelsController;
+using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
 
@@ -13,15 +16,16 @@ namespace XCommunications.Services
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
+        private IMapper mapper;
 
         public IEnumerable<RegistratedUserServiceModel> GetAll()
         {
-            return unitOfWork.RegistratedRepository.GetAll();
+            return unitOfWork.RegistratedRepository.GetAll().Select(x => mapper.Map<RegistratedUserServiceModel>(x));
         }
 
-        public RegistratedUserServiceModel Get(int id)
+        public RegistratedUserControllerModel Get(int id)
         {
-            RegistratedUserServiceModel user = context.RegistratedUser.Find(id);
+            RegistratedUserControllerModel user = mapper.Map<RegistratedUserControllerModel>(unitOfWork.RegistratedRepository.Get(mapper.Map<RegistratedUser>(id)));
 
             if (user == null)
             {
@@ -53,40 +57,31 @@ namespace XCommunications.Services
             }
         }
 
-        public bool Add(RegistratedUserServiceModel user)
+        public void Add(RegistratedUserServiceModel user)
         {
             try
             {
-                unitOfWork.RegistratedUserRepository.Add(user);
+                unitOfWork.RegistratedRepository.Add(mapper.Map<RegistratedUser>(user));
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(user.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return true;
         }
 
         public bool Delete(int id)
         {
+            RegistratedUser user = mapper.Map<RegistratedUser>(unitOfWork.RegistratedRepository.Get(mapper.Map<RegistratedUser>(id)));
+
             try
             {
-                RegistratedUserServiceModel user = context.RegistratedUser.Find(id);
-
                 if (user == null)
                 {
                     return false;
                 }
 
-                ccontext.RegistratedUser.Remove(user);
+                context.RegistratedUser.Remove(user);
                 context.Simcard.RemoveRange(context.Simcard.Where(s => s.Imsi == user.Imsi));
                 context.Customer.RemoveRange(context.Customer.Where(s => s.Id == user.CustomerId));
                 context.Worker.RemoveRange(context.Worker.Where(s => s.Id == user.WorkerId));
@@ -97,14 +92,7 @@ namespace XCommunications.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(user.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 

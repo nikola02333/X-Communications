@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using XCommunications.Models;
+using XCommunications.ModelsController;
 using XCommunications.Patterns.UnitOfWork;
 using System.Web.Http;
 using XCommunications.Context;
+using XCommunications.Services;
+using AutoMapper;
+using XCommunications.ModelsService;
 
 namespace XCommunications.Controllers
 {
@@ -16,26 +19,28 @@ namespace XCommunications.Controllers
     [ApiController]
     public class WorkersController : ControllerBase
     {
-        private XCommunicationsContext context = new XCommunicationsContext();
-        private IUnitOfWork unitOfWork;
+        private IMapper mapper;
+        private WorkersService service = new WorkersService();
 
-        public WorkersController(IUnitOfWork unitOfWork)
+        public WorkersController(WorkersService service, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         // GET: api/Workers
         [HttpGet]
-        public IEnumerable<Worker> GetWorkers()
+        public IEnumerable<WorkerControllerModel> GetWorkers()
         {
-            return unitOfWork.WorkerRepository.GetAll();
+            return service.GetAll().Select(x => mapper.Map<WorkerControllerModel>(x));
         }
 
         // GET: api/Workers/5
         [HttpGet("{id}")]
         public IActionResult GetWorker(int id)
         {
-            Worker worker = context.Worker.Find(id);
+            WorkerControllerModel worker = mapper.Map<WorkerControllerModel>(service.Get(id));
+
 
             if (worker == null)
             {
@@ -47,77 +52,53 @@ namespace XCommunications.Controllers
 
         // PUT: api/Workers/5
         [HttpPut("{id}")]
-        public IActionResult PutWorker(int id, Worker worker)
+        public IActionResult PutWorker(int id, WorkerControllerModel worker)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != worker.Id)
+            // DOGOVORITI SE DA LI CEMO DA GENERISEMO ID ILI DA GA DODAJEMO !!! 
+            //if (id != worker.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            bool exists = mapper.Map<bool>(service.Put(mapper.Map<WorkerServiceModel>(worker)));
+
+            if (exists)
             {
-                return BadRequest();
+                return NoContent();
             }
 
-            context.Entry(worker).State = EntityState.Modified;
-
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WorkerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/Workers
         [HttpPost]
-        public IActionResult PostWorker([FromBody] Worker worker)       // [FromBody] when there's no ids
+        public IActionResult PostWorker([FromBody] WorkerControllerModel worker)       
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.WorkerRepository.Add(worker);
-            unitOfWork.Commit();
+            service.Add(mapper.Map<WorkerServiceModel>(worker));
 
-            return CreatedAtRoute(new { id = worker.Id }, worker);
+            return NoContent();
         }
 
         // DELETE: api/Workers/5
         [HttpDelete("{id}")]
         public IActionResult DeleteWorker(int id)
         {
-            Worker worker = context.Worker.Find(id);
-
-            if (worker == null)
+            if (!service.Delete(id))
             {
                 return NotFound();
             }
 
-            context.Worker.Remove(worker);
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.WorkerId == worker.Id));
-            context.Contract.RemoveRange(context.Contract.Where(s => s.WorkerId == worker.Id));
-
-            context.SaveChanges();
-
-            return Ok(worker);
-        }
-
-        private bool WorkerExists(int id)
-        {
-            return context.Worker.Count(w => w.Id == id) > 0;
+            return NoContent();
         }
     }
 }

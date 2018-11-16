@@ -14,16 +14,23 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using XCommunications.Context;
 using XCommunications.ModelsDB;
+using XCommunications.ModelsService;
+using XCommunications.ModelsController;
 using XCommunications.Patterns.Repository;
 using XCommunications.Patterns.UnitOfWork;
+using AutoMapper;
+using log4net;
 
 namespace XCommunications
 {
     public class Startup
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            log.Info("Startup.cs/Startup");
         }
 
         public IConfiguration Configuration { get; }
@@ -31,6 +38,31 @@ namespace XCommunications
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Customer,CustomerServiceModel>();
+                cfg.CreateMap<Customer, CustomerControllerModel>();
+                cfg.CreateMap<CustomerServiceModel, CustomerControllerModel>();
+                cfg.CreateMap<Worker, WorkerServiceModel>();
+                cfg.CreateMap<Worker, WorkerControllerModel>();
+                cfg.CreateMap<WorkerServiceModel, WorkerControllerModel>();
+                cfg.CreateMap<Contract, ContractServiceModel>();
+                cfg.CreateMap<Contract, ContractControllerModel>();
+                cfg.CreateMap<ContractServiceModel, ContractControllerModel>();
+                cfg.CreateMap<Number, NumberServiceModel>();
+                cfg.CreateMap<Number, NumberControllerModel>();
+                cfg.CreateMap<NumberServiceModel, NumberControllerModel>();
+                cfg.CreateMap<Simcard, SimcardServiceModel>();
+                cfg.CreateMap<Simcard, SimcardControllerModel>();
+                cfg.CreateMap<SimcardServiceModel, SimcardControllerModel>();
+                cfg.CreateMap<RegistratedUser, RegistratedUserServiceModel>();
+                cfg.CreateMap<RegistratedUser, RegistratedUserServiceModel>();
+                cfg.CreateMap<RegistratedUserServiceModel, RegistratedUserControllerModel>();
+            });
+
+            var mapper = config.CreateMapper();
+            services.AddSingleton(mapper);
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -48,6 +80,8 @@ namespace XCommunications
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
+
+            log.Info("Startup.cs/ConfigureServices");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +99,8 @@ namespace XCommunications
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            log.Info("Startup.cs/Configure");
         }
     }
 }

@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.ModelsController;
+using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
 
@@ -13,15 +16,16 @@ namespace XCommunications.Services
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
+        private IMapper mapper;
 
         public IEnumerable<WorkerServiceModel> GetAll()
         {
-            return unitOfWork.WorkerRepository.GetAll();
+            return unitOfWork.WorkerRepository.GetAll().Select(x => mapper.Map<WorkerServiceModel>(x));
         }
 
-        public WorkerServiceModel Get(int id)
+        public WorkerControllerModel Get(int id)
         {
-            WorkerServiceModel worker = context.Worker.Find(id);
+            WorkerControllerModel worker = mapper.Map< WorkerControllerModel>(unitOfWork.WorkerRepository.Get(mapper.Map<Worker>(id)));
 
             if (worker == null)
             {
@@ -42,44 +46,35 @@ namespace XCommunications.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WorkerExists(worker.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
-            }
-        }
-
-        public bool Add(WorkerServiceModel worker)
-        {
-            try
-            {
-                unitOfWork.WorkerRepository.Add(worker);
-                unitOfWork.Commit();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
                 if (!Exists(worker.Id))
                 {
                     return false;
                 }
                 else
                 {
-                    throw;
+                    throw;      // moze baciti internal error server
                 }
             }
+        }
 
-            return true;
+        public void Add(WorkerServiceModel worker)
+        {
+            try
+            {
+                unitOfWork.WorkerRepository.Add(mapper.Map<Worker>(worker));
+                unitOfWork.Commit();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw;
+            }
         }
 
         public bool Delete(int id)
         {
             try
             {
-                WorkerServiceModel worker = context.Worker.Find(id);
+                Worker worker = mapper.Map<Worker>(unitOfWork.WorkerRepository.Get(mapper.Map<Worker>(id)));
 
                 if (worker == null)
                 {
@@ -95,14 +90,7 @@ namespace XCommunications.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WorkerExists(worker.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 

@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.ModelsController;
+using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
 
@@ -13,15 +16,16 @@ namespace XCommunications.Services
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
+        private IMapper mapper;
 
         public IEnumerable<ContractServiceModel> GetAll()
         {
-            return unitOfWork.ContractRepository.GetAll();
+            return unitOfWork.ContractRepository.GetAll().Select(x => mapper.Map<ContractServiceModel>(x));
         }
 
-        public ContractServiceModel Get(int id)
+        public ContractControllerModel Get(int id)
         {
-            ContractServiceModel contract = context.Contract.Find(id);
+            ContractControllerModel contract = mapper.Map< ContractControllerModel>(unitOfWork.ContractRepository.Get(mapper.Map<Contract>((id))));
 
             if (contract == null)
             {
@@ -53,34 +57,26 @@ namespace XCommunications.Services
             }
         }
 
-        public bool Add(ContractServiceModel contract)
+        public void Add(ContractServiceModel contract)
         {
             try
             {
-                unitOfWork.ContractRepository.Add(contract);
+                contract.Date = DateTime.Now;
+                unitOfWork.ContractRepository.Add(mapper.Map<Contract>(contract));
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(contract.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return true;
         }
 
         public bool Delete(int id)
         {
+            Contract contract = mapper.Map<Contract>(unitOfWork.ContractRepository.Get(mapper.Map<Contract>(id)));
+
             try
             {
-                ContractServiceModel contract = context.Contract.Find(id);
-
                 if (contract == null)
                 {
                     return false;

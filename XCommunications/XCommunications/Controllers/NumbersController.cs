@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
-using XCommunications.Models;
+using XCommunications.ModelsController;
+using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
+using XCommunications.Services;
 
 namespace XCommunications.Controllers
 {
@@ -15,26 +18,27 @@ namespace XCommunications.Controllers
     [ApiController]
     public class NumbersController : ControllerBase
     {
-        private XCommunicationsContext context = new XCommunicationsContext();
-        private IUnitOfWork unitOfWork;
+        private IMapper mapper;
+        private NumbersService service = new NumbersService();
 
-        public NumbersController(IUnitOfWork unitOfWork)
+        public NumbersController(NumbersService service, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         // GET: api/Numbers
         [HttpGet]
-        public IEnumerable<Number> GetNumbers()
+        public IEnumerable<NumberControllerModel> GetNumbers()
         {
-            return unitOfWork.NumberRepository.GetAll();
+            return service.GetAll().Select(x => mapper.Map<NumberControllerModel>(x));
         }
 
         // GET: api/Numbers/5
         [HttpGet("{id}")]
         public IActionResult GetNumber(int id)
         {
-            Number number = context.Number.Find(id);
+            NumberControllerModel number = mapper.Map<NumberControllerModel>(service.Get(id));
 
             if (number == null)
             {
@@ -46,75 +50,53 @@ namespace XCommunications.Controllers
 
         // PUT: api/Numbers/5
         [HttpPut("{id}")]
-        public IActionResult PutNumber(int id, Number number)
+        public IActionResult PutNumber(int id, NumberControllerModel number)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != number.Id)
+            // DOGOVORITI SE DA LI CEMO DA GENERISEMO ID ILI DA GA DODAJEMO !!!
+            //if (id != number.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            bool exists = mapper.Map<bool>(service.Put(mapper.Map<NumberServiceModel>(number)));
+
+            if (exists)
             {
-                return BadRequest();
+                return NoContent();
             }
 
-            context.Entry(number).State = EntityState.Modified;
-
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NumberExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/Numbers
         [HttpPost]
-        public IActionResult PostNumber(Number number)
+        public IActionResult PostNumber([FromBody] NumberControllerModel number)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.NumberRepository.Add(number);
-            unitOfWork.Commit();
+            service.Add(mapper.Map<NumberServiceModel>(number));
 
-            return CreatedAtRoute(new { id = number.Id }, number);
+            return NoContent(); ;
         }
 
         // DELETE: api/Numbers/5
         [HttpDelete("{id}")]
         public IActionResult DeleteNumber(int id)
         {
-            Number number = context.Number.Find(id);
-
-            if (number == null)
+            if (!service.Delete(id))
             {
                 return NotFound();
             }
 
-            context.Number.Remove(number);
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.NumberId == number.Id));
-            context.SaveChanges();
-
-            return Ok(number);
-        }
-
-        private bool NumberExists(int id)
-        {
-            return context.Number.Count(w => w.Id == id) > 0;
+            return NoContent();
         }
     }
 }

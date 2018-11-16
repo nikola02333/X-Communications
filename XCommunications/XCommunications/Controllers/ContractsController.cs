@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
-using XCommunications.Models;
+using XCommunications.ModelsController;
+using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
+using XCommunications.Services;
 
 namespace XCommunications.Controllers
 {
@@ -15,26 +18,27 @@ namespace XCommunications.Controllers
     [ApiController]
     public class ContractsController : ControllerBase
     {
-        private XCommunicationsContext context = new XCommunicationsContext();
-        private IUnitOfWork unitOfWork;
+        private IMapper mapper;
+        private ContractsService service = new ContractsService();
 
-        public ContractsController(IUnitOfWork unitOfWork)
+        public ContractsController(ContractsService service, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         // GET: api/Contracts
         [HttpGet]
-        public IEnumerable<Contract> GetContract()
+        public IEnumerable<ContractControllerModel> GetContract()
         {
-            return unitOfWork.ContractRepository.GetAll();
+            return service.GetAll().Select(x => mapper.Map<ContractControllerModel>(x));
         }
 
         // GET: api/Contracts/5
         [HttpGet("{id}")]
         public IActionResult GetContract(int id)
         {
-            Contract contract = context.Contract.Find(id);
+            ContractControllerModel contract = mapper.Map<ContractControllerModel>(service.Get(id));
 
             if (contract == null)
             {
@@ -46,77 +50,54 @@ namespace XCommunications.Controllers
 
         // PUT: api/Contracts/5
         [HttpPut("{id}")]
-        public IActionResult PutContract(int id, Contract contract)
+        public IActionResult PutContract(int id, ContractControllerModel contract)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != contract.Id)
+            // DOGOVORITI SE DA LI CEMO DA GENERISEMO ID ILI DA GA DODAJEMO !!!
+            //if (id != contract.Id)
+            //{
+            //    return BadRequest();
+            //}
+
+            bool exists = mapper.Map<bool>(service.Put(mapper.Map<ContractServiceModel>(contract)));
+
+            if (exists)
             {
-                return BadRequest();
+                return NoContent();
             }
 
-            context.Entry(contract).State = EntityState.Modified;
+            return NotFound();
 
-            try
-            {
-                context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ContractExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Contracts
         [HttpPost]
-        public IActionResult PostContract(Contract contract)
+        public IActionResult PostContract([FromBody] ContractControllerModel contract)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.ContractRepository.Add(contract);
-            unitOfWork.Commit();
+            service.Add(mapper.Map<ContractServiceModel>(contract));
 
-            return CreatedAtRoute(new { id = contract.Id }, contract);
+            return NoContent();
         }
 
         // DELETE: api/Contracts/5
         [HttpDelete("{id}")]
         public IActionResult DeleteContract(int id)
         {
-            Contract contract = context.Contract.Find(id);
-
-            if (contract == null)
+            if(!service.Delete(id))
             {
                 return NotFound();
             }
 
-            context.Contract.Remove(contract);
-            context.Customer.RemoveRange(context.Customer.Where(s => s.Id == contract.CustomerId));
-            context.Worker.RemoveRange(context.Worker.Where(s => s.Id == contract.WorkerId));
-
-            context.SaveChanges();
-
-            return Ok(contract);
-        }
-
-        private bool ContractExists(int id)
-        {
-            return context.Contract.Count(w => w.Id == id) > 0;
+            return NoContent();
         }
     }
 }

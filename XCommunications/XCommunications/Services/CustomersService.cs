@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.ModelsController;
+using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
 
@@ -13,15 +16,16 @@ namespace XCommunications.Services
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
+        private IMapper mapper;
 
         public IEnumerable<CustomerServiceModel> GetAll()
         {
-            return unitOfWork.CustomerRepository.GetAll();
+            return unitOfWork.CustomerRepository.GetAll().Select(x => mapper.Map<CustomerServiceModel>(x));
         }
 
-        public CustomerServiceModel Get(int id)
+        public CustomerControllerModel Get(int id)
         {
-            CustomerServiceModel customer = context.Customer.Find(id);
+            CustomerControllerModel customer = mapper.Map<CustomerControllerModel>(unitOfWork.CustomerRepository.Get(mapper.Map<Customer>(id)));
 
             if (customer == null)
             {
@@ -53,35 +57,26 @@ namespace XCommunications.Services
             }
         }
 
-        public bool Add(CustomerServiceModel customer)
+        public void Add(CustomerServiceModel customer)
         {
             try
             {
-                unitOfWork.CustomerRepository.Add(customer);
+                unitOfWork.CustomerRepository.Add(mapper.Map<Customer>(customer));
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(customer.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return true;
         }
 
         public bool Delete(int id)
         {
+            Customer customer = mapper.Map<Customer>(unitOfWork.CustomerRepository.Get(mapper.Map<Customer>(id)));
+
             try
             {
-                CustomerServiceModel customer = context.Customer.Find(id);
-
-                if (number == null)
+                if (customer == null)
                 {
                     return false;
                 }

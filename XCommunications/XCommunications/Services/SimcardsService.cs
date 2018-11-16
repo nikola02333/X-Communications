@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.ModelsController;
+using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
 
@@ -13,15 +16,16 @@ namespace XCommunications.Services
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
+        private IMapper mapper;
 
         public IEnumerable<SimcardServiceModel> GetAll()
         {
-            return unitOfWork.SimcardRepository.GetAll();
+            return unitOfWork.SimcardRepository.GetAll().Select(x => mapper.Map<SimcardServiceModel>(x));
         }
 
-        public SimcardServiceModel Get(int id)
+        public SimcardControllerModel Get(int id)
         {
-            SimcardServiceModel sim = context.Simcard.Find(id);
+            SimcardControllerModel sim = mapper.Map<SimcardControllerModel>(unitOfWork.SimcardRepository.Get(mapper.Map<Simcard>(id)));
 
             if (sim == null)
             {
@@ -53,34 +57,26 @@ namespace XCommunications.Services
             }
         }
 
-        public bool Add(SimcardServiceModel sim)
+        public void Add(SimcardServiceModel sim)
         {
             try
             {
-                unitOfWork.SimcardRepository.Add(sim);
+                sim.Status = true;
+                unitOfWork.SimcardRepository.Add(mapper.Map<Simcard>(sim));
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(sim.Imsi))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return true;
         }
 
         public bool Delete(int id)
         {
+            Simcard sim = mapper.Map<Simcard>(unitOfWork.SimcardRepository.Get(mapper.Map<Simcard>(id)));
+
             try
             {
-                SimcardServiceModel sim = context.Simcard.Find(id);
-
                 if (sim == null)
                 {
                     return false;
@@ -107,7 +103,7 @@ namespace XCommunications.Services
 
         private bool Exists(int id)
         {
-            return context.Simcard.Count(w => w.Id == id) > 0;
+            return context.Simcard.Count(w => w.Imsi == id) > 0;
         }
     }
 }

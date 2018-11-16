@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
-using XCommunications.Models;
+using XCommunications.ModelsController;
+using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
+using XCommunications.Services;
 
 namespace XCommunications.Controllers
 {
@@ -15,26 +18,27 @@ namespace XCommunications.Controllers
     [ApiController]
     public class SimcardsController : ControllerBase
     {
-        private XCommunicationsContext context = new XCommunicationsContext();
-        private IUnitOfWork unitOfWork;
+        private IMapper mapper;
+        private SimcardsService service = new SimcardsService();
 
-        public SimcardsController(IUnitOfWork unitOfWork)
+        public SimcardsController(SimcardsService service, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         // GET: api/Simcards
         [HttpGet]
-        public IEnumerable<Simcard> GetSimcards()
+        public IEnumerable<SimcardControllerModel> GetSimcards()
         {
-            return unitOfWork.SimcardRepository.GetAll();
+            return service.GetAll().Select(x => mapper.Map<SimcardControllerModel>(x));
         }
 
         // GET: api/Simcards/5
         [HttpGet("{id}")]
         public IActionResult GetSimcard(int id)
         {
-            Simcard sim = context.Simcard.Find(id);
+            SimcardControllerModel sim = mapper.Map<SimcardControllerModel>(service.Get(id));
 
             if (sim == null)
             {
@@ -46,7 +50,7 @@ namespace XCommunications.Controllers
 
         // PUT: api/Simcards/5
         [HttpPut("{id}")]
-        public IActionResult PutSimcard(int id, Simcard sim)
+        public IActionResult PutSimcard(int id, SimcardControllerModel sim)
         {
             if (!ModelState.IsValid)
             {
@@ -58,38 +62,26 @@ namespace XCommunications.Controllers
                 return BadRequest();
             }
 
-            context.Entry(sim).State = EntityState.Modified;
+            bool exists = mapper.Map<bool>(service.Put(mapper.Map<SimcardServiceModel>(sim)));
 
-            try
+            if (exists)
             {
-                context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SimcardExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NoContent();
             }
 
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/Simcards
         [HttpPost]
-        public IActionResult PostSimcard(Simcard sim)
+        public IActionResult PostSimcard([FromBody] SimcardControllerModel sim)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            unitOfWork.SimcardRepository.Add(sim);
-            unitOfWork.Commit();
+            service.Add(mapper.Map<SimcardServiceModel>(sim));
 
             return CreatedAtRoute(new { id = sim.Imsi }, sim);
         }
@@ -98,24 +90,12 @@ namespace XCommunications.Controllers
         [HttpDelete("{id}")]
         public IActionResult SimcardWorker(int id)
         {
-            Simcard sim = context.Simcard.Find(id);
-
-            if (sim == null)
+            if (!service.Delete(id))
             {
                 return NotFound();
             }
 
-            context.Simcard.Remove(sim);
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.Imsi == sim.Imsi));
-
-            context.SaveChanges();
-
-            return Ok(sim);
-        }
-
-        private bool SimcardExists(int id)
-        {
-            return context.Simcard.Count(w => w.Imsi == id) > 0;
+            return NoContent();
         }
     }
 }

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
-using XCommunications.Models;
+using XCommunications.ModelsController;
+using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
+using XCommunications.Services;
 
 namespace XCommunications.Controllers
 {
@@ -15,26 +18,27 @@ namespace XCommunications.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private XCommunicationsContext context = new XCommunicationsContext();
-        private IUnitOfWork unitOfWork;
+        private IMapper mapper;
+        private CustomersService service = new CustomersService();
 
-        public CustomersController(IUnitOfWork unitOfWork)
+        public CustomersController(CustomersService service, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.service = service;
+            this.mapper = mapper;
         }
 
         // GET: api/Customers
         [HttpGet]
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerControllerModel> GetCustomers()
         {
-            return unitOfWork.CustomerRepository.GetAll();
+            return service.GetAll().Select(x => mapper.Map<CustomerControllerModel>(x));
         }
 
         // GET: api/Customers/5
         [HttpGet("{id}")]
         public IActionResult GetCustomer(int id)
         {
-            Customer customer = context.Customer.Find(id);
+            CustomerControllerModel customer = mapper.Map<CustomerControllerModel>(service.Get(id));  
 
             if (customer == null)
             {
@@ -46,7 +50,7 @@ namespace XCommunications.Controllers
 
         // PUT: api/Customers/5
         [HttpPut("{id}")]
-        public IActionResult PutCustomer(int id, Customer customer)
+        public IActionResult PutCustomer(int id, CustomerControllerModel customer)
         {
             if (!ModelState.IsValid)
             {
@@ -58,38 +62,26 @@ namespace XCommunications.Controllers
                 return BadRequest();
             }
 
-            context.Entry(customer).State = EntityState.Modified;
+            bool exists = mapper.Map<bool>(service.Put(mapper.Map<CustomerServiceModel>(customer)));
 
-            try
+            if (exists)
             {
-                context.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NoContent();
             }
 
-            return NoContent();
+            return NotFound();
         }
 
         // POST: api/Customers
         [HttpPost]
-        public IActionResult PostCustomer([FromBody]Customer customer)
+        public IActionResult PostCustomer([FromBody] CustomerControllerModel customer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            
-            unitOfWork.CustomerRepository.Add(customer);
-            unitOfWork.Commit();
+
+           service.Add(mapper.Map<CustomerServiceModel>(customer));
 
             return CreatedAtRoute(new { id = customer.Id }, customer);
         }
@@ -98,25 +90,12 @@ namespace XCommunications.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(int id)
         {
-            Customer customer = context.Customer.Find(id);
-
-            if (customer == null)
+            if (!service.Delete(id))
             {
                 return NotFound();
             }
 
-            context.Customer.Remove(customer);
-            context.Contract.RemoveRange(context.Contract.Where(s => s.CustomerId == customer.Id));
-            context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.CustomerId == customer.Id));
-
-            context.SaveChanges();
-
-            return Ok(customer);
-        }
-
-        private bool CustomerExists(int id)
-        {
-            return context.Customer.Count(w => w.Id == id) > 0;
+            return NoContent();
         }
     }
 }

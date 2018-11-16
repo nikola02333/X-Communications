@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.ModelsController;
+using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
 
@@ -13,15 +16,16 @@ namespace XCommunications.Services
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
+        private IMapper mapper;
 
         public IEnumerable<NumberServiceModel> GetAll()
         {
-            return unitOfWork.NumberRepository.GetAll();
+            return unitOfWork.NumberRepository.GetAll().Select(x => mapper.Map<NumberServiceModel>(x));
         }
 
-        public NumberServiceModel Get(int id)
+        public NumberControllerModel Get(int id)
         {
-            NumberServiceModel number = context.Number.Find(id);
+            NumberControllerModel number = mapper.Map<NumberControllerModel>(unitOfWork.NumberRepository.Get(mapper.Map<Number>(id)));
 
             if (number == null)
             {
@@ -53,33 +57,25 @@ namespace XCommunications.Services
             }
         }
 
-        public bool Add(NumberServiceModel number)
+        public void Add(NumberServiceModel number)
         {
             try
             {
-                unitOfWork.NumberRepository.Add(number);
+                number.Status = true;
+                unitOfWork.NumberRepository.Add(mapper.Map<Number>(number));
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(number.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
-            return true;
         }
 
         public bool Delete(int id)
         {
             try
             {
-                NumberServiceModel number = context.Number.Find(id);
+                Number number = mapper.Map<Number>(unitOfWork.NumberRepository.Get(mapper.Map<Number>(id)));
 
                 if (number == null)
                 {
@@ -94,14 +90,7 @@ namespace XCommunications.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!Exists(number.Id))
-                {
-                    return false;
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
         }
 
