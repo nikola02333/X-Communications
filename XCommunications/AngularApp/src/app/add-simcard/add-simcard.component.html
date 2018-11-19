@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-md-5">
+    <form [formGroup]="this.simCardService.form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Imsi</label>
+        <input formControlName="imsi" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.imsi.errors}">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.imsi.errors">
+          This field is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Iccid</label>
+        <input formControlName="iccid" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.iccid.errors}">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.iccid.errors">
+          This field is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Pin</label>
+        <input formControlName="pin" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.pin.errors}">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.pin.errors">
+          This field is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label>Puk</label>
+        <input formControlName="puk" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.puk.errors}">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.puk.errors">
+          This field is required.</div>
+      </div>
+     
+      <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Submit" >
+      </div>
+    </form>
+    <div class="alert alert-info"  *ngIf="showSuccessMessage">
+      Submitted successfully.
+    </div>
+  </div>
+</div>

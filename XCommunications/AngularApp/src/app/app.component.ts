@@ -16,8 +16,3 @@ export class AppComponent {
     }*/
   title = 'App';
 }
-/**
- *
- */
-
-

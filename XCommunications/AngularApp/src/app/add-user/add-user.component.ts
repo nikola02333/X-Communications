@@ -10,27 +10,38 @@ import { UserServiceService } from '../Services/user-service.service';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
+  constructor(private userService :UserServiceService) { }
 
   custumer : Customer;
-  constructor(private service :UserServiceService) { }
+  submitted: boolean;
+  showSuccessMessage: boolean;
+  formControls = this.userService.form.controls;
+  
 
   ngOnInit() {
   }
  
-  onSubmit(form :NgForm)
-  {
-      console.log(form.value.firstName);
-      console.log(form.value.lastname);
 
-      this.custumer = new Customer(2,form.value.firstName,form.value.lastname);
+  onSubmit()
+   {
+      this.submitted = true;
+      if (this.userService.form.valid)
+      {
+        this.custumer = new Customer(2,this.userService.form.value.fullName,this.userService.form.value.lastname);
       
-      this.service.addUser(this.custumer).subscribe(() => console.log('bilo sta '));
-  
-      form.reset();
+        this.userService.post(this.custumer).subscribe( x=> console.log(x)); //
+
+      }
+    }
+    resetForm(form:NgForm)
+  {
+    this.userService.form.reset();
+  }
 
   }
+  
+
+  
  
- 
-    // do something else
-}
+
 

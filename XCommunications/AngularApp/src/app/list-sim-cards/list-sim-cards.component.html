@@ -1,0 +1,23 @@
+
+<table class="table table-hover">
+    <thead>
+        <th>Imsi </th>
+        <th>Iccid </th>
+        <th>Status</th>
+        <th>Pin</th>
+        <th>Puk</th>
+        <th></th>
+        <th></th>
+      </thead>
+    <tr *ngFor="let simCard of simCards">
+      <td (click)="populateForm(simCard)">{{simCard.imsi}} </td>
+      <td (click)="populateForm(simCard)">{{simCard.iccid}}</td>
+      <td (click)="populateForm(simCard)">{{simCard.status}}</td>
+      <td (click)="populateForm(simCard)">{{simCard.pin}}</td>
+      <td (click)="populateForm(simCard)">{{simCard.puk}}</td>
+      <td><button (click)="onDelete(simCard.custumerId)" class="btn btn-sm btn-outline-danger">X</button></td>
+      <td><button (click)="onDelete(simCard.custumerId)" class="btn btn-sm btn-outline-danger"  > edit</button></td>
+
+    </tr>
+  </table>
+

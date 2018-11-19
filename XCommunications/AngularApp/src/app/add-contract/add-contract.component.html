@@ -1,0 +1,39 @@
+<div   class="container" >
+
+<div style="text-align: center">
+<form  class="emp-form" #ContractForm= "ngForm" (submit)="onSubmit(ContractForm)">
+    <div class="form-group">
+      <div class="form-group col-md-6">
+        <input class="form-control" name="custumerId" #id="ngModel" placeholder="custumer ID" [(ngModel)]="contractService.selectedContract.custumerId" required>
+          <div class="validation-error" *ngIf="custumerId.invalid && custumerId.touched ">this Filed is Requaired</div>
+      </div>
+  
+    </div>
+    <div class="form-group">
+        <div class="form-group col-md-6">
+        <input class="form-control" name="workerId" #workerId="ngModel"   placeholder="worker ID"[(ngModel)]="contractService.selectedContract.workerId">
+        <div class="validation-error" *ngIf="workerId.invalid && workerId.touched ">this Filed is Requaired</div>
+    </div>
+    <div class="form-group">
+        <div class="form-group col-md-6">
+        <input class="form-control" name="tariff" #tariff="ngModel"   placeholder="Tariff"[(ngModel)]="contractService.selectedContract.tariff">
+        <div class="validation-error" *ngIf="tariff.invalid && tariff.touched ">this Filed is Requaired</div>
+    </div>
+    </div>
+      <div class="form-row">
+          <div class="form-group col-md-3">
+           <button [disabled]="!ContractForm.valid" type="submit" class="btn btn-lg btn-block btn-info">
+              <i class="fa fa-floppy-o"> Submit</i>
+            </button>
+          </div>
+    
+          <div class="form-group col-md-3">
+              <button class="btn btn-lg btn-block btn-secendery" (click)="resetForm(ContractForm)"> 
+                  <i class="fa fa-repeat" > Reset</i>
+              </button>
+        
+            </div>
+        </div>
+        </div>
+  </form>
+</div>

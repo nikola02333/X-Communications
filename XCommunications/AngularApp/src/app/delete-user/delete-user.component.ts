@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { UserServiceService } from 'local/src/app/Services/user-service.service';
 
 @Component({
   selector: 'app-delete-user',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeleteUserComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService :UserServiceService) { }
 
   ngOnInit() {
   }
-
+  onSubmit(form: NgForm)
+  {
+    this.userService.deleteUser(form.value).subscribe();
+  }
 }

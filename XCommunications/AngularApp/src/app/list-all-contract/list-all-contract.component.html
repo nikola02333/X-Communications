@@ -1,0 +1,17 @@
+
+<table class="table table-hover">
+    <thead>
+        <th>ID </th>
+        <th>Worker Id</th>
+        <th>Tariff</th>
+      </thead>
+    <tr *ngFor="let contract of contract">
+      <td (click)="populateForm(contract)">{{contract.custumerId}} </td>
+      <td (click)="populateForm(contract)">{{contract.workerId}}</td>
+      <td (click)="populateForm(contract)">{{contract.tariff}}</td>
+      <td><button (click)="onDelete(contract.custumerId)" class="btn btn-sm btn-outline-danger">X</button></td>
+      <td><button (click)="onDelete(contract.custumerId)" class="btn btn-sm btn-outline-danger"  > edit</button></td>
+
+    </tr>
+  </table>
+

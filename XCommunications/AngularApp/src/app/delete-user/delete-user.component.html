@@ -1,9 +1,9 @@
 
-<div class="container">
+<div >
     <h1>Delete user </h1>
-    <form (ngSubmit)="onSubmit()" #f="ngForm" >
+    <form  #f="ngForm"   (submit)="onSubmit(f)">
       
-      <div class="form-group" class= "col-md-7">
+      <div class="form-group" class= "col-md-4">
         <label  for="name" >Enter Social security number of user you want to delete</label>
         <input type="text" 
         ngModel
@@ -17,6 +17,5 @@
               <button type="submit"  class="btn btn-success">Submit</button>
               <button type="submit" class="btn btn-danger">cancel</button>
               </div>
-        
     </form>
 </div>
