@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace XCommunications.Patterns.Repository
+namespace XCommunications.Interfaces
 {
     public interface IRepository<T> where T : class
     {

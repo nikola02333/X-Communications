@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using XCommunications.ModelsDB;
 using XCommunications.Patterns.Repository;
 
-namespace XCommunications.Patterns.UnitOfWork
+namespace XCommunications.Interfaces
 {
     public interface IUnitOfWork
     {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
@@ -12,11 +13,17 @@ using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Services
 {
-    public class ContractsService
+    public class ContractsService : IContractsService
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+
+        public ContractsService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+        }
 
         public IEnumerable<ContractServiceModel> GetAll()
         {
@@ -25,7 +32,10 @@ namespace XCommunications.Services
 
         public ContractControllerModel Get(int id)
         {
-            ContractControllerModel contract = mapper.Map< ContractControllerModel>(unitOfWork.ContractRepository.Get(mapper.Map<Contract>((id))));
+            Contract c = null;
+            c = context.Contract.Find(id);
+
+            ContractControllerModel contract = mapper.Map<ContractControllerModel>(c);
 
             if (contract == null)
             {
@@ -37,9 +47,12 @@ namespace XCommunications.Services
 
         public bool Put(ContractServiceModel contract)
         {
+            Contract c = null;
+            c = mapper.Map<Contract>(contract);
+
             try
             {
-                context.Entry(contract).State = EntityState.Modified;
+                context.Entry(c).State = EntityState.Modified;
                 context.SaveChanges();
 
                 return true;
@@ -52,17 +65,20 @@ namespace XCommunications.Services
                 }
                 else
                 {
-                    throw;
+                    throw;      // moze baciti internal error server
                 }
             }
         }
 
         public void Add(ContractServiceModel contract)
         {
+            Contract c = null;
+            c = mapper.Map<Contract>(contract);
+
             try
             {
-                contract.Date = DateTime.Now;
-                unitOfWork.ContractRepository.Add(mapper.Map<Contract>(contract));
+                c.Date = DateTime.Now;
+                unitOfWork.ContractRepository.Add(c);
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
@@ -73,7 +89,8 @@ namespace XCommunications.Services
 
         public bool Delete(int id)
         {
-            Contract contract = mapper.Map<Contract>(unitOfWork.ContractRepository.Get(mapper.Map<Contract>(id)));
+            Contract contract = null;
+            contract = context.Contract.Find(id);
 
             try
             {
@@ -83,8 +100,6 @@ namespace XCommunications.Services
                 }
 
                 context.Contract.Remove(contract);
-                context.Customer.RemoveRange(context.Customer.Where(s => s.Id == contract.CustomerId));
-                context.Worker.RemoveRange(context.Worker.Where(s => s.Id == contract.WorkerId));
                 context.SaveChanges();
 
                 return true;

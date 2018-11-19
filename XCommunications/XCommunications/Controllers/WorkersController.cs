@@ -12,6 +12,7 @@ using XCommunications.Context;
 using XCommunications.Services;
 using AutoMapper;
 using XCommunications.ModelsService;
+using XCommunications.Interfaces;
 
 namespace XCommunications.Controllers
 {
@@ -20,9 +21,9 @@ namespace XCommunications.Controllers
     public class WorkersController : ControllerBase
     {
         private IMapper mapper;
-        private WorkersService service = new WorkersService();
+        private IWorkersService service;
 
-        public WorkersController(WorkersService service, IMapper mapper)
+        public WorkersController(IWorkersService service, IMapper mapper)
         {
             this.service = service;
             this.mapper = mapper;
@@ -59,11 +60,10 @@ namespace XCommunications.Controllers
                 return BadRequest(ModelState);
             }
 
-            // DOGOVORITI SE DA LI CEMO DA GENERISEMO ID ILI DA GA DODAJEMO !!! 
-            //if (id != worker.Id)
-            //{
-            //    return BadRequest();
-            //}
+            if (id != worker.Id)
+            {
+                return BadRequest();
+            }
 
             bool exists = mapper.Map<bool>(service.Put(mapper.Map<WorkerServiceModel>(worker)));
 

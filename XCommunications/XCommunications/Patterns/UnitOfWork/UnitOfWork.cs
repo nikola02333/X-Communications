@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsDB;
 using XCommunications.Patterns.Repository;
 

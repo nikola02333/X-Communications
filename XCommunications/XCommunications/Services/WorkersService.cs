@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
@@ -12,11 +13,17 @@ using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Services
 {
-    public class WorkersService
+    public class WorkersService : IWorkersService
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+
+        public WorkersService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+        }
 
         public IEnumerable<WorkerServiceModel> GetAll()
         {
@@ -25,7 +32,10 @@ namespace XCommunications.Services
 
         public WorkerControllerModel Get(int id)
         {
-            WorkerControllerModel worker = mapper.Map< WorkerControllerModel>(unitOfWork.WorkerRepository.Get(mapper.Map<Worker>(id)));
+            Worker w = null;
+            w = context.Worker.Find(id);
+            
+            WorkerControllerModel worker = mapper.Map<WorkerControllerModel>(w);
 
             if (worker == null)
             {
@@ -37,9 +47,12 @@ namespace XCommunications.Services
 
         public bool Put(WorkerServiceModel worker)
         {
+            Worker w = null;
+            w = mapper.Map<Worker>(worker);
+
             try
             {
-                context.Entry(worker).State = EntityState.Modified;
+                context.Entry(w).State = EntityState.Modified;
                 context.SaveChanges();
 
                 return true;
@@ -59,9 +72,12 @@ namespace XCommunications.Services
 
         public void Add(WorkerServiceModel worker)
         {
+            Worker w = null;
+            w = mapper.Map<Worker>(worker);
+
             try
             {
-                unitOfWork.WorkerRepository.Add(mapper.Map<Worker>(worker));
+                unitOfWork.WorkerRepository.Add(w);
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
@@ -72,10 +88,11 @@ namespace XCommunications.Services
 
         public bool Delete(int id)
         {
+            Worker worker = null;
+            worker = context.Worker.Find(id);
+
             try
             {
-                Worker worker = mapper.Map<Worker>(unitOfWork.WorkerRepository.Get(mapper.Map<Worker>(id)));
-
                 if (worker == null)
                 {
                     return false;

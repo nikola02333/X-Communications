@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
@@ -19,9 +20,9 @@ namespace XCommunications.Controllers
     public class NumbersController : ControllerBase
     {
         private IMapper mapper;
-        private NumbersService service = new NumbersService();
+        private INumbersService service;
 
-        public NumbersController(NumbersService service, IMapper mapper)
+        public NumbersController(INumbersService service, IMapper mapper)
         {
             this.service = service;
             this.mapper = mapper;
@@ -57,11 +58,10 @@ namespace XCommunications.Controllers
                 return BadRequest(ModelState);
             }
 
-            // DOGOVORITI SE DA LI CEMO DA GENERISEMO ID ILI DA GA DODAJEMO !!!
-            //if (id != number.Id)
-            //{
-            //    return BadRequest();
-            //}
+            if (id != number.Id)
+            {
+                return BadRequest();
+            }
 
             bool exists = mapper.Map<bool>(service.Put(mapper.Map<NumberServiceModel>(number)));
 

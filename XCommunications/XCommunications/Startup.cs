@@ -20,6 +20,8 @@ using XCommunications.Patterns.Repository;
 using XCommunications.Patterns.UnitOfWork;
 using AutoMapper;
 using log4net;
+using XCommunications.Services;
+using XCommunications.Interfaces;
 
 namespace XCommunications
 {
@@ -40,24 +42,18 @@ namespace XCommunications
         {
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Customer,CustomerServiceModel>();
-                cfg.CreateMap<Customer, CustomerControllerModel>();
-                cfg.CreateMap<CustomerServiceModel, CustomerControllerModel>();
-                cfg.CreateMap<Worker, WorkerServiceModel>();
-                cfg.CreateMap<Worker, WorkerControllerModel>();
-                cfg.CreateMap<WorkerServiceModel, WorkerControllerModel>();
-                cfg.CreateMap<Contract, ContractServiceModel>();
-                cfg.CreateMap<Contract, ContractControllerModel>();
-                cfg.CreateMap<ContractServiceModel, ContractControllerModel>();
-                cfg.CreateMap<Number, NumberServiceModel>();
-                cfg.CreateMap<Number, NumberControllerModel>();
-                cfg.CreateMap<NumberServiceModel, NumberControllerModel>();
-                cfg.CreateMap<Simcard, SimcardServiceModel>();
-                cfg.CreateMap<Simcard, SimcardControllerModel>();
-                cfg.CreateMap<SimcardServiceModel, SimcardControllerModel>();
-                cfg.CreateMap<RegistratedUser, RegistratedUserServiceModel>();
-                cfg.CreateMap<RegistratedUser, RegistratedUserServiceModel>();
-                cfg.CreateMap<RegistratedUserServiceModel, RegistratedUserControllerModel>();
+                cfg.CreateMap<WorkerControllerModel, WorkerServiceModel>();
+                cfg.CreateMap<WorkerServiceModel, Worker>();
+                cfg.CreateMap<SimcardControllerModel, SimcardServiceModel>();
+                cfg.CreateMap<SimcardServiceModel, Simcard>();
+                cfg.CreateMap<RegistratedUserControllerModel, RegistratedUserServiceModel>();
+                cfg.CreateMap<RegistratedUserServiceModel, RegistratedUser>();
+                cfg.CreateMap<NumberControllerModel, NumberServiceModel>();
+                cfg.CreateMap<NumberServiceModel, Number>();
+                cfg.CreateMap<CustomerControllerModel, CustomerServiceModel>();
+                cfg.CreateMap<CustomerServiceModel, Customer>();
+                cfg.CreateMap<ContractControllerModel, ContractServiceModel>();
+                cfg.CreateMap<ContractServiceModel, Contract>();
             });
 
             var mapper = config.CreateMapper();
@@ -70,11 +66,19 @@ namespace XCommunications
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();      // Dependency Injection
+            // Dependency Injections
+            services.AddScoped<IUnitOfWork, UnitOfWork>();      
+            services.AddTransient<IWorkersService, WorkersService>();
+            services.AddTransient<ISimcardsService, SimcardsService>();
+            services.AddTransient<IRegistratedUsersService, RegistratedUsersService>();
+            services.AddTransient<INumbersService, NumbersService>();
+            services.AddTransient<ICustomersService, CustomersService>();
+            services.AddTransient<IContractsService, ContractsService>();
+
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-                options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("https://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+                //options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("https://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

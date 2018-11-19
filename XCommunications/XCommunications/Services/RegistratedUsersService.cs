@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
@@ -12,11 +13,17 @@ using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Services
 {
-    public class RegistratedUsersService
+    public class RegistratedUsersService : IRegistratedUsersService
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+
+        public RegistratedUsersService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+        }
 
         public IEnumerable<RegistratedUserServiceModel> GetAll()
         {
@@ -25,7 +32,10 @@ namespace XCommunications.Services
 
         public RegistratedUserControllerModel Get(int id)
         {
-            RegistratedUserControllerModel user = mapper.Map<RegistratedUserControllerModel>(unitOfWork.RegistratedRepository.Get(mapper.Map<RegistratedUser>(id)));
+            RegistratedUser r = null;
+            r = context.RegistratedUser.Find(id);
+
+            RegistratedUserControllerModel user = mapper.Map<RegistratedUserControllerModel>(r);
 
             if (user == null)
             {
@@ -37,9 +47,12 @@ namespace XCommunications.Services
 
         public bool Put(RegistratedUserServiceModel user)
         {
+            RegistratedUser r = null;
+            r = mapper.Map<RegistratedUser>(user);
+
             try
             {
-                context.Entry(user).State = EntityState.Modified;
+                context.Entry(r).State = EntityState.Modified;
                 context.SaveChanges();
 
                 return true;
@@ -52,16 +65,19 @@ namespace XCommunications.Services
                 }
                 else
                 {
-                    throw;
+                    throw;      // moze baciti internal error server
                 }
             }
         }
 
         public void Add(RegistratedUserServiceModel user)
         {
+            RegistratedUser r = null;
+            r = mapper.Map<RegistratedUser>(user);
+
             try
             {
-                unitOfWork.RegistratedRepository.Add(mapper.Map<RegistratedUser>(user));
+                unitOfWork.RegistratedRepository.Add(mapper.Map<RegistratedUser>(r));
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
@@ -72,7 +88,8 @@ namespace XCommunications.Services
 
         public bool Delete(int id)
         {
-            RegistratedUser user = mapper.Map<RegistratedUser>(unitOfWork.RegistratedRepository.Get(mapper.Map<RegistratedUser>(id)));
+            RegistratedUser user = null;
+            user = context.RegistratedUser.Find(id);
 
             try
             {
@@ -83,8 +100,8 @@ namespace XCommunications.Services
 
                 context.RegistratedUser.Remove(user);
                 context.Simcard.RemoveRange(context.Simcard.Where(s => s.Imsi == user.Imsi));
-                context.Customer.RemoveRange(context.Customer.Where(s => s.Id == user.CustomerId));
-                context.Worker.RemoveRange(context.Worker.Where(s => s.Id == user.WorkerId));
+                context.Contract.RemoveRange(context.Contract.Where(s => s.CustomerId == user.CustomerId));
+                context.Contract.RemoveRange(context.Contract.Where(s => s.WorkerId == user.WorkerId));
                 context.Number.RemoveRange(context.Number.Where(s => s.Id == user.NumberId));
                 context.SaveChanges();
 

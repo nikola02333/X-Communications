@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsDB;
 using XCommunications.ModelsService;
@@ -12,11 +13,17 @@ using XCommunications.Patterns.UnitOfWork;
 
 namespace XCommunications.Services
 {
-    public class CustomersService
+    public class CustomersService : ICustomersService
     {
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+
+        public CustomersService(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
+        }
 
         public IEnumerable<CustomerServiceModel> GetAll()
         {
@@ -25,7 +32,10 @@ namespace XCommunications.Services
 
         public CustomerControllerModel Get(int id)
         {
-            CustomerControllerModel customer = mapper.Map<CustomerControllerModel>(unitOfWork.CustomerRepository.Get(mapper.Map<Customer>(id)));
+            Customer c = null;
+            c = context.Customer.Find(id);
+
+            CustomerControllerModel customer = mapper.Map<CustomerControllerModel>(c);
 
             if (customer == null)
             {
@@ -37,9 +47,12 @@ namespace XCommunications.Services
 
         public bool Put(CustomerServiceModel customer)
         {
+            Customer c = null;
+            c = mapper.Map<Customer>(customer);
+
             try
             {
-                context.Entry(customer).State = EntityState.Modified;
+                context.Entry(c).State = EntityState.Modified;
                 context.SaveChanges();
 
                 return true;
@@ -52,16 +65,19 @@ namespace XCommunications.Services
                 }
                 else
                 {
-                    throw;
+                    throw;      // moze baciti internal error server
                 }
             }
         }
 
         public void Add(CustomerServiceModel customer)
         {
+            Customer c = null;
+            c = mapper.Map<Customer>(customer);
+
             try
             {
-                unitOfWork.CustomerRepository.Add(mapper.Map<Customer>(customer));
+                unitOfWork.CustomerRepository.Add(c);
                 unitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException)
@@ -72,7 +88,8 @@ namespace XCommunications.Services
 
         public bool Delete(int id)
         {
-            Customer customer = mapper.Map<Customer>(unitOfWork.CustomerRepository.Get(mapper.Map<Customer>(id)));
+            Customer customer = null;
+            customer = context.Customer.Find(id);
 
             try
             {

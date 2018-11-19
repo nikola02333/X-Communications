@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
@@ -19,9 +20,9 @@ namespace XCommunications.Controllers
     public class ContractsController : ControllerBase
     {
         private IMapper mapper;
-        private ContractsService service = new ContractsService();
+        private IContractsService service;
 
-        public ContractsController(ContractsService service, IMapper mapper)
+        public ContractsController(IContractsService service, IMapper mapper)
         {
             this.service = service;
             this.mapper = mapper;

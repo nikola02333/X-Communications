@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using XCommunications.Context;
+using XCommunications.Interfaces;
 using XCommunications.ModelsController;
 using XCommunications.ModelsService;
 using XCommunications.Patterns.UnitOfWork;
@@ -19,9 +20,9 @@ namespace XCommunications.Controllers
     public class RegistratedUsersController : ControllerBase
     {
         private IMapper mapper;
-        private RegistratedUsersService service = new RegistratedUsersService();
+        private IRegistratedUsersService service;
 
-        public RegistratedUsersController(RegistratedUsersService service, IMapper mapper)
+        public RegistratedUsersController(IRegistratedUsersService service, IMapper mapper)
         {
             this.service = service;
             this.mapper = mapper;
@@ -58,11 +59,10 @@ namespace XCommunications.Controllers
                 return BadRequest(ModelState);
             }
 
-            // DOGOVORITI SE DA LI CEMO GENERISATI ID ILI DA GA DODAJEMO !!!
-            //if (id != user.Id)
-            //{
-            //    return BadRequest();
-            //}
+            if (id != user.Id)
+            {
+                return BadRequest();
+            }
 
             bool exists = mapper.Map<bool>(service.Put(mapper.Map<RegistratedUserServiceModel>(user)));
 
