@@ -20,16 +20,14 @@ export class AddNumberComponent implements OnInit {
 
   onSubmit()
   {
-     this.submitted = true;
-     if (this.numberService.form.valid)
-     {
-       this.number = new Number(1,true,this.numberService.form.value.cc,
-                                    this.numberService.form.value.ndc,
-                                    this.numberService.form.value.sn
-                                     ); // false = free
-     
-       this.numberService.postNumber(this.number).subscribe( x=> console.log(x)); //
+    this.submitted = true;
 
-     }
-   }
+    if (this.numberService.form.valid)
+    {
+      this.number = new Number(this.numberService.form.value.id,false,this.numberService.form.value.cc,this.numberService.form.value.ndc,this.numberService.form.value.sn);
+    
+      this.numberService.postNumber(this.number).subscribe( x=> console.log(x)); 
+    }
+  }
+
 }

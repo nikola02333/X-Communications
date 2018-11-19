@@ -1,23 +1,31 @@
 
-<table class="table table-hover">
-    <thead>
-        <th>Imsi </th>
-        <th>Iccid </th>
-        <th>Status</th>
-        <th>Pin</th>
-        <th>Puk</th>
-        <th></th>
-        <th></th>
-      </thead>
-    <tr *ngFor="let simCard of simCards">
-      <td (click)="populateForm(simCard)">{{simCard.imsi}} </td>
-      <td (click)="populateForm(simCard)">{{simCard.iccid}}</td>
-      <td (click)="populateForm(simCard)">{{simCard.status}}</td>
-      <td (click)="populateForm(simCard)">{{simCard.pin}}</td>
-      <td (click)="populateForm(simCard)">{{simCard.puk}}</td>
-      <td><button (click)="onDelete(simCard.custumerId)" class="btn btn-sm btn-outline-danger">X</button></td>
-      <td><button (click)="onDelete(simCard.custumerId)" class="btn btn-sm btn-outline-danger"  > edit</button></td>
-
-    </tr>
-  </table>
-
+<div class="row">
+  <div class="col-md-5">     
+    <ul  class="list-group">
+            <a  class="list-group-item clearfix" 
+                style="cursor: pointer" 
+              *ngFor="let card of cards"
+              [class.selected]="card === selectedsimCard"
+              (click)="onSelect(card)">
+                <div >
+                  <h4 class="list-group-item-heading">{{card.imsi}}, {{card.iccid}},<i>!{{card.status}}!</i>, {{card.pin}}, {{card.puk}} </h4>
+                </div>
+              </a>
+     </ul>
+    </div>
+      <div *ngIf="selectedsimCard"> 
+        <div class="container">
+              <label>Selected simcard:</label>
+              <div class="col-md-12">
+                <div class="row">
+                          <input [value]="selectedsimCard.status"  (input)="selectedsimCard.status=$event.target.value">  
+                              <div class="row">
+                                <div><button  class="btn btn-success"  (click)= "onClickEdit()">Edit</button>
+                                </div>
+                                <button  class="btn btn-danger"  (click)="onClickDelete()">Delete</button>
+                              </div>
+                  </div>
+                </div>
+         </div>
+       </div>
+</div>

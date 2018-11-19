@@ -8,18 +8,18 @@ namespace XCommunications.ModelsController
 {
     public class SimcardControllerModel
     {
-        [Required]
+        //[Required]
         public int Imsi { get; set; }
 
-        [Required]
+        //[Required]
         public int Iccid { get; set; }
 
-        [Required]
-        [MinLength(4)]
+        //[Required]
+        //[MinLength(4)]
         public int Pin { get; set; }
 
-        [Required]
-        [MinLength(4)]
+        //[Required]
+        //[MinLength(4)]
         public int Puk { get; set; }
 
         public SimcardControllerModel() { }

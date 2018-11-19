@@ -14,6 +14,7 @@ export class ListNumbersService {
 
   
   form = new FormGroup({
+    id: new FormControl('', Validators.required),
     cc: new FormControl('', Validators.required),
     ndc: new FormControl('', Validators.required),
     sn: new FormControl('', Validators.required)
@@ -22,20 +23,21 @@ export class ListNumbersService {
 
   postNumber(services: Number) : Observable<Number>
   {
+    debugger
     return this.http.post<Number>(this.baseUrl,services);
     
   }
 
   getAllNumbers(): Observable<Number[]> {
 
-    return this.http.get<Number[]>(this.baseUrl +'/'+'GetNumbers');
+    return this.http.get<Number[]>(this.baseUrl);
 } 
 
   deleteNumber(id: number) {
-    return this.http.delete( this.baseUrl +'/'+'DeleteNumber' + '/' + id);
+    return this.http.delete( this.baseUrl +'/' + id);
     }
 
     updateNumber(number: Number) {  
-      return this.http.put(this.baseUrl +'/'+'PutNumber'+ '/' + number.id , number);  
+      return this.http.put(this.baseUrl + number.id , number);  
     } 
 }

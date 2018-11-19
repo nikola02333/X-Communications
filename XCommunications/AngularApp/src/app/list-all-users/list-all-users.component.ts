@@ -12,48 +12,34 @@ export class ListAllUsersComponent implements OnInit {
 
   constructor(private service: UserServiceService) { }
    selectedUser : Customer;
-   selectedUserUpdate: Customer;
-
-   private  customers:  Array<object> = [];
-
-   users : Customer[] =[
-     new Customer(3,'nikola1','velickovic1'),
-     new Customer(4,'nikola2','car2')
-   ];
+   users : Customer[] = [];
 
    onSelect(user: Customer): void {
     this.selectedUser = user;  
   }
 
-  onSubmit(form :NgForm)
-  {
-      this.selectedUserUpdate = new Customer(2,form.value.firstName,form.value.lastname);
-      this.service.post(this.selectedUserUpdate).subscribe();
-  
-      form.reset();
-  }
- 
-   
   ngOnInit() {
+    this.getAllUsers();
   }
+
   onClickDelete()
   {
-    
     this.service.deleteUser(this.selectedUser.id).subscribe();
   }
+
   getAllUsers(){
     this.service.getAll().subscribe( ( data: Array<Customer>) => 
     {
-      this.customers =data;
+      this.users =data;
       console.log(data);
     }
     );
   }
 
   onClickEdit()
-{
-  this.service.post(this.selectedUser);
-}
+  {
+    this.service.updateUser(this.selectedUser=this.selectedUser).subscribe();
+  }
 
 }
 

@@ -11,25 +11,33 @@ export class ListSimCardsComponent implements OnInit {
 
   constructor(private simCardService: SimCardServiceService ) { }
 
+  cards: SimCard[]=[];
   selectedsimCard : SimCard;
-
-  simCards : SimCard[] =[
-    new SimCard(11,12,1234,1111,true),
-    new SimCard(11,12,1234,2222,true)
-  ];
 
   onSelect(simCard: SimCard): void {
     this.selectedsimCard = simCard;
   }
+
   onClickDelete()
   {
     this.simCardService.deleteSimCard(this.selectedsimCard).subscribe();
   }
+
   onClickUpdate()
   {
     this.simCardService.updateSimCard(this.selectedsimCard).subscribe();
   }
+
   ngOnInit() {
+    this.getAllCards();
   }
 
+  getAllCards()
+  {
+    this.simCardService.getAllsimCards().subscribe((data:Array<SimCard>) =>
+    {
+      this.cards=data;
+      console.log(data);
+    });
+  }
 }

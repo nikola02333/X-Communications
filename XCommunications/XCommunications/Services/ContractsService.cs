@@ -18,6 +18,7 @@ namespace XCommunications.Services
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public ContractsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -27,11 +28,15 @@ namespace XCommunications.Services
 
         public IEnumerable<ContractServiceModel> GetAll()
         {
+            log.Info("Reached GetAll() in ContractsService.cs");
+
             return unitOfWork.ContractRepository.GetAll().Select(x => mapper.Map<ContractServiceModel>(x));
         }
 
         public ContractControllerModel Get(int id)
         {
+            log.Info("Reached Get(int id) in ContractsService.cs");
+
             Contract c = null;
             c = context.Contract.Find(id);
 
@@ -39,14 +44,20 @@ namespace XCommunications.Services
 
             if (contract == null)
             {
+                log.Error("Got null object in Get(int id) in ContractsService.cs");
                 return null;
             }
+
+            log.Info("Returned Contract object from Get(int id) in ContractsService.cs");
 
             return contract;
         }
 
         public bool Put(ContractServiceModel contract)
         {
+
+            log.Info("Reached Put(ContractServiceModel contract) in ContractsService.cs");
+
             Contract c = null;
             c = mapper.Map<Contract>(contract);
 
@@ -54,6 +65,7 @@ namespace XCommunications.Services
             {
                 context.Entry(c).State = EntityState.Modified;
                 context.SaveChanges();
+                log.Info("Modified Contract object in Put(ContractServiceModel contract) in ContractsService.cs");
 
                 return true;
             }
@@ -61,17 +73,18 @@ namespace XCommunications.Services
             {
                 if (!Exists(contract.Id))
                 {
-                    return false;
+                    log.Error("Contract object with given id doesn't exist in Put(ContractServiceModel contract) in ContractsService.cs");
                 }
-                else
-                {
-                    throw;      // moze baciti internal error server
-                }
+
+                return false;
+
             }
         }
 
         public void Add(ContractServiceModel contract)
         {
+            log.Info("Reached Add(ContractServiceModel contract) in ContractsService.cs");
+
             Contract c = null;
             c = mapper.Map<Contract>(contract);
 
@@ -80,15 +93,18 @@ namespace XCommunications.Services
                 c.Date = DateTime.Now;
                 unitOfWork.ContractRepository.Add(c);
                 unitOfWork.Commit();
+                log.Info("Added new Contract object in Add(ContractServiceModel contract) in ContractsService.cs");
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw;
+                log.Error("A DbUpdateConcurrencyException occured in Add(ContractServiceModel contract) in ContractsService.cs");
             }
         }
 
         public bool Delete(int id)
         {
+            log.Info("Reached Delete(int id) in ContractsService.cs");
+
             Contract contract = null;
             contract = context.Contract.Find(id);
 
@@ -96,11 +112,13 @@ namespace XCommunications.Services
             {
                 if (contract == null)
                 {
+                    log.Error("Got null object in Delete(int id) in ContractsService.cs");
                     return false;
                 }
 
                 context.Contract.Remove(contract);
                 context.SaveChanges();
+                log.Info("Deleted Contract object in Delete(int id) in ContractsService.cs");
 
                 return true;
             }
@@ -108,12 +126,10 @@ namespace XCommunications.Services
             {
                 if (!Exists(contract.Id))
                 {
-                    return false;
+                    log.Error("A DbUpdateConcurrencyException occured in Delete(int id) in ContractsService.cs");
                 }
-                else
-                {
-                    throw;
-                }
+
+                return false;
             }
         }
 

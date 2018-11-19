@@ -8,18 +8,18 @@ namespace XCommunications.ModelsController
 {
     public class NumberControllerModel
     {
-        [Required]
+        //[Required]
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(3)]
+        //[Required]
+        //[MinLength(3)]
         public int Cc { get; set; }
 
-        [Required]
-        [MinLength(3)]
+        //[Required]
+        //[MinLength(3)]
         public int Ndc { get; set; }
 
-        [Required]
+        //[Required]
         public int Sn { get; set; }
 
         public bool Status { get; set; }

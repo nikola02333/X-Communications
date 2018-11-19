@@ -8,7 +8,6 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgBoostrapDropdownDirective } from './directives/ng-boostrap-dropdown.directive';
-import { DeleteUserComponent } from './delete-user/delete-user.component';
 import { ListAllUsersComponent } from './list-all-users/list-all-users.component';
 import { UserServiceService } from './Services/user-service.service';
 import { HttpModule } from '@angular/http';
@@ -25,7 +24,6 @@ import { ListAllContractComponent } from './list-all-contract/list-all-contract.
 const appRoutes: Routes =[
               {path : '' ,component: HomeComponent},
               {path : 'User' ,component: AddUserComponent},
-              {path : 'UserDelete' ,component: DeleteUserComponent},
               {path : 'UserList' ,component: ListAllUsersComponent},
               {path : 'SimCardList' ,component: ListSimCardsComponent},
               {path : 'NumberList' ,component: ListNumbersComponent},
@@ -42,7 +40,6 @@ const appRoutes: Routes =[
     HomeComponent,
     AddUserComponent,
      NgBoostrapDropdownDirective,
-     DeleteUserComponent,
      ListAllUsersComponent,
      ListSimCardsComponent,
      ListNumbersComponent,

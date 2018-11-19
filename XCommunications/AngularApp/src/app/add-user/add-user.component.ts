@@ -27,7 +27,7 @@ export class AddUserComponent implements OnInit {
       this.submitted = true;
       if (this.userService.form.valid)
       {
-        this.custumer = new Customer(2,this.userService.form.value.fullName,this.userService.form.value.lastname);
+        this.custumer = new Customer(this.userService.form.value.id,this.userService.form.value.fullName,this.userService.form.value.lastname);
       
         this.userService.post(this.custumer).subscribe( x=> console.log(x)); //
 

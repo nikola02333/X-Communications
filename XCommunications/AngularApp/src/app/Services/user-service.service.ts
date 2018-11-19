@@ -13,7 +13,7 @@ export class UserServiceService {
 
     constructor(private http: HttpClient) { }
 
-    readonly baseUrl='https://localhost:44350/api/';
+    readonly baseUrl='https://localhost:44350/api/Customers';
     form = new FormGroup({
       fullName: new FormControl('', Validators.required),
       lastname: new FormControl('', Validators.required),
@@ -22,21 +22,19 @@ export class UserServiceService {
 
     post(user: Customer) : Observable<Customer>
     {
-      return this.http.post<Customer>(this.baseUrl+ 'Customers/',user);
-      
+      return this.http.post<Customer>(this.baseUrl, user);
     }
 
     getAll(): Observable<Customer[]> {
 
-      return this.http.get<Customer[]>(this.baseUrl+'Customers/GetCustomers');
+      return this.http.get<Customer[]>(this.baseUrl);
   } 
   
     deleteUser(id: number) {
-      debugger
-      return this.http.delete(this.baseUrl+'Customers' + '/' + id);
+      return this.http.delete(this.baseUrl +'/' + id);
       }
 
       updateUser(user: Customer) {  
-        return this.http.put(this.baseUrl+'PutCustomer'+ '/' + user.id,user);  
+        return this.http.put(this.baseUrl + '/' + user.id,user);  
       }  
 }

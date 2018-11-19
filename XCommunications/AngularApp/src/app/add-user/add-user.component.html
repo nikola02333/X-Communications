@@ -23,7 +23,7 @@
      
       <div class="form-row">
        <div class="form-group col-md-5">
-       <button [disabled]="userForm.valid && !submitted" type="submit" class="btn btn-lg btn-block btn-info">
+       <button [disabled]="!userForm.valid && !submitted" type="submit" class="btn btn-lg btn-block btn-info">
         <i class="fa fa-floppy-o"> Submit</i>
       </button>
       </div>

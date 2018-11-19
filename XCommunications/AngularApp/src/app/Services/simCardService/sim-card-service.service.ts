@@ -24,20 +24,23 @@ export class SimCardServiceService {
 
   post(services: SimCard) : Observable<SimCard>
   {
+    console.log(services);
+    debugger
     return this.http.post<SimCard>(this.baseUrl,services);
     
   }
 
   getAllsimCards(): Observable<SimCard[]> {
 
-    return this.http.get<SimCard[]>(this.baseUrl +'/'+'GetSimcards');
+    return this.http.get<SimCard[]>(this.baseUrl);
 } 
 
   deleteSimCard(id: SimCard) {
-    return this.http.delete( this.baseUrl +'/'+'DeleteSimCard' + '/' + id);
+    debugger
+    return this.http.delete( this.baseUrl + '/' + id.imsi);
     }
 
     updateSimCard(simCard: SimCard) {  
-      return this.http.put(this.baseUrl +'/'+'PutSimCard'+ '/' + simCard.iccid , simCard);  
+      return this.http.put(this.baseUrl + '/' + simCard.iccid , simCard);  
     }  
 }

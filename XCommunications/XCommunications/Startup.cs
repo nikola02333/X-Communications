@@ -32,7 +32,7 @@ namespace XCommunications
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            log.Info("Startup.cs/Startup");
+            log.Info("Reached Startup in Startup.cs");
         }
 
         public IConfiguration Configuration { get; }
@@ -78,14 +78,14 @@ namespace XCommunications
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-                //options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("https://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+                //options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
 
-            log.Info("Startup.cs/ConfigureServices");
+            log.Info("Reached ConfigureServices in Startup.cs");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,7 +104,7 @@ namespace XCommunications
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            log.Info("Startup.cs/Configure");
+            log.Info("Reached Configure in Startup.cs");
         }
     }
 }
