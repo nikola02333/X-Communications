@@ -8,39 +8,38 @@ import { ListNumbersService } from '../Services/numberService/list-numbers.servi
 })
 export class ListNumbersComponent implements OnInit {
 
-  constructor(private serviceNumber:ListNumbersService ) { }
- 
-  private  listNumbers:  Array<object> = [];  
+  constructor(private serviceNumber: ListNumbersService) { }
+
+  private listNumbers: Array<object> = [];
   ngOnInit() {
     this.getListNumbers();
 
   }
 
-  selectedNumber : Number;
+  selectedNumber: Number;
 
 
- getListNumbers()
-{
-  this.serviceNumber.getAllNumbers().subscribe(
+  getListNumbers() {
+    this.serviceNumber.getAllNumbers().subscribe(
 
-    (data:  Array<object>) => {
+      (data: Array<object>) => {
 
-    this.listNumbers  =  data;
-    console.log(data);
-});
-}
+        this.listNumbers = data;
+        console.log(data);
+      });
+  }
   onSelect(number: Number): void {
     this.selectedNumber = number;
   }
 
-      onClickDelete()
-  {
+  onClickDelete() {
     this.serviceNumber.deleteNumber(this.selectedNumber.id).subscribe();
     this.getListNumbers();
   }
-  onClickEdit()
-  {
-    this.serviceNumber.updateNumber(this.selectedNumber=this.selectedNumber).subscribe();
+
+  onClickEdit() {
+    debugger
+    this.serviceNumber.updateNumber(this.selectedNumber = this.selectedNumber).subscribe();
     this.getListNumbers();
   }
 

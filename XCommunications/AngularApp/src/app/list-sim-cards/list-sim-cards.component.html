@@ -16,6 +16,9 @@
       <div class="col-md-12">
         <div class="row">
           <input [value]="selectedsimCard.imsi" (input)="selectedsimCard.imsi=$event.target.value">
+          <input [value]="selectedsimCard.iccid" (input)="selectedsimCard.iccid=$event.target.value">
+          <input [value]="selectedsimCard.pin" (input)="selectedsimCard.pin=$event.target.value">
+          <input [value]="selectedsimCard.puk" (input)="selectedsimCard.puk=$event.target.value">
           <div class="row">
             <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
             </div>

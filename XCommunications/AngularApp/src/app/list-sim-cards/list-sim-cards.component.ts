@@ -20,14 +20,15 @@ export class ListSimCardsComponent implements OnInit {
 
   onClickDelete()
   {
+    debugger
     this.simCardService.deleteSimCard(this.selectedsimCard).subscribe();
     this.getAllCards();
   }
 
-  onClickUpdate()
+  onClickEdit()
   {
+    debugger
     this.simCardService.updateSimCard(this.selectedsimCard).subscribe();
-    this.getAllCards();
   }
 
   ngOnInit() {

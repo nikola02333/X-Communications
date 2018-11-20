@@ -103,7 +103,7 @@ namespace XCommunications.Controllers
             service.Add(mapper.Map<NumberServiceModel>(number));
             log.Info("Added new Number object in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
 
-            return NoContent(); ;
+            return NoContent(); 
         }
 
         // DELETE: api/Numbers/5

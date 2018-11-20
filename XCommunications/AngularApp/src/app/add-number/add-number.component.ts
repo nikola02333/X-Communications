@@ -24,7 +24,7 @@ export class AddNumberComponent implements OnInit {
 
     if (this.numberService.form.valid) {
       this.number = new Number(this.numberService.form.value.id, false, this.numberService.form.value.cc, this.numberService.form.value.ndc, this.numberService.form.value.sn);
-
+      debugger
       this.numberService.postNumber(this.number).subscribe(
         response => {
           console.log(response);

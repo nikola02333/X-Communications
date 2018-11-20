@@ -60,6 +60,7 @@ namespace XCommunications.Services
 
             Contract c = null;
             c = mapper.Map<Contract>(contract);
+            c.Date = DateTime.Now;
 
             try
             {

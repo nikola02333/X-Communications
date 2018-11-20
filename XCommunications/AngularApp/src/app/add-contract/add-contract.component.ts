@@ -24,7 +24,7 @@ export class AddContractComponent implements OnInit {
     this.submitted = true;
     if(this.contractService.form.valid)
     {
-      this.Contract = new Contract(form.value.id,form.value.custumerId,form.value.workerId,form.value.tariff);
+      this.Contract = new Contract(form.value.id,form.value.customerId,form.value.workerId,form.value.tarif);
       debugger
 
       

@@ -1,9 +1,9 @@
 export class Contract {
     constructor(
       public id: number,
-      public custumerId: number,
+      public customerId: number,
       public workerId: string,
-      public tariff: string
+      public tarif: string
     ) {  }
   
   }

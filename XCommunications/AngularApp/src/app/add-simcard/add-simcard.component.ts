@@ -28,7 +28,9 @@ export class AddSimcardComponent implements OnInit {
                                     this.simCardService.form.value.iccid,
                                     this.simCardService.form.value.pin,
                                     this.simCardService.form.value.puk
-                                     );      
+                                     );     
+      
+                                
        this.simCardService.post(this.simcard).subscribe(
         response => {
              console.log(response);

@@ -41,6 +41,7 @@ export class SimCardServiceService {
     }
 
     updateSimCard(simCard: SimCard) {  
-      return this.http.put(this.baseUrl + '/' + simCard.iccid , simCard);  
+      debugger
+      return this.http.put(this.baseUrl + '/' + simCard.imsi , simCard);  
     }  
 }
