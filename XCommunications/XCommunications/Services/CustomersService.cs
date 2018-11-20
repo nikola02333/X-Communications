@@ -18,6 +18,7 @@ namespace XCommunications.Services
         private XCommunicationsContext context = new XCommunicationsContext();
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public CustomersService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -27,11 +28,15 @@ namespace XCommunications.Services
 
         public IEnumerable<CustomerServiceModel> GetAll()
         {
+            log.Info("Reached GetAll() in CustomersService.cs");
+
             return unitOfWork.CustomerRepository.GetAll().Select(x => mapper.Map<CustomerServiceModel>(x));
         }
 
         public CustomerControllerModel Get(int id)
         {
+            log.Info("Reached Get(int id) in CustomersService.cs");
+
             Customer c = null;
             c = context.Customer.Find(id);
 
@@ -39,14 +44,19 @@ namespace XCommunications.Services
 
             if (customer == null)
             {
+                log.Error("Got null object in Get(int id) in CustomersService.cs");
                 return null;
             }
+
+            log.Info("Returned Customer object from Get(int id) in CustomersService.cs");
 
             return customer;
         }
 
         public bool Put(CustomerServiceModel customer)
         {
+            log.Info("Reached Put(CustomerServiceModel customer) in CustomersService.cs");
+
             Customer c = null;
             c = mapper.Map<Customer>(customer);
 
@@ -54,6 +64,7 @@ namespace XCommunications.Services
             {
                 context.Entry(c).State = EntityState.Modified;
                 context.SaveChanges();
+                log.Info("Modified Customer object in Put(CustomerServiceModel customer) in CustomersService.cs");
 
                 return true;
             }
@@ -61,17 +72,17 @@ namespace XCommunications.Services
             {
                 if (!Exists(customer.Id))
                 {
-                    return false;
+                    log.Error("Customer object with given id doesn't exist in Put(CustomerServiceModel customer) in CustomersService.cs");
                 }
-                else
-                {
-                    throw;      // moze baciti internal error server
-                }
+
+                return false;
             }
         }
 
         public void Add(CustomerServiceModel customer)
         {
+            log.Info("Reached Add(CustomerServiceModel customer) in CustomersService.cs");
+
             Customer c = null;
             c = mapper.Map<Customer>(customer);
 
@@ -79,15 +90,18 @@ namespace XCommunications.Services
             {
                 unitOfWork.CustomerRepository.Add(c);
                 unitOfWork.Commit();
+                log.Info("Added new Customer object in Add(CustomerServiceModel customer) in CustomersService.cs");
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw;
+                log.Error("A DbUpdateConcurrencyException occured in Add(CustomerServiceModel customer) in CustomersService.cs");
             }
         }
 
         public bool Delete(int id)
         {
+            log.Info("Reached Delete(int id) in CustomersService.cs");
+
             Customer customer = null;
             customer = context.Customer.Find(id);
 
@@ -95,6 +109,7 @@ namespace XCommunications.Services
             {
                 if (customer == null)
                 {
+                    log.Error("Got null object in Delete(int id) in CustomersService.cs");
                     return false;
                 }
 
@@ -102,6 +117,7 @@ namespace XCommunications.Services
                 context.Contract.RemoveRange(context.Contract.Where(s => s.CustomerId == customer.Id));
                 context.RegistratedUser.RemoveRange(context.RegistratedUser.Where(s => s.CustomerId == customer.Id));
                 context.SaveChanges();
+                log.Info("Deleted Customer object in Delete(int id) in CustomersService.cs");
 
                 return true;
             }
@@ -109,12 +125,10 @@ namespace XCommunications.Services
             {
                 if (!Exists(customer.Id))
                 {
-                    return false;
+                    log.Error("A DbUpdateConcurrencyException occured in Delete(int id) in CustomersService.cs");
                 }
-                else
-                {
-                    throw;
-                }
+
+                return false;
             }
         }
 

@@ -21,6 +21,7 @@ namespace XCommunications.Controllers
     {
         private IMapper mapper;
         private IRegistratedUsersService service;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public RegistratedUsersController(IRegistratedUsersService service, IMapper mapper)
         {
@@ -32,6 +33,8 @@ namespace XCommunications.Controllers
         [HttpGet]
         public IEnumerable<RegistratedUserControllerModel> GetRegistrated()
         {
+            log.Info("Reached GetRegistrated() in RegistratedUsersController.cs");
+
             return service.GetAll().Select(x => mapper.Map<RegistratedUserControllerModel>(x));
         }
 
@@ -39,13 +42,17 @@ namespace XCommunications.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRegistrated(int id)
         {
-            RegistratedUserControllerModel user = mapper.Map<RegistratedUserControllerModel>(service.Get(id));
+            log.Info("Reached GetRegistrated(int id) in RegistratedUsersController.cs");
 
+            RegistratedUserControllerModel user = mapper.Map<RegistratedUserControllerModel>(service.Get(id));
 
             if (user == null)
             {
+                log.Error("Got null object in GetRegistrated(int id) in RegistratedUsersController.cs");
                 return NotFound();
             }
+
+            log.Info("Returned RegistratedUser object from GetRegistrated(int id) in RegistratedUsersController.cs");
 
             return Ok(user);
         }
@@ -54,13 +61,17 @@ namespace XCommunications.Controllers
         [HttpPut("{id}")]
         public IActionResult PutRegistrated(int id, RegistratedUserControllerModel user)
         {
+            log.Info("Reached PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
+
             if (!ModelState.IsValid)
             {
+                log.Error("A ModelState isn't valid error occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
                 return BadRequest(ModelState);
             }
 
             if (id != user.Id)
             {
+                log.Error("RegistratedUser object isn't matched with given id! Error occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
                 return BadRequest();
             }
 
@@ -68,8 +79,11 @@ namespace XCommunications.Controllers
 
             if (exists)
             {
+                log.Info("Modified RegistratedUser object in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
                 return NoContent();
             }
+
+            log.Error("RegistratedUser object with given id doesn't exist! Error occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
 
             return NotFound();
         }
@@ -78,12 +92,16 @@ namespace XCommunications.Controllers
         [HttpPost]
         public IActionResult PostRegistrated([FromBody] RegistratedUserControllerModel user)
         {
+            log.Info("Reached PostRegistrated([FromBody] RegistratedUserControllerModel user) in RegistratedUsersController.cs");
+
             if (!ModelState.IsValid)
             {
+                log.Error("A ModelState isn't valid error occured in PostRegistrated([FromBody] RegistratedUserControllerModel user) in RegistratedUsersController.cs");
                 return BadRequest(ModelState);
             }
 
             service.Add(mapper.Map<RegistratedUserServiceModel>(user));
+            log.Info("Added new RegistratedUser object in PostRegistrated([FromBody] RegistratedUserControllerModel user) in RegistratedUsersController.cs");
 
             return NoContent();
         }
@@ -92,10 +110,15 @@ namespace XCommunications.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteRegistrated(int id)
         {
+            log.Info("Reached DeleteNumber(int id) in RegistratedUsersController.cs");
+
             if (!service.Delete(id))
             {
+                log.Error("Got null object in DeleteRegistrated(int id) in RegistratedUsersController.cs");
                 return NotFound();
             }
+
+            log.Info("Deleted RegistratedUser object in DeleteRegistrated(int id) in RegistratedUsersController.cs");
 
             return NoContent();
         }
