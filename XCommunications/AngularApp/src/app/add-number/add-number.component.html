@@ -1,38 +1,47 @@
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-6">
     <form [formGroup]="this.numberService.form" (ngSubmit)="onSubmit()">
         <div class="form-group">
-            <label>id</label>
-            <input formControlName="id" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.id.errors}">
+            <div class="col-md-6">
+            <input formControlName="id" class="form-control" placeholder="Id" [ngClass]="{'is-invalid':submitted && formControls.id.errors}">
             <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors">
               This field is required.</div>
           </div>
+        </div>
       <div class="form-group">
-        <label>sn</label>
-        <input formControlName="sn" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.sn.errors}">
+          <div class="col-md-6">
+        <input formControlName="sn" class="form-control" placeholder="Sn" [ngClass]="{'is-invalid':submitted && formControls.sn.errors}">
         <div class="invalid-feedback" *ngIf="submitted && formControls.sn.errors">
           This field is required.</div>
       </div>
+      </div>
       <div class="form-group">
-        <label>ndc</label>
-        <input formControlName="ndc" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.ndc.errors}">
+          <div class="col-md-6">
+        <input formControlName="ndc" class="form-control" placeholder="Ndc" [ngClass]="{'is-invalid':submitted && formControls.ndc.errors}">
         <div class="invalid-feedback" *ngIf="submitted && formControls.ndc.errors">
           This field is required.</div>
       </div>
-
+      </div>
       <div class="form-group">
-        <label>cc</label>
-        <input formControlName="cc" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.cc.errors}">
+          <div class="col-md-6">
+        <input formControlName="cc" class="form-control" placeholder="Cc" [ngClass]="{'is-invalid':submitted && formControls.cc.errors}">
         <div class="invalid-feedback" *ngIf="submitted && formControls.cc.errors">
           This field is required.</div>
       </div>
-      <div class="form-group">
-        <input type="submit" class="btn btn-primary" value="Submit">
       </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+        <button  type="submit" class="btn btn-lg btn-block btn-info">
+         <i class="fa fa-floppy-o"> Submit</i>
+       </button>
+       </div>
+       <div class="form-group col-md-3">
+         <button class="btn btn-lg btn-block btn-secendery" type="reset"> 
+             <i class="fa fa-repeat" > Reset</i>
+         </button>
+       </div>
+       </div>
     </form>
-    <div class="alert alert-info"  *ngIf="showSuccessMessage">
-      Submitted successfully.
-    </div>
   </div>
  
 </div>

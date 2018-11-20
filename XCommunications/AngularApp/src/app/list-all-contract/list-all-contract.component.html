@@ -1,17 +1,39 @@
+<h1>List of all Contract:</h1>
 
-<table class="table table-hover">
-    <thead>
-        <th>ID </th>
-        <th>Worker Id</th>
-        <th>Tariff</th>
-      </thead>
-    <tr *ngFor="let contract of contract">
-      <td (click)="populateForm(contract)">{{contract.custumerId}} </td>
-      <td (click)="populateForm(contract)">{{contract.workerId}}</td>
-      <td (click)="populateForm(contract)">{{contract.tariff}}</td>
-      <td><button (click)="onDelete(contract.custumerId)" class="btn btn-sm btn-outline-danger">X</button></td>
-      <td><button (click)="onDelete(contract.custumerId)" class="btn btn-sm btn-outline-danger"  > edit</button></td>
 
-    </tr>
-  </table>
+<div class="row">
+  <div class="col-md-5">
+    <ul class="list-group">
+      <a class="list-group-item clearfix" style="cursor: pointer" *ngFor="let contract of listContract"
+        [class.selected]="contract === selectedContract" (click)="onSelect(contract)">
+        <div>
+          <h4 class="list-group-item-heading">{{contract.id}} {{contract.customerId}} {{contract.workerId}}
+            {{contract.tarif}} </h4>
+        </div>
+      </a>
 
+    </ul>
+  </div>
+  <div *ngIf="selectedContract">
+    <div class="container">
+      <label>Selected contract:</label>
+      <div class="col-md-12">
+        <div class="row">
+          <form id="myForm">
+            <input [value]="selectedContract.id" (input)="selectedContract.contractId=$event.target.value">
+            <input [value]="selectedContract.customerId" (input)="selectedContract.customerId=$event.target.value">
+            <input [value]="selectedContract.workerId" (input)="selectedContract.workerId=$event.target.value">
+            <input [value]="selectedContract.tarif" (input)="selectedContract.tarif=$event.target.value">
+
+            <div class="row">
+
+              <div><button id="myInput" class="btn btn-success" (click)="onClickEdit()">Edit</button>
+              </div>
+              <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

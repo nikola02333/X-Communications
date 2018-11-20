@@ -17,6 +17,7 @@ export class SimCardServiceService {
       iccid: new FormControl('', Validators.required),
       pin: new FormControl('', Validators.required),
       puk: new FormControl('', Validators.required)
+     
     });
 
   
@@ -25,7 +26,6 @@ export class SimCardServiceService {
   post(services: SimCard) : Observable<SimCard>
   {
     console.log(services);
-    debugger
     return this.http.post<SimCard>(this.baseUrl,services);
     
   }

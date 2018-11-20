@@ -82,7 +82,7 @@ namespace XCommunications
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=INTERNSHIP09\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
 
             log.Info("Reached ConfigureServices in Startup.cs");

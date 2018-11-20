@@ -1,31 +1,28 @@
-
+<h1>List of all Sim cards:</h1>
 <div class="row">
-  <div class="col-md-5">     
-    <ul  class="list-group">
-            <a  class="list-group-item clearfix" 
-                style="cursor: pointer" 
-              *ngFor="let card of cards"
-              [class.selected]="card === selectedsimCard"
-              (click)="onSelect(card)">
-                <div >
-                  <h4 class="list-group-item-heading">{{card.imsi}}, {{card.iccid}},<i>!{{card.status}}!</i>, {{card.pin}}, {{card.puk}} </h4>
-                </div>
-              </a>
-     </ul>
+  <div class="col-md-5">
+    <ul class="list-group">
+      <a class="list-group-item clearfix" style="cursor: pointer" *ngFor="let card of cards" [class.selected]="card === selectedsimCard"
+        (click)="onSelect(card)">
+        <div>
+          <h4 class="list-group-item-heading">{{card.imsi}}, {{card.iccid}}, {{card.pin}}, {{card.puk}} </h4>
+        </div>
+      </a>
+    </ul>
+  </div>
+  <div *ngIf="selectedsimCard">
+    <div class="container">
+      <label>Selected simcard:</label>
+      <div class="col-md-12">
+        <div class="row">
+          <input [value]="selectedsimCard.imsi" (input)="selectedsimCard.imsi=$event.target.value">
+          <div class="row">
+            <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
+            </div>
+            <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+          </div>
+        </div>
+      </div>
     </div>
-      <div *ngIf="selectedsimCard"> 
-        <div class="container">
-              <label>Selected simcard:</label>
-              <div class="col-md-12">
-                <div class="row">
-                          <input [value]="selectedsimCard.status"  (input)="selectedsimCard.status=$event.target.value">  
-                              <div class="row">
-                                <div><button  class="btn btn-success"  (click)= "onClickEdit()">Edit</button>
-                                </div>
-                                <button  class="btn btn-danger"  (click)="onClickDelete()">Delete</button>
-                              </div>
-                  </div>
-                </div>
-         </div>
-       </div>
+  </div>
 </div>

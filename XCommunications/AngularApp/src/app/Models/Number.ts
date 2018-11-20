@@ -5,7 +5,7 @@ export class Number {
       public status: boolean,
       public cc: number,
       public ndc: number,
-      public sn: number
+      public sn: number,
     ) {  }
   
   }

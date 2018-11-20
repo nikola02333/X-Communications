@@ -21,11 +21,13 @@ export class ListSimCardsComponent implements OnInit {
   onClickDelete()
   {
     this.simCardService.deleteSimCard(this.selectedsimCard).subscribe();
+    this.getAllCards();
   }
 
   onClickUpdate()
   {
     this.simCardService.updateSimCard(this.selectedsimCard).subscribe();
+    this.getAllCards();
   }
 
   ngOnInit() {

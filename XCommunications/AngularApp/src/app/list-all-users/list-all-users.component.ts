@@ -24,7 +24,10 @@ export class ListAllUsersComponent implements OnInit {
 
   onClickDelete()
   {
-    this.service.deleteUser(this.selectedUser.id).subscribe();
+    this.service.deleteUser(this.selectedUser.id).subscribe(
+      
+      
+    );
   }
 
   getAllUsers(){

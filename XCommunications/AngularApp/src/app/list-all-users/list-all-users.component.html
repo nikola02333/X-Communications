@@ -1,38 +1,36 @@
-
+<h1>List of all Users:</h1>
 <div class="row">
-  <div class="col-md-5">     
-    <ul  class="list-group">
-            <a  class="list-group-item clearfix" 
-                style="cursor: pointer" 
-              *ngFor="let user of users"
-              [class.selected]="user === selectedUser"
-              (click)="onSelect(user)">
-                <div >
-                  <h4 class="list-group-item-heading">{{user.name}} {{user.lastName}} </h4>
-                </div>
-              </a>
-     </ul>
+  <div class="col-md-5">
+
+    <ul class="list-group">
+      <a class="list-group-item clearfix" style="cursor: pointer" *ngFor="let user of users" [class.selected]="user === selectedUser"
+        (click)="onSelect(user)">
+        <div>
+          <h4 class="list-group-item-heading"> {{user.id}} {{user.name}} {{user.lastName}} </h4>
+        </div>
+      </a>
+    </ul>
+
+
+
+  </div>
+  <div *ngIf="selectedUser">
+    <div class="container">
+      <label>Selected user:</label>
+      <div class="col-md-12">
+        <div class="row">
+          <form #myForm="ngForm">
+            <input [value]="selectedUser.name" (input)="selectedUser.name=$event.target.value">
+            <input [value]="selectedUser.lastName" (input)="selectedUser.lastName=$event.target.value">
+            <div class="row">
+              <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
+              </div>
+              <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-      <div *ngIf="selectedUser"> 
-        <div class="container">
-              <label>Selected user:</label>
-              <div class="col-md-12">
-                <div class="row">
-                          <input [value]="selectedUser.name"  (input)="selectedUser.name=$event.target.value">  
-                          <input [value]="selectedUser.lastName" (input)="selectedUser.lastName=$event.target.value"> 
-                              <div class="row">
-                                <div><button  class="btn btn-success"  (click)= "onClickEdit()">Edit</button>
-                                </div>
-                                <button  class="btn btn-danger"  (click)="onClickDelete()">Delete</button>
-                              </div>
-                  </div>
-                </div>
-         </div>
-       </div>
+
+  </div>
 </div>
-
-
-
-
-
-        

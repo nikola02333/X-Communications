@@ -13,21 +13,35 @@ export class ListAllContractComponent implements OnInit {
 
   selectedContract : Contract;
   ngOnInit() {
+    this.getListContract();
   }
-  contract : Contract[] =[
-    new Contract(1,"contract1","tarriff1"),
-    new Contract(2,"contract2","tarriff2")
-  ];
+  private  listContract:  Array<object> = [];  
 
+
+  getListContract()
+{
+  this.serviceContract.getAllContract().subscribe(
+
+    (data:  Array<object>) => {
+
+    this.listContract  =  data;
+    console.log(data);
+});
+}
   onSelect(contract: Contract): void {
     this.selectedContract = contract;
   }
 
-  RowSelected(conrtact:Contract){
-    this.selectedContract=  conrtact;
-    }
-    RowSelectedDelete(conrtact:Contract){
-     this.serviceContract.deleteContract(conrtact).subscribe();
+      onClickDelete()
+      {
+        debugger
+        this.serviceContract.deleteContract(this.selectedContract.id).subscribe();
+        this.getListContract();
+      }
+      onClickEdit()
+      {
+        this.serviceContract.updateContract(this.selectedContract=this.selectedContract).subscribe();
+        this.getListContract();
       }
 
 }

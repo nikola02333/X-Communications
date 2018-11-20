@@ -5,8 +5,6 @@ export class SimCard{
         public iccid: number,
         public pin: number,
         public puk: number,
-        public status: boolean
-    ) {
-        
-    }
+       // public status: boolean
+    ) {}
 }

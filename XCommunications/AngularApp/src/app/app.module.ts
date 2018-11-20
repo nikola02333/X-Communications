@@ -20,6 +20,9 @@ import { AddSimcardComponent } from './add-simcard/add-simcard.component';
 import { AddNumberComponent } from './add-number/add-number.component';
 import { AddContractComponent } from './add-contract/add-contract.component';
 import { ListAllContractComponent } from './list-all-contract/list-all-contract.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 const appRoutes: Routes =[
               {path : '' ,component: HomeComponent},
@@ -55,7 +58,8 @@ const appRoutes: Routes =[
     HttpClientModule, 
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-     
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot(),
     AppRoutingModule,
     FormsModule,
         ReactiveFormsModule,

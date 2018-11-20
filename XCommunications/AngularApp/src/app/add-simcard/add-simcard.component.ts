@@ -1,6 +1,7 @@
 import { SimCard } from './../Models/SimCard';
 import { Component, OnInit } from '@angular/core';
 import { SimCardServiceService } from '../Services/simCardService/sim-card-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-simcard',
@@ -9,7 +10,7 @@ import { SimCardServiceService } from '../Services/simCardService/sim-card-servi
 })
 export class AddSimcardComponent implements OnInit {
 
-  constructor(private simCardService: SimCardServiceService) { }
+  constructor(private simCardService: SimCardServiceService,private toastService : ToastrService) { }
 
   simcard : SimCard;
   submitted: boolean;
@@ -26,11 +27,21 @@ export class AddSimcardComponent implements OnInit {
        this.simcard = new SimCard(this.simCardService.form.value.imsi,
                                     this.simCardService.form.value.iccid,
                                     this.simCardService.form.value.pin,
-                                    this.simCardService.form.value.puk,
-                                     false); 
-     
-       this.simCardService.post(this.simcard).subscribe( x=> console.log(x)); 
+                                    this.simCardService.form.value.puk
+                                     );      
+       this.simCardService.post(this.simcard).subscribe(
+        response => {
+             console.log(response);
+        },
+        err => {
+             console.log(err);
+        },
+        () => {
+          this.toastService.success('Inserted successfully','X-Communications');}); 
 
      }
+     this.submitted=false;
+       this.simCardService.form.reset();
+
    }
 }

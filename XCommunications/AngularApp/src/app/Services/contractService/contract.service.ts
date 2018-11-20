@@ -11,34 +11,36 @@ import {RequestOptions, Request, RequestMethod} from '@angular/http';
 })
 export class ContractService {
 
-    baseUrl='https://localhost:44350/api';
     form = new FormGroup({
-      imsi: new FormControl('', Validators.required),
-      iccid: new FormControl('', Validators.required),
-      pin: new FormControl('', Validators.required),
-      puk: new FormControl('', Validators.required)
+      id: new FormControl('', Validators.required),
+      custumerId: new FormControl('', Validators.required),
+      workerId: new FormControl('', Validators.required),
+      tariff: new FormControl('', Validators.required)
+     
     });
 
-  
+   readonly baseUrl='https://localhost:44350/api/Contracts';
+
   constructor(private http: HttpClient) { }
 
-  postContract(services: Contract) 
+  postContract(contract: Contract) :Observable<Contract>
   {
-    return this.http.post<Contract>(this.baseUrl,services);
+    debugger
+    return this.http.post<Contract>(this.baseUrl,contract);
     
   }
 
   getAllContract(): Observable<Contract[]> {
 
-    return this.http.get<Contract[]>(this.baseUrl +'/'+'Contracts');
+    return this.http.get<Contract[]>(this.baseUrl);
 } 
 
-  deleteContract(id: Contract) {
-    return this.http.delete( this.baseUrl +'/'+'Contracts' + '/' + id);
+  deleteContract(id: number) {
+    return this.http.delete( this.baseUrl + '/' + id);
     }
 
     updateContract(contract: Contract) {  
-      return this.http.put(this.baseUrl +'/'+'Contracts'+ '/' + contract.custumerId , contract);  
+      return this.http.put(this.baseUrl +'/' + contract.id , contract);  
     }  
 }
 

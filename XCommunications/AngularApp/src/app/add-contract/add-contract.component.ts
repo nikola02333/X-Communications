@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { ContractService } from '../Services/contractService/contract.service';
 import { Contract } from '../Models/contract';
@@ -10,15 +11,34 @@ import { NgForm } from '@angular/forms';
 })
 export class AddContractComponent implements OnInit {
 
-  constructor( private contractService: ContractService) { }
+  constructor( private contractService: ContractService,private toastService : ToastrService) { }
 
-  selectedContract: Contract;
-
+  submitted: boolean;
+  Contract: Contract;
+  formControls = this.contractService.form.controls;
   ngOnInit() {
   }
-
+  
   onSubmit(form:NgForm)
   {
-    this.contractService.postContract(form.value);
+    this.submitted = true;
+    if(this.contractService.form.valid)
+    {
+      this.Contract = new Contract(form.value.id,form.value.custumerId,form.value.workerId,form.value.tariff);
+      debugger
+
+      
+      this.contractService.postContract(this.Contract).subscribe(
+        response => {
+             console.log(response);
+        },
+        err => {
+             console.log(err);
+        },
+        () => {
+          this.toastService.success('Inserted successfully','X-Communications');});  
+          this.submitted=false;
+          form.resetForm();
+    }
   }
 }
