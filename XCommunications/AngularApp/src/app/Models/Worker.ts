@@ -1,5 +1,5 @@
 
-export class Worker{
+export class Worker {
 
 
     constructor(
@@ -9,6 +9,6 @@ export class Worker{
         public email: string,
         public operater: string
     ) {
-        
+
     }
 }

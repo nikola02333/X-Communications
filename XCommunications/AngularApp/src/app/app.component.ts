@@ -7,12 +7,8 @@ import { UserServiceService } from './Services/user-service.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(private server :UserServiceService) {
-  
-    }
-    /*onSave()
-    {
-      this.server.addUser
-    }*/
+  constructor(private server: UserServiceService) {
+
+  }
   title = 'App';
 }

@@ -9,24 +9,22 @@ import { SimCardServiceService } from '../Services/simCardService/sim-card-servi
 })
 export class ListSimCardsComponent implements OnInit {
 
-  constructor(private simCardService: SimCardServiceService ) { }
+  constructor(private simCardService: SimCardServiceService) { }
 
-  cards: SimCard[]=[];
-  selectedsimCard : SimCard;
+  cards: SimCard[] = [];
+  selectedsimCard: SimCard;
 
   onSelect(simCard: SimCard): void {
     this.selectedsimCard = simCard;
   }
 
-  onClickDelete()
-  {
+  onClickDelete() {
     debugger
     this.simCardService.deleteSimCard(this.selectedsimCard).subscribe();
     this.getAllCards();
   }
 
-  onClickEdit()
-  {
+  onClickEdit() {
     debugger
     this.simCardService.updateSimCard(this.selectedsimCard).subscribe();
   }
@@ -35,11 +33,9 @@ export class ListSimCardsComponent implements OnInit {
     this.getAllCards();
   }
 
-  getAllCards()
-  {
-    this.simCardService.getAllsimCards().subscribe((data:Array<SimCard>) =>
-    {
-      this.cards=data;
+  getAllCards() {
+    this.simCardService.getAllsimCards().subscribe((data: Array<SimCard>) => {
+      this.cards = data;
       console.log(data);
     });
   }

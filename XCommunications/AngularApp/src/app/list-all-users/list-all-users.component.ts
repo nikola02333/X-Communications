@@ -1,7 +1,7 @@
 import { Customer } from './../Models/Customer';
 import { Component, OnInit } from '@angular/core';
 import { UserServiceService } from '../Services/user-service.service';
-import {FormControl, FormGroup, Validators, NgForm} from '@angular/forms';
+import { FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-list-all-users',
@@ -11,37 +11,34 @@ import {FormControl, FormGroup, Validators, NgForm} from '@angular/forms';
 export class ListAllUsersComponent implements OnInit {
 
   constructor(private service: UserServiceService) { }
-   selectedUser : Customer;
-   users : Customer[] = [];
+  selectedUser: Customer;
+  users: Customer[] = [];
 
-   onSelect(user: Customer): void {
-    this.selectedUser = user;  
+  onSelect(user: Customer): void {
+    this.selectedUser = user;
   }
 
   ngOnInit() {
     this.getAllUsers();
   }
 
-  onClickDelete()
-  {
+  onClickDelete() {
     this.service.deleteUser(this.selectedUser.id).subscribe(
-      
-      
+
+
     );
   }
 
-  getAllUsers(){
-    this.service.getAll().subscribe( ( data: Array<Customer>) => 
-    {
-      this.users =data;
+  getAllUsers() {
+    this.service.getAll().subscribe((data: Array<Customer>) => {
+      this.users = data;
       console.log(data);
     }
     );
   }
 
-  onClickEdit()
-  {
-    this.service.updateUser(this.selectedUser=this.selectedUser).subscribe();
+  onClickEdit() {
+    this.service.updateUser(this.selectedUser = this.selectedUser).subscribe();
   }
 
 }

@@ -10,40 +10,39 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddSimcardComponent implements OnInit {
 
-  constructor(private simCardService: SimCardServiceService,private toastService : ToastrService) { }
+  constructor(private simCardService: SimCardServiceService, private toastService: ToastrService) { }
 
-  simcard : SimCard;
+  simcard: SimCard;
   submitted: boolean;
   showSuccessMessage: boolean;
   formControls = this.simCardService.form.controls;
 
   ngOnInit() {
   }
-  onSubmit()
-  {
-     this.submitted = true;
-     if (this.simCardService.form.valid)
-     {
-       this.simcard = new SimCard(this.simCardService.form.value.imsi,
-                                    this.simCardService.form.value.iccid,
-                                    this.simCardService.form.value.pin,
-                                    this.simCardService.form.value.puk
-                                     );     
-      
-                                
-       this.simCardService.post(this.simcard).subscribe(
+  onSubmit() {
+    this.submitted = true;
+    if (this.simCardService.form.valid) {
+      this.simcard = new SimCard(this.simCardService.form.value.imsi,
+        this.simCardService.form.value.iccid,
+        this.simCardService.form.value.pin,
+        this.simCardService.form.value.puk
+      );
+
+
+      this.simCardService.post(this.simcard).subscribe(
         response => {
-             console.log(response);
+          console.log(response);
         },
         err => {
-             console.log(err);
+          console.log(err);
         },
         () => {
-          this.toastService.success('Inserted successfully','X-Communications');}); 
+          this.toastService.success('Inserted successfully', 'X-Communications');
+        });
 
-     }
-     this.submitted=false;
-       this.simCardService.form.reset();
+    }
+    this.submitted = false;
+    this.simCardService.form.reset();
 
-   }
+  }
 }

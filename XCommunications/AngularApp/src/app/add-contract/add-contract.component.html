@@ -1,49 +1,50 @@
-
-
 <div class="row">
     <div class="col-md-5">
-<form  [formGroup]="this.contractService.form"  #contractForm= "ngForm" (submit)="onSubmit(contractForm)">
-    <div class="form-group">
-      <div class="form-group col-md-6">
-        <input formControlName="id" class="form-control"   placeholder="contract ID" [ngClass]="{'is-invalid':submitted && formControls.id.errors}" >
-          <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors ">This Filed is Requaired</div>
-      </div>
-    </div>
-     
-      <div class="form-group">
-        <div class="form-group col-md-6">
-          <input formControlName="customerId" class="form-control"   placeholder="custumer ID" [ngClass]="{'is-invalid':submitted && formControls.customerId.errors}" >
-            <div class="invalid-feedback" *ngIf="submitted && formControls.customerId.errors ">This Filed is Requaired</div>
-        </div>
-     
-    </div>
-    <div class="form-group">
-        <div class="form-group col-md-6">
-        <input  formControlName="workerId" class="form-control"   placeholder="worker ID" [ngClass]="{'is-invalid':submitted && formControls.workerId.errors}" >
-        <div class="invalid-feedback" *ngIf="submitted && formControls.workerId.errors ">This Filed is Requaired</div>
-    </div>
-    <div class="form-group">
-        <div class="form-group col-md-6">
-        <input  formControlName="tarif" class="form-control"     placeholder="tarif" [ngClass]="{'is-invalid':submitted && formControls.tarif.errors}">
-        <div class="invalid-feedback"*ngIf="submitted && formControls.tarif.errors ">This Filed is Requaired</div>
-    </div>
-    </div>
-      <div class="form-row">
-          <div class="form-group col-md-3">
-           <button  type="submit" class="btn btn-lg btn-block btn-info">
-              <i class="fa fa-floppy-o"> Submit</i>
-            </button>
-          </div>
-    
-          <div class="form-group col-md-3">
-              <button class="btn btn-lg btn-block btn-secendery" type="Reset"> 
-                  <i class="fa fa-repeat" > Reset</i>
-              </button>
-        
+        <form [formGroup]="this.contractService.form" #contractForm="ngForm" (submit)="onSubmit(contractForm)">
+            <div class="form-group">
+                <div class="form-group col-md-6">
+                    <input formControlName="id" class="form-control" placeholder="contract ID" [ngClass]="{'is-invalid':submitted && formControls.id.errors}">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors ">This Filed is Requaired</div>
+                </div>
             </div>
-        </div>
-        </div>
-  </form>
 
-</div>
+            <div class="form-group">
+                <div class="form-group col-md-6">
+                    <input formControlName="customerId" class="form-control" placeholder="custumer ID" [ngClass]="{'is-invalid':submitted && formControls.customerId.errors}">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.customerId.errors ">This Filed is
+                        Requaired</div>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="form-group col-md-6">
+                    <input formControlName="workerId" class="form-control" placeholder="worker ID" [ngClass]="{'is-invalid':submitted && formControls.workerId.errors}">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.workerId.errors ">This Filed is
+                        Requaired</div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group col-md-6">
+                        <input formControlName="tarif" class="form-control" placeholder="tarif" [ngClass]="{'is-invalid':submitted && formControls.tarif.errors}">
+                        <div class="invalid-feedback" *ngIf="submitted && formControls.tarif.errors ">This Filed is
+                            Requaired</div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <button type="submit" class="btn btn-lg btn-block btn-info">
+                            <i class="fa fa-floppy-o"> Submit</i>
+                        </button>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <button class="btn btn-lg btn-block btn-secendery" type="Reset">
+                            <i class="fa fa-repeat"> Reset</i>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
 </div>
