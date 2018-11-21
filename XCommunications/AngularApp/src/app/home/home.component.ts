@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServiceService } from '../Services/user-service.service';
+import { UserServiceService } from '../Services/userService/user-service.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +8,7 @@ import { UserServiceService } from '../Services/user-service.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private server: UserServiceService) { }
+  constructor(private server :UserServiceService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,4 @@
-export class RegistratedUser {
+export class RegistratedUser{
 
 
     constructor(
@@ -8,6 +8,6 @@ export class RegistratedUser {
         public workerId: number,
         public numberId: number
 
-    ) { }
-
+    ) {}
+    
 }

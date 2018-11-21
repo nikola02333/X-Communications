@@ -1,0 +1,57 @@
+<div class="container-fluid h-100 ">
+  <div class="row justify-content-center align-items-center">
+
+    <div id="page" class="col-md-6">
+      <table class="table table-striped">
+        <tr>
+          <th>imsi</th>
+          <th>iccid</th>
+          <th>pin</th>
+          <th>puk</th>
+        </tr>
+        <tr *ngFor="let card of cards" [class.selected]="card === selectedCard" style="cursor: pointer" (click)="onSelect(card)">
+          <td> {{card.imsi}} </td>
+          <td> {{card.iccid}} </td>
+          <td> {{card.pin}}</td>
+          <td> {{card.puk}}</td>
+        </tr>
+      </table>
+    </div>
+
+
+
+    <div id="page" class="col-md-6">
+      <div *ngIf="selectedsimCard">
+        <div class="container">
+          <label>Selected simcard:</label>
+          <div id="page" class="col-md-6">
+            <form #myForm="ngForm">
+              <table class="table table-striped">
+                <tr>
+                  <th>imsi</th>
+                  <th>iccid</th>
+                  <th>pin</th>
+                  <th>puk</th>
+                </tr>
+                <tr>
+                  <td> <input [value]="selectedsimCard.imsi" (input)="selectedsimCard.imsi=$event.target.value">
+                  </td>
+                  <td> <input [value]="selectedsimCard.iccid" (input)="selectedsimCard.iccid=$event.target.value"></td>
+                  <td> <input [value]="selectedsimCard.pin" (input)="selectedsimCard.pin=$event.target.value"></td>
+                  <td> <input [value]="selectedsimCard.puk" (input)="selectedsimCard.puk=$event.target.value"></td>
+                </tr>
+              </table>
+              <div class="row">
+                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
+                </div>
+                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

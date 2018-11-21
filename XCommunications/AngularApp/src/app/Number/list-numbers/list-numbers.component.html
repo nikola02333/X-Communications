@@ -1,0 +1,123 @@
+<!--
+<div class="container" id="page">
+    <div class="row">
+      <div id="page" class="col-md-6">
+        <table class="table table-striped">
+          <tr>
+            <th>id</th>
+            <th>status</th>
+            <th>cc</th>
+            <th>ndc</th>
+            <th>sn</th>
+          </tr>
+          <tr *ngFor="let number of listNumbers" [class.selected]="number === selectedNumber" style="cursor: pointer" (click)="onSelect(number)">
+            <td> {{number.id}} </td>
+            <td> {{number.status}} </td>
+            <td> {{number.cc}}</td>
+            <td> {{number.ndc}}</td>
+            <td> {{number.sn}}</td>
+          </tr>
+        </table>
+      </div>
+  
+      <div *ngIf="selectedNumber">
+        <div class="container">
+          <h2>Selected Number:</h2>
+          <div class="col-md-12">
+            <div class="row">
+             
+              <form  #myForm="ngForm">
+                  <label>Id:</label>
+                  <br>
+                <input [value]="selectedNumber.id" readonly="readonly">
+                <br>
+                  <label>Status:</label>
+                  <br>
+                <input [value]="selectedNumber.status" (input)="selectedNumber.status=$event.target.value">
+               
+                <br>
+                <label>Cc:</label>
+                <br>
+                <input [value]="selectedNumber.cc" (input)="selectedNumber.cc=$event.target.value">
+                <br>
+                <label>Ndc:</label>
+                <br>
+                <input [value]="selectedNumber.ndc" (input)="selectedNumber.ndc=$event.target.value">
+                <br>
+                <label>Sn:</label>
+                <br>
+                <input [value]="selectedNumber.sn" (input)="selectedNumber.sn=$event.target.value">
+                <div class="row">
+                  <div><button id="myInput" class="btn btn-success" (click)="onClickEdit(myForm)">Edit</button>
+                  </div>
+                  <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    -->
+<div class="container-fluid h-100 ">
+  <div class="row justify-content-center align-items-center">
+
+    <div id="page" class="col-md-6">
+      <table class="table table-striped">
+        <tr>
+          <th>id</th>
+          <th>status</th>
+          <th>cc</th>
+          <th>ndc</th>
+          <th>sn</th>
+        </tr>
+        <tr *ngFor="let number of listNumbers" [class.selected]="number === selectedNumber" style="cursor: pointer"
+          (click)="onSelect(number)">
+          <td> {{number.id}} </td>
+          <td> {{number.status}} </td>
+          <td> {{number.cc}}</td>
+          <td> {{number.ndc}}</td>
+          <td> {{number.sn}}</td>
+        </tr>
+      </table>
+    </div>
+
+
+
+    <div id="page" class="col-md-6">
+      <div *ngIf="selectedNumber">
+        <div class="container">
+          <label>Selected number:</label>
+          <div id="page" class="col-md-6">
+            <form #myForm="ngForm">
+              <table class="table table-striped">
+                <tr>
+                  <th>id</th>
+                  <th>status</th>
+                  <th>cc</th>
+                  <th>ndc</th>
+                  <th>sn</th>
+                </tr>
+                <tr>
+                  <td> <input [value]="selectedNumber.id" (input)="selectedNumber.imsi=$event.target.value">
+                  </td>
+                  <td> <input [value]="selectedNumber.status" (input)="selectedNumber.status=$event.target.value"></td>
+                  <td> <input [value]="selectedNumber.cc" (input)="selectedNumber.cc=$event.target.value"></td>
+                  <td> <input [value]="selectedNumber.ndc" (input)="selectedNumber.ndc=$event.target.value"></td>
+                  <td> <input [value]="selectedNumber.sn" (input)="selectedNumber.sn=$event.target.value"></td>
+                </tr>
+              </table>
+              <div class="row">
+                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
+                </div>
+                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
