@@ -1,0 +1,86 @@
+<div class="container">
+    <div class="form1 col-md-6 offset-md-3">
+
+        <form [formGroup]="this.registratedService.form" #userForm="ngForm" (submit)="onSubmit(userForm)" #forma>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <label>Enter registrated user's id</label>
+                    <input formControlName="id" placeholder="Id" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.id.errors}">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors">
+                        <label *ngIf="formControls.id.errors.required">This field is required </label>
+                        <label *ngIf="formControls.id.errors.pattern">This field is required letters</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label>Choose simcard based on its imsi</label>
+                <select formControlName="imsi" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.imsi.errors}">
+                    <option *ngFor="let imsi of simCards">
+                        {{imsi.imsi}}
+                    </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="submitted && formControls.imsi.errors">
+                    <label *ngIf="formControls.imsi.errors.required">This field is required </label>
+                    <label *ngIf="formControls.imsi.errors.pattern">This field is required letters</label>
+                </div>
+            </div>
+
+            <br>
+            <div class="col-md-12">
+                <label>Choose customer based on their id</label>
+                <select formControlName="customerId" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.customerId.errors}">
+                    <option *ngFor="let id of customers">
+                        {{id.id}}
+                    </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="submitted && formControls.customerId.errors">
+                        <label *ngIf="formControls.customerId.errors.required">This field is required </label>
+                        <label *ngIf="formControls.customerId.errors.pattern">This field is required letters</label>
+                    </div>
+            </div>
+
+            <br>
+            <div class="col-md-12">
+                <label>Choose worker based on their id</label>
+                <select formControlName="workerId" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.workerId.errors}">
+                    <option *ngFor="let id of workers">
+                        {{id.id}}
+                    </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="submitted && formControls.workerId.errors">
+                        <label *ngIf="formControls.workerId.errors.required">This field is required </label>
+                        <label *ngIf="formControls.workerId.errors.pattern">This field is required letters</label>
+                    </div>
+            </div>
+
+            <br>
+            <div class="col-md-12">
+                <label>Choose number based on its id</label>
+                <select formControlName="numberId" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.numberId.errors}">
+                    <option *ngFor="let id of numbers">
+                        {{id.id}} 
+                    </option>
+                </select>
+                <div class="invalid-feedback" *ngIf="submitted && formControls.numberId.errors">
+                        <label *ngIf="formControls.numberId.errors.required">This field is required </label>
+                        <label *ngIf="formControls.numberId.errors.pattern">This field is required letters</label>
+                    </div>
+            </div>
+
+            <br>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <button type="submit" class="btn btn-lg btn-block btn-info">
+                        <i class="fa fa-floppy-o"> Submit</i>
+                    </button>
+                </div>
+                <div class="form-group col-md-6">
+                    <button class="btn btn-lg btn-block btn-secendery" type="reset">
+                        <i class="fa fa-repeat"> Discard</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

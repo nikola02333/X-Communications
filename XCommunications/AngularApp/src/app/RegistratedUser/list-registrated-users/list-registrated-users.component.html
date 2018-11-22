@@ -1,0 +1,72 @@
+<div class="container-fluid h-100 ">
+  <div class="row justify-content-center align-items-center">
+
+    <div id="page" class="col-md-6">
+      <table class="table table-striped">
+        <tr>
+          <th>Id</th>
+          <th>Imsi</th>
+          <th>Customer id</th>
+          <th>Worker id</th>
+          <th>Number id</th>
+        </tr>
+        <tr *ngFor="let user of users" [class.selected]="user === selectedUser" style="cursor: pointer" (click)="onSelect(user)"
+          data-toggle="modal" data-target="#modalLoginForm" data-backdrop="static">
+          <td> {{user.id}} </td>
+          <td> {{user.imsi}} </td>
+          <td> {{user.customerId}}</td>
+          <td> {{user.workerId}}</td>
+          <td> {{user.numberId}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div *ngIf="selectedUser">
+      <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold">Registrated user's details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body mx-3">
+              <div class="md-form mb-5">
+                <label data-error="wrong" data-success="right" for="defaultForm-id">Id</label>
+                <input type="text" id="defaultForm-id" class="form-control validate" [value]="selectedUser.id" (input)="selectedUser.id=$event.target.value"
+                  readonly>
+              </div>
+
+              <div class="md-form mb-4">
+                <label data-error="wrong" data-success="right" for="defaultForm-imsi">Imsi</label>
+                <input type="text" id="defaultForm-imsi" class="form-control validate" [value]="selectedUser.imsi" (input)="selectedUser.imsi=$event.target.value">
+              </div>
+
+              <div class="md-form mb-4">
+                <label data-error="wrong" data-success="right" for="defaultForm-customerId">Customer id</label>
+                <input type="text" id="defaultForm-customerId" class="form-control validate" [value]="selectedUser.customerId" (input)="selectedUser.customerId=$event.target.value">
+              </div>
+              
+              <div class="md-form mb-4">
+                <label data-error="wrong" data-success="right" for="defaultForm-workerId">Worker id</label>
+                <input type="text" id="defaultForm-workerId" class="form-control validate" [value]="selectedUser.workerId" (input)="selectedUser.workerId=$event.target.value">
+              </div>
+
+              <div class="md-form mb-4">
+                <label data-error="wrong" data-success="right" for="defaultForm-numberId">Number id</label>
+                <input type="text" id="defaultForm-numberId" class="form-control validate" [value]="selectedUser.numberId" (input)="selectedUser.numberId=$event.target.value">
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button class="btn btn-info" (click)="onClickEdit()" data-dismiss="modal">Edit</button>
+              <button class="btn btn-danger" (click)="onClickDelete()" data-dismiss="modal">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

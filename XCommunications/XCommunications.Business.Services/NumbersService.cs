@@ -11,7 +11,7 @@ using XCommunications.Data.Interfaces;
 
 namespace XCommunications.Business.Services
 {
-    public class NumbersService : IService<NumberServiceModel>
+    public class NumbersService : IService<NumberServiceModel>, IQuery<NumberServiceModel>
     {
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
@@ -197,6 +197,21 @@ namespace XCommunications.Business.Services
             {
                 log.Error(String.Format("An exception {0} occured in Exists(int id) in NumbersService.cs", e));
                 return false;
+            }
+        }
+
+        public IEnumerable<NumberServiceModel> FindAvailable()
+        {
+            try
+            {
+                log.Info("Reached FindAvailable() in NumbersService.cs");
+                IEnumerable<NumberServiceModel> retVal = unitOfWork.SimcardRepository.GetAll().Select(x => mapper.Map<NumberServiceModel>(x));
+                return retVal.Where(s => s.Status == true);
+            }
+            catch (Exception e)
+            {
+                log.Error(String.Format("An exception {0} occured in FindAvailable() in NumbersService.cs!", e));
+                return null;
             }
         }
     }

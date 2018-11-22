@@ -42,7 +42,7 @@ export class ListSimCardsComponent implements OnInit {
 
   getAllCards()
   {
-    this.simCardService.getAllsimCards().subscribe((data:Array<SimCard>) =>
+    this.simCardService.getAllSimCards().subscribe((data:Array<SimCard>) =>
     {
       this.cards=data;
       console.log(data);

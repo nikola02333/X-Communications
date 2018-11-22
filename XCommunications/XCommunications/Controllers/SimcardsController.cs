@@ -16,13 +16,15 @@ namespace XCommunications.Controllers
     {
         private IMapper mapper;
         private IService<SimcardServiceModel> service;
+        private IQuery<SimcardServiceModel> query;
         private ILog log;
 
-        public SimcardsController(IService<SimcardServiceModel> service, IMapper mapper, ILog log)
+        public SimcardsController(IService<SimcardServiceModel> service, IMapper mapper, ILog log, IQuery<SimcardServiceModel> query)
         {
             this.service = service;
             this.mapper = mapper;
             this.log = log;
+            this.query = query;
         }
 
         // GET: api/Simcards
@@ -65,6 +67,21 @@ namespace XCommunications.Controllers
             {
                 log.Error(string.Format("An exception {0} occured in GetSimcard(int id) in SimcardsController.cs",e));
                 return NotFound();
+            }
+        }
+
+        [HttpGet("GetAvailableSimcard")]
+        public IEnumerable<SimcardControllerModel> GetAvailableSimcard()
+        {
+            try
+            {
+                log.Info("Reached GetAvailableSimcard() in SimcardsController.cs");
+                return query.FindAvailable().Select(x => mapper.Map<SimcardControllerModel>(x));
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GetAvailableSimcard() in SimcardsController.cs", e));
+                return null;
             }
         }
 

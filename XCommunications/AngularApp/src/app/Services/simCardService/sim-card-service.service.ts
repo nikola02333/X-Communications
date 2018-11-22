@@ -27,7 +27,7 @@ export class SimCardServiceService {
 
   }
 
-  getAllsimCards(): Observable<SimCard[]> {
+  getAllSimCards(): Observable<SimCard[]> {
     return this.http.get<SimCard[]>(this.baseUrl);
   }
 

@@ -4,10 +4,12 @@ import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { RequestOptions, Request, RequestMethod } from '@angular/http';
 import { RegistratedUser } from 'src/app/Models/RegistratedUser';
+import { debug } from 'util';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class RegistratedUserService {
 
   constructor(private http: HttpClient) { }
@@ -27,7 +29,6 @@ export class RegistratedUserService {
   }
 
   getAll(): Observable<RegistratedUser[]> {
-    debugger
     return this.http.get<RegistratedUser[]>(this.baseUrl);
   }
 

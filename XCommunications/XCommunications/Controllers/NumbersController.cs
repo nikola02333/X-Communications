@@ -16,13 +16,15 @@ namespace XCommunications.Controllers
     {
         private IMapper mapper;
         private IService<NumberServiceModel> service;
+        private IQuery<NumberServiceModel> query;
         private ILog log;
 
-        public NumbersController(IService<NumberServiceModel> service, IMapper mapper, ILog log)
+        public NumbersController(IService<NumberServiceModel> service, IMapper mapper, ILog log, IQuery<NumberServiceModel> query)
         {
             this.service = service;
             this.mapper = mapper;
             this.log = log;
+            this.query = query;
         }
 
         // GET: api/Numbers
@@ -65,6 +67,21 @@ namespace XCommunications.Controllers
             {
                 log.Error(string.Format("An exception {0} occured in GetNumber(int id) in NumbersController.cs",e));
                 return NotFound();
+            }
+        }
+
+        [HttpGet("GetAvailableNumber")]
+        public IEnumerable<NumberControllerModel> GetAvailableNumber()
+        {
+            try
+            {
+                log.Info("Reached GetAvailableNumber() in NumbersController.cs");
+                return query.FindAvailable().Select(x => mapper.Map<NumberControllerModel>(x));
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GetAvailableNumber() in NumbersController.cs", e));
+                return null;
             }
         }
 

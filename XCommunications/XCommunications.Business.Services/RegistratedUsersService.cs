@@ -155,22 +155,6 @@ namespace XCommunications.Business.Services
                     unitOfWork.SimcardRepository.Remove(sc);
                 }
 
-                Customer c = null;
-                c = unitOfWork.CustomerRepository.Where(s => s.Id == user.CustomerId);
-
-                if(c != null)
-                {
-                    unitOfWork.CustomerRepository.Remove(c);
-                }
-
-                Worker w = null;
-                w = unitOfWork.WorkerRepository.Where(s => s.Id == user.WorkerId);
-
-                if( w!=null)
-                {
-                    unitOfWork.WorkerRepository.Remove(w);
-                }
-
                 Number n = null;
                 n = unitOfWork.NumberRepository.Where(s => s.Id == user.NumberId);
 

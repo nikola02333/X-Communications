@@ -8,10 +8,11 @@ using XCommunications.Data.Models;
 using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
 using XCommunications.Data.Interfaces;
+using System.Linq.Expressions;
 
 namespace XCommunications.Business.Services
 {
-    public class SimcardsService : IService<SimcardServiceModel>
+    public class SimcardsService : IService<SimcardServiceModel>, IQuery<SimcardServiceModel>
     {
         private IUnitOfWork unitOfWork;
         private IMapper mapper;
@@ -196,6 +197,21 @@ namespace XCommunications.Business.Services
             {
                 log.Error(String.Format("An exception {0} occured in Exists(int id) in SimcardsService.cs", e));
                 return false;
+            }
+        }
+
+        public IEnumerable<SimcardServiceModel> FindAvailable()
+        {
+            try
+            {
+                log.Info("Reached FindAvailable() in SimcardsService.cs");
+                IEnumerable<SimcardServiceModel> retVal =  unitOfWork.SimcardRepository.GetAll().Select(x => mapper.Map<SimcardServiceModel>(x));
+                return retVal.Where(s => s.Status == true);
+            }
+            catch (Exception e)
+            {
+                log.Error(String.Format("An exception {0} occured in FindAvailable() in SimcardsService.cs!", e));
+                return null;
             }
         }
     }

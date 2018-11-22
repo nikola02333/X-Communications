@@ -67,6 +67,8 @@ namespace XCommunications
             services.AddTransient<IService<NumberServiceModel>, NumbersService>();
             services.AddTransient<IService<CustomerServiceModel>, CustomersService>();
             services.AddTransient<IService<ContractServiceModel>, ContractsService>();
+            //services.AddTransient<IQuery<SimcardServiceModel>, SimcardServiceModel>();
+            //services.AddTransient<IQuery<NumberServiceModel>, NumberServiceModel>();
 
             services.AddCors(options =>
             {
