@@ -98,7 +98,7 @@ namespace XCommunications.Controllers
 
                 log.Error("Simcard object with given id doesn't exist! Error occured in PutSimcard(int id, SimcardControllerModel sim) in SimcardsController.cs");
 
-                return NotFound();
+                return Ok(sim);
             }
             catch (Exception e)
             {
@@ -124,7 +124,7 @@ namespace XCommunications.Controllers
                 service.Add(mapper.Map<SimcardServiceModel>(sim));
                 log.Info("Added new Simcard object in PostSimcard([FromBody] SimcardControllerModel sim) in SimcardsController.cs");
 
-                return NoContent();
+                return Ok(sim);
             }
             catch (Exception e)
             {
@@ -149,7 +149,7 @@ namespace XCommunications.Controllers
 
                 log.Info("Deleted Simcard object in DeleteSimcard(int id) in SimcardsController.cs");
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {

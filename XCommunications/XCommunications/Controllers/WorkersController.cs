@@ -93,7 +93,7 @@ namespace XCommunications.Controllers
                 if (exists)
                 {
                     log.Info("Modified Worker object in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-                    return NoContent();
+                    return Ok(worker);
                 }
 
                 log.Error("Worker object with given id doesn't exist! Error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
@@ -124,7 +124,7 @@ namespace XCommunications.Controllers
                 service.Add(mapper.Map<WorkerServiceModel>(worker));
                 log.Info("Added new Worker object in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
 
-                return NoContent();
+                return Ok(worker);
             }
             catch (Exception e)
             {
@@ -149,7 +149,7 @@ namespace XCommunications.Controllers
 
                 log.Info("Deleted Worker object in DeleteWorker(int id) in WorkersController.cs");
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {

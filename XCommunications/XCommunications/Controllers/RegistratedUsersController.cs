@@ -93,7 +93,7 @@ namespace XCommunications.Controllers
                 if (exists)
                 {
                     log.Info("Modified RegistratedUser object in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
-                    return NoContent();
+                    return Ok(user);
                 }
 
                 log.Error("RegistratedUser object with given id doesn't exist! Error occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
@@ -124,7 +124,7 @@ namespace XCommunications.Controllers
                 service.Add(mapper.Map<RegistratedUserServiceModel>(user));
                 log.Info("Added new RegistratedUser object in PostRegistrated([FromBody] RegistratedUserControllerModel user) in RegistratedUsersController.cs");
 
-                return NoContent();
+                return Ok(user);
             }
             catch (Exception e)
             {
@@ -149,7 +149,7 @@ namespace XCommunications.Controllers
 
                 log.Info("Deleted RegistratedUser object in DeleteRegistrated(int id) in RegistratedUsersController.cs");
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {
