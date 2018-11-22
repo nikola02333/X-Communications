@@ -27,15 +27,17 @@ export class RegistratedUserService {
   }
 
   getAll(): Observable<RegistratedUser[]> {
-
+    debugger
     return this.http.get<RegistratedUser[]>(this.baseUrl);
   }
 
   deleteUser(id: number) {
+    debugger
     return this.http.delete(this.baseUrl + '/' + id);
   }
 
   updateUser(user: RegistratedUser) {
+    debugger
     return this.http.put(this.baseUrl + '/' + user.id, user);
   }
 }

@@ -147,7 +147,15 @@ namespace XCommunications.Business.Services
                 }
 
                 unitOfWork.SimcardRepository.Remove(sim);
-                unitOfWork.RegistratedRepository.Remove(unitOfWork.RegistratedRepository.Where(s => s.Imsi == sim.Imsi));
+
+                RegistratedUser u = null;
+                u = unitOfWork.RegistratedRepository.Where(s => s.Imsi == sim.Imsi);
+
+                if(u != null)
+                {
+                    unitOfWork.RegistratedRepository.Remove(u);
+                }
+                
                 unitOfWork.Commit();
                 log.Info("Deleted Simcard object in Delete(int id) in SimcardsService.cs");
                 return true;

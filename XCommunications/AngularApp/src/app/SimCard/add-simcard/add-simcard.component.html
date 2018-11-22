@@ -23,7 +23,7 @@
       </div>
       <div class="form-group">
         <div class="form-group col-md-12">
-          <input formControlName="pin" class="form-control" placeholder="pin" [ngClass]="{'is-invalid':submitted && formControls.pin.errors}" pattern='[0-9]*'>
+          <input formControlName="pin" class="form-control" placeholder="Pin" [ngClass]="{'is-invalid':submitted && formControls.pin.errors}" pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.pin.errors ">
             <label *ngIf="formControls.pin.errors.required">This field is required </label> 
             <label *ngIf="formControls.pin.errors.pattern">This field is required numbers only</label> 
@@ -34,7 +34,7 @@
       </div>
       <div class="form-group">
         <div class="form-group col-md-12">
-          <input formControlName="puk" class="form-control" placeholder="puk" [ngClass]="{'is-invalid':submitted && formControls.puk.errors}" pattern='[0-9]*'>
+          <input formControlName="puk" class="form-control" placeholder="Puk" [ngClass]="{'is-invalid':submitted && formControls.puk.errors}" pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.puk.errors ">
             <label *ngIf="formControls.puk.errors.required">This field is required </label> 
             <label *ngIf="formControls.puk.errors.pattern">This field is required numbers only</label> 
@@ -54,7 +54,7 @@
 
         <div class="form-group col-md-6">
           <button class="btn btn-lg btn-block btn-secendery" type="Reset">
-            <i class="fa fa-repeat"> Reset</i>
+            <i class="fa fa-repeat"> Discard</i>
           </button>
 
         </div>

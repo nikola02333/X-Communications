@@ -146,10 +146,39 @@ namespace XCommunications.Business.Services
                 }
 
                 unitOfWork.RegistratedRepository.Remove(user);
-                unitOfWork.SimcardRepository.Remove(unitOfWork.SimcardRepository.Where(s => s.Imsi == user.Imsi));
-                unitOfWork.CustomerRepository.Remove(unitOfWork.CustomerRepository.Where(s => s.Id == user.CustomerId));
-                unitOfWork.WorkerRepository.Remove(unitOfWork.WorkerRepository.Where(s => s.Id == user.WorkerId));
-                unitOfWork.NumberRepository.Remove(unitOfWork.NumberRepository.Where(s => s.Id == user.NumberId));
+
+                Simcard sc = null;
+                sc = unitOfWork.SimcardRepository.Where(s => s.Imsi == user.Imsi);
+
+                if(sc != null)
+                {
+                    unitOfWork.SimcardRepository.Remove(sc);
+                }
+
+                Customer c = null;
+                c = unitOfWork.CustomerRepository.Where(s => s.Id == user.CustomerId);
+
+                if(c != null)
+                {
+                    unitOfWork.CustomerRepository.Remove(c);
+                }
+
+                Worker w = null;
+                w = unitOfWork.WorkerRepository.Where(s => s.Id == user.WorkerId);
+
+                if( w!=null)
+                {
+                    unitOfWork.WorkerRepository.Remove(w);
+                }
+
+                Number n = null;
+                n = unitOfWork.NumberRepository.Where(s => s.Id == user.NumberId);
+
+                if(n != null)
+                {
+                    unitOfWork.NumberRepository.Remove(n);
+                }
+                
                 unitOfWork.Commit();
                 log.Info("Deleted RegistratedUser object in Delete(int id) in RegistratedUsersService.cs");
                 return true;

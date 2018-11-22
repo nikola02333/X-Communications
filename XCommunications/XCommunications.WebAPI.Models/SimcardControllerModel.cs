@@ -11,11 +11,11 @@ namespace XCommunications.WebAPI.Models
         public int Iccid { get; set; }
 
         [Required]
-        [Range(100, 1000)]
+        [Range(1000, 10000)]
         public int Pin { get; set; }
 
         [Required]
-        [Range(100, 1000)]
+        [Range(1000, 10000)]
         public int Puk { get; set; }
 
         public SimcardControllerModel() { }

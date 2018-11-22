@@ -1,59 +1,60 @@
-
 <div class="container">
-        <div class="form1 col-md-6 offset-md-3">
-<form  [formGroup]="this.contractService.form"  #contractForm= "ngForm" (submit)="onSubmit(contractForm)">
-    <div class="form-group">
-      <div class="form-group col-md-12">
-        <input formControlName="id" class="form-control"   placeholder="contract ID" [ngClass]="{'is-invalid':submitted && formControls.id.errors}" pattern="[0-9]*">
-          <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors ">
-            <label *ngIf="formControls.id.errors.required">This field is required </label> 
-            <label *ngIf="formControls.id.errors.pattern">This field  requireds numbers only</label> 
-          </div>
-      </div>
-    </div>
-     
-      <div class="form-group">
-        <div class="form-group col-md-12">
-          <input formControlName="custumerId" class="form-control"   placeholder="custumer ID" [ngClass]="{'is-invalid':submitted && formControls.custumerId.errors}" pattern="[0-9]*" >
-            <div class="invalid-feedback" *ngIf="submitted && formControls.custumerId.errors ">
-                <label *ngIf="formControls.custumerId.errors.required">This field is required </label> 
-                <label *ngIf="formControls.custumerId.errors.pattern">This field  requireds numbers only</label> 
+    <div class="form1 col-md-6 offset-md-3">
+        <form [formGroup]="this.contractService.form" #contractForm="ngForm" (submit)="onSubmit(contractForm)">
+            <div class="form-group">
+                <div class="form-group col-md-12">
+                    <input formControlName="id" class="form-control" placeholder="Contract ID" [ngClass]="{'is-invalid':submitted && formControls.id.errors}"
+                        pattern="[0-9]*">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors ">
+                        <label *ngIf="formControls.id.errors.required">This field is required </label>
+                        <label *ngIf="formControls.id.errors.pattern">This field requireds numbers only</label>
+                    </div>
+                </div>
             </div>
-        </div>
-     
-    </div>
-    <div class="form-group">
-        <div class="form-group col-md-12">
-        <input  formControlName="workerId" class="form-control"   placeholder="worker ID" [ngClass]="{'is-invalid':submitted && formControls.workerId.errors}" pattern="[0-9]*" >
-        <div class="invalid-feedback" *ngIf="submitted && formControls.workerId.errors ">
-            <label *ngIf="formControls.workerId.errors.required">This field is required </label> 
-            <label *ngIf="formControls.workerId.errors.pattern">This field  requireds numbers only</label> 
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="form-group col-md-12">
-        <input  formControlName="tariff" class="form-control"     placeholder="Tariff" [ngClass]="{'is-invalid':submitted && formControls.tariff.errors}" >
-        <div class="invalid-feedback"*ngIf="submitted && formControls.tariff.errors ">
-            <label *ngIf="formControls.tariff.errors.required">This field is required </label> 
-        </div>
-    </div>
-    </div>
-      <div class="form-row">
-          <div class="form-group col-md-6">
-           <button  type="submit" class="btn btn-lg btn-block btn-info">
-              <i class="fa fa-floppy-o"> Submit</i>
-            </button>
-          </div>
-    
-          <div class="form-group col-md-6">
-              <button class="btn btn-lg btn-block btn-secendery" type="Reset"> 
-                  <i class="fa fa-repeat" > Reset</i>
-              </button>
+
+            <div class="form-group">
+                <div class="form-group col-md-12">
+                    <input formControlName="customerId" class="form-control" placeholder="Customer ID" [ngClass]="{'is-invalid':submitted && formControls.customerId.errors}"
+                        pattern="[0-9]*">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.customerId.errors ">
+                        <label *ngIf="formControls.customerId.errors.required">This field is required </label>
+                        <label *ngIf="formControls.customerId.errors.pattern">This field requireds numbers only</label>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        </div>
-  </form>
+            <div class="form-group">
+                <div class="form-group col-md-12">
+                    <input formControlName="workerId" class="form-control" placeholder="Worker ID" [ngClass]="{'is-invalid':submitted && formControls.workerId.errors}"
+                        pattern="[0-9]*">
+                    <div class="invalid-feedback" *ngIf="submitted && formControls.workerId.errors ">
+                        <label *ngIf="formControls.workerId.errors.required">This field is required </label>
+                        <label *ngIf="formControls.workerId.errors.pattern">This field requireds numbers only</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-group col-md-12">
+                        <input formControlName="tariff" class="form-control" placeholder="Tarif" [ngClass]="{'is-invalid':submitted && formControls.tariff.errors}">
+                        <div class="invalid-feedback" *ngIf="submitted && formControls.tariff.errors ">
+                            <label *ngIf="formControls.tariff.errors.required">This field is required </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <button type="submit" class="btn btn-lg btn-block btn-info">
+                            <i class="fa fa-floppy-o"> Submit</i>
+                        </button>
+                    </div>
 
-</div>
-</div>
+                    <div class="form-group col-md-6">
+                        <button class="btn btn-lg btn-block btn-secendery" type="Reset">
+                            <i class="fa fa-repeat">Discard</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
+    </div>
+</div>

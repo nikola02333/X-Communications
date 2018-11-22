@@ -27,7 +27,7 @@ export class AddSimcardComponent implements OnInit {
        this.simcard = new SimCard(this.simCardService.form.value.imsi,
                                     this.simCardService.form.value.iccid,
                                     this.simCardService.form.value.pin,
-                                    this.simCardService.form.value.puk
+                                    this.simCardService.form.value.puk, false
                                      );      
        this.simCardService.post(this.simcard).subscribe(
         response => {
@@ -38,10 +38,6 @@ export class AddSimcardComponent implements OnInit {
         },
         () => {
           this.toastService.success('Inserted successfully','X-Communications');}); 
-          //this.submitted=false;
-         // this.simCardService.form.reset();
      }
-   
-
    }
 }

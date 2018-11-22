@@ -1,7 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { ContractService } from '../../Services/contractService/contract.service';
-import { Contract } from '../../Models/contract';
+import { Contract } from '../../Models/Contract';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -24,9 +24,7 @@ export class AddContractComponent implements OnInit {
     this.submitted = true;
     if(this.contractService.form.valid)
     {
-      this.Contract = new Contract(form.value.id,form.value.custumerId,form.value.workerId,form.value.tariff);
-      debugger
-
+      this.Contract = new Contract(form.value.id,form.value.customerId,form.value.workerId,form.value.tariff);
       
       this.contractService.postContract(this.Contract).subscribe(
         response => {

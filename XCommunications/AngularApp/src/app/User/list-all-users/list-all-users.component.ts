@@ -14,9 +14,6 @@ export class ListAllUsersComponent implements OnInit {
    selectedUser : Customer;
    users : Customer[] = [];
 
-  
-
-
    onSelect(user: Customer): void {
     this.selectedUser = user;  
   }
@@ -30,7 +27,6 @@ export class ListAllUsersComponent implements OnInit {
     this.service.deleteUser(this.selectedUser.id).subscribe(
       
         x=>this.getAllUsers());
-        debugger
         if(this.users.length==0)
         {
           this.toastService.info('There are no users');

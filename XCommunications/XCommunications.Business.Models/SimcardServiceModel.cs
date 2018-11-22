@@ -11,11 +11,11 @@ namespace XCommunications.Business.Models
         public int Iccid { get; set; }
 
         [Required]
-        [MinLength(4)]
+        [Range(1000,10000)]
         public int Pin { get; set; }
 
         [Required]
-        [MinLength(4)]
+        [Range(1000, 10000)]
         public int Puk { get; set; }
 
         public bool Status { get; set; }

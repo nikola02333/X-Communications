@@ -4,7 +4,7 @@
       <form [formGroup]="this.userService.form" #userForm= "ngForm" (submit)="onSubmit(userForm)" #forma   > 
           <div class="form-group">
               <div class="col-md-12">
-            <input formControlName="fullName"  placeholder="FirstName"class="form-control" [ngClass]="{'is-invalid':submitted && formControls.fullName.errors}">
+            <input formControlName="fullName"  placeholder="First name"class="form-control" [ngClass]="{'is-invalid':submitted && formControls.fullName.errors}">
             <div class="invalid-feedback" *ngIf="submitted && formControls.fullName.errors">
                 <label *ngIf="formControls.fullName.errors.required">This field is required </label> 
                 <label *ngIf="formControls.fullName.errors.pattern">This field is required letters</label> 
@@ -13,11 +13,9 @@
           </div>
           </div>
 
-
-          
           <div class="col-md-12">
           <div class="form-group">
-            <input formControlName="lastname" class="form-control" placeholder="LastName" [ngClass]="{'is-invalid':submitted && formControls.lastname.errors}">
+            <input formControlName="lastname" class="form-control" placeholder="Last name" [ngClass]="{'is-invalid':submitted && formControls.lastname.errors}">
             <div class="invalid-feedback" *ngIf="submitted && formControls.lastname.errors">
                 <label *ngIf="formControls.lastname.errors.required">This field is required </label> 
                 <label *ngIf="formControls.lastname.errors.pattern">This field is required letters</label> 
@@ -44,7 +42,7 @@
           </div>
           <div class="form-group col-md-6">
             <button class="btn btn-lg btn-block btn-secendery" type="reset"> 
-                <i class="fa fa-repeat" > Reset</i>
+                <i class="fa fa-repeat" > Discard</i>
             </button>
           </div>
           </div>

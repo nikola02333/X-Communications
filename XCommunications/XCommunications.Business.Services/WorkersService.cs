@@ -146,8 +146,23 @@ namespace XCommunications.Business.Services
                 }
 
                 unitOfWork.WorkerRepository.Remove(worker);
-                unitOfWork.RegistratedRepository.Remove(unitOfWork.RegistratedRepository.Where(s => s.WorkerId == id));
-                unitOfWork.ContractRepository.Remove(unitOfWork.ContractRepository.Where(s => s.WorkerId == id));
+
+                RegistratedUser u = null;
+                u = unitOfWork.RegistratedRepository.Where(s => s.WorkerId == id);
+
+                if(u != null)
+                {
+                    unitOfWork.RegistratedRepository.Remove(u);
+                }
+
+                Contract c = null;
+                c = unitOfWork.ContractRepository.Where(s => s.WorkerId == id);
+
+                if( c!= null)
+                {
+                    unitOfWork.ContractRepository.Remove(c);
+                }
+                
                 unitOfWork.Commit();
                 log.Info("Deleted Worker object in Delete(int id) in WorkersService.cs");
 

@@ -4,11 +4,11 @@
         <div id="page" class="col-md-6">
             <table class="table table-striped">
         <tr>
-          <th>id</th>
-          <th>status</th>
-          <th>cc</th>
-          <th>ndc</th>
-          <th>sn</th>
+          <th>Id</th>
+          <th>Status</th>
+          <th>Cc</th>
+          <th>Ndc</th>
+          <th>Sn</th>
         </tr>
         <tr *ngFor="let number of listNumbers" [class.selected]="number === selectedNumber" style="cursor: pointer"  data-toggle="modal" data-target="#modalLoginForm"  data-backdrop="static"
           (click)="onSelect(number)">
@@ -28,19 +28,19 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Selected number</h4>
+                <h4 class="modal-title w-100 font-weight-bold">Number's details</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body mx-3">
                 <div class="md-form mb-5">
-                    <label data-error="wrong" data-success="right" for="defaultForm-id">Number id</label>
+                    <label data-error="wrong" data-success="right" for="defaultForm-id">Id</label>
                   <input type="text" id="defaultForm-id" class="form-control validate" [value]="selectedNumber.id" (input)="selectedNumber.id=$event.target.value"  readonly>
                 </div>
         
                 <div class="md-form mb-4">
-                    <label data-error="wrong" data-success="right" for="defaultForm-status">status</label>
+                    <label data-error="wrong" data-success="right" for="defaultForm-status">Status</label>
                   <input type="text" id="defaultForm-status" class="form-control validate" [value]="selectedNumber.status" (input)="selectedNumber.status=$event.target.value">
                 </div>
         
@@ -50,7 +50,7 @@
                   
                   </div>
                   <div class="md-form mb-4">
-                      <label data-error="wrong" data-success="right" for="defaultForm-ndc">ndc</label>
+                      <label data-error="wrong" data-success="right" for="defaultForm-ndc">Ndc</label>
                       <input type="text" id="defaultForm-ndc" class="form-control validate" [value]="selectedNumber.ndc" (input)="selectedNumber.ndc=$event.target.value">
                     
                     </div>

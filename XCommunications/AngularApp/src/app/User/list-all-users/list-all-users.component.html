@@ -4,9 +4,9 @@
     <div id="page" class="col-md-6">
       <table class="table table-striped">
         <tr>
-          <th>id</th>
-          <th>name</th>
-          <th>lastname</th>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Last name</th>
         </tr>
         <tr *ngFor="let user of users" [class.selected]="user === selectedUser" style="cursor: pointer" (click)="onSelect(user)" data-toggle="modal" data-target="#modalLoginForm"  data-backdrop="static" >
           <td> {{user.id}} </td>
@@ -23,14 +23,14 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Selected user</h4>
+        <h4 class="modal-title w-100 font-weight-bold">User's details</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
-            <label data-error="wrong" data-success="right" for="defaultForm-id">User id</label>
+            <label data-error="wrong" data-success="right" for="defaultForm-id">Id</label>
           <input type="text" id="defaultForm-id" class="form-control validate" [value]="selectedUser.id" (input)="selectedUser.id=$event.target.value"  readonly>
         </div>
 

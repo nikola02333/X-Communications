@@ -8,11 +8,11 @@ namespace XCommunications.WebAPI.Models
         public int Id { get; set; }
 
         [Required]
-        [Range(100, 1000)]
+        [Range(100, 10000)]
         public int Cc { get; set; }
 
         [Required]
-        [Range(100, 1000)]
+        [Range(100, 10000)]
         public int Ndc { get; set; }
 
         [Required]

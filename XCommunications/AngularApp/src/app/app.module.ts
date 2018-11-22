@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { AddUserComponent } from '../app/User/add-user/add-user.component';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -22,7 +21,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 const appRoutes: Routes =[
-              {path : '' ,component: HomeComponent},
               {path : 'User' ,component: AddUserComponent},
               {path : 'UserList' ,component: ListAllUsersComponent},
               {path : 'SimCardList' ,component: ListSimCardsComponent},
@@ -37,7 +35,6 @@ const appRoutes: Routes =[
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     AddUserComponent,
      NgBoostrapDropdownDirective,
      ListAllUsersComponent,

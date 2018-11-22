@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContractService } from '../../Services/contractService/contract.service';
-import { Contract } from '../../Models/contract';
+import { Contract } from '../../Models/Contract';
 import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-list-all-contract',
