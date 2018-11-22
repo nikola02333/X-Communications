@@ -20,9 +20,6 @@ import { AddContractComponent } from '../app/Contract/add-contract/add-contract.
 import { ListAllContractComponent } from '../app/Contract/list-all-contract/list-all-contract.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-import { RegistratedUserService } from './Services/registratedUserService/registrated-user.service';
-import { AddRegistratedUserComponent } from './add-registrated-user/add-registrated-user.component';
-import { ListRegistratedUsersComponent } from './list-registrated-users/list-registrated-users.component';
 
 const appRoutes: Routes =[
               {path : '' ,component: HomeComponent},
@@ -33,9 +30,8 @@ const appRoutes: Routes =[
               {path : 'SimCard',component : AddSimcardComponent},
               { path: 'AddNumber', component: AddNumberComponent},
               { path: 'AddContract', component: AddContractComponent},
-              {path : 'ContractList', component: ListAllContractComponent},
-              {path : 'AddRegistratedUser', component: AddRegistratedUserComponent},
-              {path: 'RegistratedUserList', component: ListRegistratedUsersComponent}
+              {path : 'ContractList', component: ListAllContractComponent}
+              
 ];
 
 @NgModule({
@@ -49,10 +45,10 @@ const appRoutes: Routes =[
      ListNumbersComponent,
      AddSimcardComponent,
      AddNumberComponent,
+     
      AddContractComponent,
-     ListAllContractComponent,
-     AddRegistratedUserComponent,
-     ListRegistratedUsersComponent
+     
+     ListAllContractComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +61,7 @@ const appRoutes: Routes =[
     FormsModule,
         ReactiveFormsModule,
   ],
-  providers: [UserServiceService, SimCardServiceService,ListNumbersService,RegistratedUserService],
+  providers: [UserServiceService, SimCardServiceService,ListNumbersService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

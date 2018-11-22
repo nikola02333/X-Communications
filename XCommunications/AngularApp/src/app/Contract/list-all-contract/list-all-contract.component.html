@@ -9,7 +9,7 @@
           <th>Worker id</th>
           <th>Tarif</th>
         </tr>
-        <tr *ngFor="let contract of listContract" [class.selected]="contract === selectedContract" style="cursor: pointer"
+        <tr *ngFor="let contract of listContract" [class.selected]="contract === selectedContract" style="cursor: pointer"  data-toggle="modal" data-target="#modalLoginForm"  data-backdrop="static"
           (click)="onSelect(contract)">
           <td> {{contract.id}} </td>
           <td> {{contract.customerId}} </td>
@@ -19,39 +19,51 @@
       </table>
     </div>
 
-
-
-    <div id="page" class="col-md-6">
-      <div *ngIf="selectedContract">
-        <div class="container">
-          <label>Selected contract:</label>
-          <div id="page" class="col-md-6">
-            <form #myForm="ngForm">
-              <table class="table table-striped">
-                <tr>
-                  <th>id</th>
-                  <th>Customer id</th>
-                  <th>Worker id</th>
-                  <th>Tarif</th>
-                </tr>
-                <tr>
-                  <td> <input [value]="selectedContract.id" (input)="selectedContract.id=$event.target.value">
-                  </td>
-                  <td> <input [value]="selectedContract.customerId" (input)="selectedContract.customerId=$event.target.value"></td>
-                  <td> <input [value]="selectedContract.tarif" (input)="selectedContract.tarif=$event.target.value"></td>
-                </tr>
-              </table>
-              <div class="row">
-                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
-                </div>
-                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+    <div *ngIf="selectedContract" >
+        <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Selected Contract</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-            </form>
+              <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <label data-error="wrong" data-success="right" for="defaultForm-id">Id</label>
+                  <input type="text" id="defaultForm-id" class="form-control validate"  [value]="selectedContract.id" (input)="selectedContract.id=$event.target.value" readonly >
+                </div>
+        
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="defaultForm-customerId">Customer id</label>
+                  <input type="text" id="defaultForm-customerId" class="form-control validate" [value]="selectedContract.customerId" (input)="selectedContract.customerId=$event.target.value" >
+                </div>
+        
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="defaultForm-workerId">Worker id</label>
+                    <input type="text" id="defaultForm-workerId" class="form-control validate" [value]="selectedContract.workerId" (input)="selectedContract.workerId=$event.target.value">
+                  
+                  </div>
+                  <div class="md-form mb-4">
+                      <label data-error="wrong" data-success="right" for="defaultForm-tarif">Tarif</label>
+                      <input type="text" id="defaultForm-tarif" class="form-control validate" [value]="selectedContract.tarif" (input)="selectedContract.tarif=$event.target.value">
+                    
+                    </div>
+                   
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button class="btn btn-info" (click)="onClickEdit()"  data-dismiss="modal">Edit</button>
+                <button class="btn btn-danger" (click)="onClickDelete()" data-dismiss="modal">Delete</button>
+              </div>
+            </div>
           </div>
-
-
-        </div>
-      </div>
+          </div>
     </div>
+
+
+
   </div>
 </div>
+  

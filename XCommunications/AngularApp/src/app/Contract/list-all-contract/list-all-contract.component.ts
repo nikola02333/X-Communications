@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContractService } from '../../Services/contractService/contract.service';
 import { Contract } from '../../Models/contract';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-list-all-contract',
   templateUrl: './list-all-contract.component.html',
@@ -9,7 +9,7 @@ import { Contract } from '../../Models/contract';
 })
 export class ListAllContractComponent implements OnInit {
 
-  constructor(private serviceContract: ContractService) { }
+  constructor(private serviceContract: ContractService, private toastService : ToastrService) { }
 
   selectedContract : Contract;
   ngOnInit() {
@@ -34,9 +34,15 @@ export class ListAllContractComponent implements OnInit {
 
       onClickDelete()
       {
-        debugger
         this.serviceContract.deleteContract(this.selectedContract.id).subscribe();
+
+      
         this.getListContract();
+        if(this.listContract.length==0)
+        {
+          this.toastService.info('There are no Contract left');
+        }
+        
       }
       onClickEdit()
       {

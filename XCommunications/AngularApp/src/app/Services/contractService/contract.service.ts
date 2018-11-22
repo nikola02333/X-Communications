@@ -4,10 +4,7 @@ import {HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 
 import { FormControl, FormGroup, Validators } from "@angular/forms"
-<<<<<<< HEAD
-=======
 import {RequestOptions, Request, RequestMethod} from '@angular/http';
->>>>>>> 5bde82f7006ea3fcf147ecf26f76b044175c87a1
 
 @Injectable({
   providedIn: 'root'

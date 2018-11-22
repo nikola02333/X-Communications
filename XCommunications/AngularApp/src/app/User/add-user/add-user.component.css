@@ -1,7 +1,10 @@
 
+.form1{
 
-
-.center_div{
-  margin: 0 auto;
-  width:80% /* value of your choice which suits your alignment */
+	margin-top: 30px;
+	padding  :15px;
+	border-radius : 5px;
+	box-shadow : 2px 2px 2px 2px #253063;
+	
 }
+

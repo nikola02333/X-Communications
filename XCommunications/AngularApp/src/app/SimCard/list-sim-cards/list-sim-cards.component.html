@@ -9,7 +9,7 @@
           <th>pin</th>
           <th>puk</th>
         </tr>
-        <tr *ngFor="let card of cards" [class.selected]="card === selectedCard" style="cursor: pointer" (click)="onSelect(card)">
+        <tr *ngFor="let card of cards" [class.selected]="card === selectedCard" style="cursor: pointer" (click)="onSelect(card)" data-toggle="modal" data-target="#modalLoginForm"  data-backdrop="static"> 
           <td> {{card.imsi}} </td>
           <td> {{card.iccid}} </td>
           <td> {{card.pin}}</td>
@@ -18,40 +18,51 @@
       </table>
     </div>
 
-
-
-    <div id="page" class="col-md-6">
-      <div *ngIf="selectedsimCard">
-        <div class="container">
-          <label>Selected simcard:</label>
-          <div id="page" class="col-md-6">
-            <form #myForm="ngForm">
-              <table class="table table-striped">
-                <tr>
-                  <th>imsi</th>
-                  <th>iccid</th>
-                  <th>pin</th>
-                  <th>puk</th>
-                </tr>
-                <tr>
-                  <td> <input [value]="selectedsimCard.imsi" (input)="selectedsimCard.imsi=$event.target.value">
-                  </td>
-                  <td> <input [value]="selectedsimCard.iccid" (input)="selectedsimCard.iccid=$event.target.value"></td>
-                  <td> <input [value]="selectedsimCard.pin" (input)="selectedsimCard.pin=$event.target.value"></td>
-                  <td> <input [value]="selectedsimCard.puk" (input)="selectedsimCard.puk=$event.target.value"></td>
-                </tr>
-              </table>
-              <div class="row">
-                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
-                </div>
-                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+    <div *ngIf="selectedCard" >
+        <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Selected sim card</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-            </form>
+              <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <label data-error="wrong" data-success="right" for="defaultForm-imsi">Imsi</label>
+                  <input type="text" id="defaultForm-imsi" class="form-control validate"  [value]="selectedCard.imsi" (input)="selectedCard.imsi=$event.target.value" readonly >
+                </div>
+        
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="defaultForm-iccid">Iccid</label>
+                  <input type="text" id="defaultForm-iccid" class="form-control validate" [value]="selectedCard.iccid" (input)="selectedCard.iccid=$event.target.value">
+                </div>
+        
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="defaultForm-pin">Pin</label>
+                    <input type="text" id="defaultForm-pin" class="form-control validate" [value]="selectedCard.pin" (input)="selectedCard.pin=$event.target.value">
+                  
+                  </div>
+                  <div class="md-form mb-4">
+                      <label data-error="wrong" data-success="right" for="defaultForm-puk">Puk</label>
+                      <input type="text" id="defaultForm-puk" class="form-control validate" [value]="selectedCard.puk" (input)="selectedCard.puk=$event.target.value">
+                    
+                    </div>
+                   
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button class="btn btn-info" (click)="onClickEdit()"  data-dismiss="modal">Edit</button>
+                <button class="btn btn-danger" (click)="onClickDelete()" data-dismiss="modal">Delete</button>
+              </div>
+            </div>
           </div>
 
 
-        </div>
-      </div>
-    </div>
+
+
+
+
   </div>
 </div>

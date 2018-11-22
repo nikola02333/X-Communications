@@ -15,8 +15,8 @@ export class UserServiceService {
 
     readonly baseUrl='https://localhost:44350/api/Customers';
     form = new FormGroup({
-      fullName: new FormControl('', Validators.required),
-      lastname: new FormControl('', Validators.required),
+      fullName: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]*')]),
+      lastname: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]*')]),
       id: new FormControl('', Validators.required),
     });
 

@@ -1,69 +1,8 @@
-<!--
-<div class="container" id="page">
-    <div class="row">
-      <div id="page" class="col-md-6">
-        <table class="table table-striped">
-          <tr>
-            <th>id</th>
-            <th>status</th>
-            <th>cc</th>
-            <th>ndc</th>
-            <th>sn</th>
-          </tr>
-          <tr *ngFor="let number of listNumbers" [class.selected]="number === selectedNumber" style="cursor: pointer" (click)="onSelect(number)">
-            <td> {{number.id}} </td>
-            <td> {{number.status}} </td>
-            <td> {{number.cc}}</td>
-            <td> {{number.ndc}}</td>
-            <td> {{number.sn}}</td>
-          </tr>
-        </table>
-      </div>
-  
-      <div *ngIf="selectedNumber">
-        <div class="container">
-          <h2>Selected Number:</h2>
-          <div class="col-md-12">
-            <div class="row">
-             
-              <form  #myForm="ngForm">
-                  <label>Id:</label>
-                  <br>
-                <input [value]="selectedNumber.id" readonly="readonly">
-                <br>
-                  <label>Status:</label>
-                  <br>
-                <input [value]="selectedNumber.status" (input)="selectedNumber.status=$event.target.value">
-               
-                <br>
-                <label>Cc:</label>
-                <br>
-                <input [value]="selectedNumber.cc" (input)="selectedNumber.cc=$event.target.value">
-                <br>
-                <label>Ndc:</label>
-                <br>
-                <input [value]="selectedNumber.ndc" (input)="selectedNumber.ndc=$event.target.value">
-                <br>
-                <label>Sn:</label>
-                <br>
-                <input [value]="selectedNumber.sn" (input)="selectedNumber.sn=$event.target.value">
-                <div class="row">
-                  <div><button id="myInput" class="btn btn-success" (click)="onClickEdit(myForm)">Edit</button>
-                  </div>
-                  <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
 <div class="container-fluid h-100 ">
-  <div class="row justify-content-center align-items-center">
+    <div class="row justify-content-center align-items-center">
 
-    <div id="page" class="col-md-6">
-      <table class="table table-striped">
+        <div id="page" class="col-md-6">
+            <table class="table table-striped">
         <tr>
           <th>id</th>
           <th>status</th>
@@ -71,7 +10,7 @@
           <th>ndc</th>
           <th>sn</th>
         </tr>
-        <tr *ngFor="let number of listNumbers" [class.selected]="number === selectedNumber" style="cursor: pointer"
+        <tr *ngFor="let number of listNumbers" [class.selected]="number === selectedNumber" style="cursor: pointer"  data-toggle="modal" data-target="#modalLoginForm"  data-backdrop="static"
           (click)="onSelect(number)">
           <td> {{number.id}} </td>
           <td> {{number.status}} </td>
@@ -83,41 +22,57 @@
     </div>
 
 
-
-    <div id="page" class="col-md-6">
-      <div *ngIf="selectedNumber">
-        <div class="container">
-          <label>Selected number:</label>
-          <div id="page" class="col-md-6">
-            <form #myForm="ngForm">
-              <table class="table table-striped">
-                <tr>
-                  <th>id</th>
-                  <th>status</th>
-                  <th>cc</th>
-                  <th>ndc</th>
-                  <th>sn</th>
-                </tr>
-                <tr>
-                  <td> <input [value]="selectedNumber.id" (input)="selectedNumber.imsi=$event.target.value">
-                  </td>
-                  <td> <input [value]="selectedNumber.status" (input)="selectedNumber.status=$event.target.value"></td>
-                  <td> <input [value]="selectedNumber.cc" (input)="selectedNumber.cc=$event.target.value"></td>
-                  <td> <input [value]="selectedNumber.ndc" (input)="selectedNumber.ndc=$event.target.value"></td>
-                  <td> <input [value]="selectedNumber.sn" (input)="selectedNumber.sn=$event.target.value"></td>
-                </tr>
-              </table>
-              <div class="row">
-                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
-                </div>
-                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+    <div *ngIf="selectedNumber" >
+        <div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Selected number</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
               </div>
-            </form>
+              <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <label data-error="wrong" data-success="right" for="defaultForm-id">Number id</label>
+                  <input type="text" id="defaultForm-id" class="form-control validate" [value]="selectedNumber.id" (input)="selectedNumber.id=$event.target.value"  readonly>
+                </div>
+        
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="defaultForm-status">status</label>
+                  <input type="text" id="defaultForm-status" class="form-control validate" [value]="selectedNumber.status" (input)="selectedNumber.status=$event.target.value">
+                </div>
+        
+                <div class="md-form mb-4">
+                    <label data-error="wrong" data-success="right" for="defaultForm-cc">Cc</label>
+                    <input type="text" id="defaultForm-cc" class="form-control validate" [value]="selectedNumber.cc" (input)="selectedNumber.cc=$event.target.value">
+                  
+                  </div>
+                  <div class="md-form mb-4">
+                      <label data-error="wrong" data-success="right" for="defaultForm-ndc">ndc</label>
+                      <input type="text" id="defaultForm-ndc" class="form-control validate" [value]="selectedNumber.ndc" (input)="selectedNumber.ndc=$event.target.value">
+                    
+                    </div>
+                    <div class="md-form mb-4">
+                        <label data-error="wrong" data-success="right" for="defaultForm-sn">Sn</label>
+                        <input type="text" id="defaultForm-sn" class="form-control validate" [value]="selectedNumber.sn" (input)="selectedNumber.sn=$event.target.value">
+                      
+                      </div>
+          
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button class="btn btn-info" (click)="onClickEdit()"  data-dismiss="modal">Edit</button>
+                <button class="btn btn-danger" (click)="onClickDelete()" data-dismiss="modal">Delete</button>
+              </div>
+            </div>
           </div>
+
+
+
+    
 
 
         </div>
       </div>
-    </div>
-  </div>
-</div>
+   

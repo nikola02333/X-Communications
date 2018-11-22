@@ -1,7 +1,5 @@
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators, NgForm} from '@angular/forms';
-import { formArrayNameProvider } from '@angular/forms/src/directives/reactive_directives/form_group_name';
 import {Customer} from '../../Models/Customer';
 import { UserServiceService } from '../../../app/Services/userService/user-service.service';
 
@@ -15,7 +13,6 @@ export class AddUserComponent implements OnInit {
 
   custumer : Customer;
   submitted: boolean;
-  showSuccessMessage: boolean;
   formControls = this.userService.form.controls;
   
 
@@ -34,10 +31,12 @@ export class AddUserComponent implements OnInit {
            console.log(response);
       },
       err => {
+          this.toastService.error("Something went wrong");
+
            console.log(err);
       },
       () => {
-        this.toastService.success('Inserted successfully','X-Communications');}); 
+        this.toastService.success('User Inserted successfully','X-Communications'); }); 
          this.submitted=false;
       this.userService.form.reset();
       }

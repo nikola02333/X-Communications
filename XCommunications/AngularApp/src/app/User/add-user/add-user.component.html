@@ -1,19 +1,27 @@
-<div class="container-fluid h-100 ">
-  <div class="row justify-content-center align-items-center">
+<div class="container">
+    <div class="form1 col-md-6 offset-md-3">
           
       <form [formGroup]="this.userService.form" #userForm= "ngForm" (submit)="onSubmit(userForm)" #forma   > 
           <div class="form-group">
               <div class="col-md-12">
             <input formControlName="fullName"  placeholder="FirstName"class="form-control" [ngClass]="{'is-invalid':submitted && formControls.fullName.errors}">
             <div class="invalid-feedback" *ngIf="submitted && formControls.fullName.errors">
-              This field is required.</div>
+                <label *ngIf="formControls.fullName.errors.required">This field is required </label> 
+                <label *ngIf="formControls.fullName.errors.pattern">This field is required letters</label> 
+            
+            </div>
           </div>
           </div>
+
+
+          
           <div class="col-md-12">
           <div class="form-group">
             <input formControlName="lastname" class="form-control" placeholder="LastName" [ngClass]="{'is-invalid':submitted && formControls.lastname.errors}">
             <div class="invalid-feedback" *ngIf="submitted && formControls.lastname.errors">
-              This field is required.</div>
+                <label *ngIf="formControls.lastname.errors.required">This field is required </label> 
+                <label *ngIf="formControls.lastname.errors.pattern">This field is required letters</label> 
+            </div>
           </div>
           </div>
           <div class="col-md-12">
