@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using XCommunications.ModelsController;
-using XCommunications.Patterns.UnitOfWork;
-using System.Web.Http;
-using XCommunications.Context;
-using XCommunications.Services;
 using AutoMapper;
-using XCommunications.ModelsService;
-using XCommunications.Interfaces;
+using log4net;
+using XCommunications.Business.Interfaces;
+using XCommunications.Business.Models;
+using XCommunications.WebAPI.Models;
+using System;
 
 namespace XCommunications.Controllers
 {
@@ -21,107 +15,147 @@ namespace XCommunications.Controllers
     public class WorkersController : ControllerBase
     {
         private IMapper mapper;
-        private IWorkersService service;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IService<WorkerServiceModel> service;
+        private ILog log;
 
-        public WorkersController(IWorkersService service, IMapper mapper)
+        public WorkersController(IService<WorkerServiceModel> service, IMapper mapper, ILog log)
         {
             this.service = service;
             this.mapper = mapper;
+            this.log = log;
         }
 
         // GET: api/Workers
         [HttpGet]
         public IEnumerable<WorkerControllerModel> GetWorker()
         {
-            log.Info("Reached GetWorker() in WorkersController.cs");
-
-            return service.GetAll().Select(x => mapper.Map<WorkerControllerModel>(x));
+            try
+            {
+                log.Info("Reached GetWorker() in WorkersController.cs");
+                return service.GetAll().Select(x => mapper.Map<WorkerControllerModel>(x));
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GetWorker() in WorkersController.cs",e));
+                return null;
+            }
         }
 
         // GET: api/Workers/5
         [HttpGet("{id}")]
         public IActionResult GetWorker(int id)
         {
-            log.Info("Reached GetWorker(int id) in WorkersController.cs");
-
-            WorkerControllerModel worker = mapper.Map<WorkerControllerModel>(service.Get(id));
-
-            if (worker == null)
+            try
             {
-                log.Error("Got null object in GetWorker(int id) in WorkersController.cs");
+                log.Info("Reached GetWorker(int id) in WorkersController.cs");
+
+                WorkerControllerModel worker = mapper.Map<WorkerControllerModel>(service.Get(id));
+
+                if (worker == null)
+                {
+                    log.Error("Got null object in GetWorker(int id) in WorkersController.cs");
+                    return NotFound();
+                }
+
+                log.Info("Returned Worker object from GetWorker(int id) in WorkersController.cs");
+
+                return Ok(worker);
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GetWorker(int id) in WorkersController.cs",e));
                 return NotFound();
             }
-
-            log.Info("Returned Worker object from GetWorker(int id) in WorkersController.cs");
-
-            return Ok(worker);
         }
 
         // PUT: api/Workers/5
         [HttpPut("{id}")]
         public IActionResult PutWorker(int id, WorkerControllerModel worker)
         {
-            log.Info("Reached PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-
-            if (!ModelState.IsValid)
+            try
             {
-                log.Error("A ModelState isn't valid error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-                return BadRequest(ModelState);
-            }
+                log.Info("Reached PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
 
-            if (id != worker.Id)
+                if (!ModelState.IsValid)
+                {
+                    log.Error("A ModelState isn't valid error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
+                    return BadRequest(ModelState);
+                }
+
+                if (id != worker.Id)
+                {
+                    log.Error("Worker object isn't matched with given id! Error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
+                    return BadRequest();
+                }
+
+                bool exists = service.Update(mapper.Map<WorkerServiceModel>(worker));
+
+                if (exists)
+                {
+                    log.Info("Modified Worker object in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
+                    return NoContent();
+                }
+
+                log.Error("Worker object with given id doesn't exist! Error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
+
+                return NotFound();
+            }
+            catch (Exception e)
             {
-                log.Error("Worker object isn't matched with given id! Error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-                return BadRequest();
+                log.Error(string.Format("An exception {0} occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs",e));
+                return NotFound();
             }
-
-            bool exists = mapper.Map<bool>(service.Put(mapper.Map<WorkerServiceModel>(worker)));
-
-            if (exists)
-            {
-                log.Info("Modified Worker object in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-                return NoContent();
-            }
-
-            log.Error("Worker object with given id doesn't exist! Error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-
-            return NotFound();
         }
 
         // POST: api/Workers
         [HttpPost]
         public IActionResult PostWorker([FromBody] WorkerControllerModel worker)       
         {
-            log.Info("Reached PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
-
-            if (!ModelState.IsValid)
+            try
             {
-                log.Error("A ModelState isn't valid error occured in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
-                return BadRequest(ModelState);
+                log.Info("Reached PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
+
+                if (!ModelState.IsValid)
+                {
+                    log.Error("A ModelState isn't valid error occured in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
+                    return BadRequest(ModelState);
+                }
+
+                service.Add(mapper.Map<WorkerServiceModel>(worker));
+                log.Info("Added new Worker object in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
+
+                return NoContent();
             }
-
-            service.Add(mapper.Map<WorkerServiceModel>(worker));
-            log.Info("Added new Worker object in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
-
-            return NoContent();
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs",e));
+                return NotFound();
+            }
         }
 
         // DELETE: api/Workers/5
         [HttpDelete("{id}")]
         public IActionResult DeleteWorker(int id)
         {
-            log.Info("Reached DeleteWorker(int id) in WorkersController.cs");
-
-            if (!service.Delete(id))
+            try
             {
-                log.Error("Got null object in DeleteWorker(int id) in WorkersController.cs");
-                return NotFound();
+                log.Info("Reached DeleteWorker(int id) in WorkersController.cs");
+
+                if (!service.Delete(id))
+                {
+                    log.Error("Got null object in DeleteWorker(int id) in WorkersController.cs");
+                    return NotFound();
+                }
+
+                log.Info("Deleted Worker object in DeleteWorker(int id) in WorkersController.cs");
+
+                return NoContent();
             }
-
-            log.Info("Deleted Worker object in DeleteWorker(int id) in WorkersController.cs");
-
-            return NoContent();
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GDeleteWorker(int id) in WorkersController.cs",e));
+                return null;
+            }
         }
     }
 }

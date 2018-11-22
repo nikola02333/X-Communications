@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using XCommunications.Context;
-using XCommunications.ModelsDB;
-using XCommunications.ModelsService;
-using XCommunications.ModelsController;
-using XCommunications.Patterns.Repository;
-using XCommunications.Patterns.UnitOfWork;
-using AutoMapper;
 using log4net;
-using XCommunications.Services;
-using XCommunications.Interfaces;
+using XCommunications.Business.Models;
+using XCommunications.WebAPI.Models;
+using XCommunications.Data.Interfaces;
+using XCommunications.Data.UnitOfWork;
+using XCommunications.Data.Context;
+using XCommunications.Business.Services;
+using XCommunications.Business.Interfaces;
+using XCommunications.Data.Models;
 
 namespace XCommunications
 {
@@ -58,6 +50,7 @@ namespace XCommunications
 
             var mapper = config.CreateMapper();
             services.AddSingleton(mapper);
+            services.AddSingleton(log);
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -67,13 +60,13 @@ namespace XCommunications
             });
 
             // Dependency Injections
-            services.AddScoped<IUnitOfWork, UnitOfWork>();      
-            services.AddTransient<IWorkersService, WorkersService>();
-            services.AddTransient<ISimcardsService, SimcardsService>();
-            services.AddTransient<IRegistratedUsersService, RegistratedUsersService>();
-            services.AddTransient<INumbersService, NumbersService>();
-            services.AddTransient<ICustomersService, CustomersService>();
-            services.AddTransient<IContractsService, ContractsService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IService<WorkerServiceModel>, WorkersService>();
+            services.AddTransient<IService<SimcardServiceModel>, SimcardsService>();
+            services.AddTransient<IService<RegistratedUserServiceModel>, RegistratedUsersService>();
+            services.AddTransient<IService<NumberServiceModel>, NumbersService>();
+            services.AddTransient<IService<CustomerServiceModel>, CustomersService>();
+            services.AddTransient<IService<ContractServiceModel>, ContractsService>();
 
             services.AddCors(options =>
             {

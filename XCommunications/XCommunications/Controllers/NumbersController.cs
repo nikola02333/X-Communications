@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using XCommunications.Context;
-using XCommunications.Interfaces;
-using XCommunications.ModelsController;
-using XCommunications.ModelsService;
-using XCommunications.Patterns.UnitOfWork;
-using XCommunications.Services;
+using XCommunications.Business.Interfaces;
+using XCommunications.Business.Models;
+using XCommunications.WebAPI.Models;
 
 namespace XCommunications.Controllers
 {
@@ -20,107 +15,147 @@ namespace XCommunications.Controllers
     public class NumbersController : ControllerBase
     {
         private IMapper mapper;
-        private INumbersService service;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private IService<NumberServiceModel> service;
+        private ILog log;
 
-        public NumbersController(INumbersService service, IMapper mapper)
+        public NumbersController(IService<NumberServiceModel> service, IMapper mapper, ILog log)
         {
             this.service = service;
             this.mapper = mapper;
+            this.log = log;
         }
 
         // GET: api/Numbers
         [HttpGet]
         public IEnumerable<NumberControllerModel> GetNumber()
         {
-            log.Info("Reached GetNumbers() in NumbersController.cs");
-
-            return service.GetAll().Select(x => mapper.Map<NumberControllerModel>(x));
+            try
+            {
+                log.Info("Reached GetNumbers() in NumbersController.cs");
+                return service.GetAll().Select(x => mapper.Map<NumberControllerModel>(x));
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GetNumbers() in NumbersController.cs", e));
+                return null;
+            }
         }
 
         // GET: api/Numbers/5
         [HttpGet("{id}")]
         public IActionResult GetNumber(int id)
         {
-            log.Info("Reached GetNumber(int id) in NumbersController.cs");
-
-            NumberControllerModel number = mapper.Map<NumberControllerModel>(service.Get(id));
-
-            if (number == null)
+            try
             {
-                log.Error("Got null object in GetNumber(int id) in NumbersController.cs");
+                log.Info("Reached GetNumber(int id) in NumbersController.cs");
+
+                NumberControllerModel number = mapper.Map<NumberControllerModel>(service.Get(id));
+
+                if (number == null)
+                {
+                    log.Error("Got null object in GetNumber(int id) in NumbersController.cs");
+                    return NotFound();
+                }
+
+                log.Info("Returned Number object from GetNumber(int id) in NumbersController.cs");
+
+                return Ok(number);
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in GetNumber(int id) in NumbersController.cs",e));
                 return NotFound();
             }
-
-            log.Info("Returned Number object from GetNumber(int id) in NumbersController.cs");
-
-            return Ok(number);
         }
 
         // PUT: api/Numbers/5
         [HttpPut("{id}")]
         public IActionResult PutNumber(int id, NumberControllerModel number)
         {
-            log.Info("Reached PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-
-            if (!ModelState.IsValid)
+            try
             {
-                log.Error("A ModelState isn't valid error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-                return BadRequest(ModelState);
-            }
+                log.Info("Reached PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
 
-            if (id != number.Id)
+                if (!ModelState.IsValid)
+                {
+                    log.Error("A ModelState isn't valid error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
+                    return BadRequest(ModelState);
+                }
+
+                if (id != number.Id)
+                {
+                    log.Error("Number object isn't matched with given id! Error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
+                    return BadRequest();
+                }
+
+                bool exists = service.Update(mapper.Map<NumberServiceModel>(number));
+
+                if (exists)
+                {
+                    log.Info("Modified Number object in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
+                    return NoContent();
+                }
+
+                log.Error("Number object with given id doesn't exist! Error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
+
+                return NotFound();
+            }
+            catch (Exception e)
             {
-                log.Error("Number object isn't matched with given id! Error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-                return BadRequest();
+                log.Error(string.Format("An exception {0} occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs",e));
+                return NotFound();
             }
-
-            bool exists = mapper.Map<bool>(service.Put(mapper.Map<NumberServiceModel>(number)));
-
-            if (exists)
-            {
-                log.Info("Modified Number object in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-                return NoContent();
-            }
-
-            log.Error("Number object with given id doesn't exist! Error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-
-            return NotFound();
         }
 
         // POST: api/Numbers
         [HttpPost]
         public IActionResult PostNumber([FromBody] NumberControllerModel number)
         {
-            log.Info("Reached PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
-
-            if (!ModelState.IsValid)
+            try
             {
-                log.Error("A ModelState isn't valid error occured in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
-                return BadRequest(ModelState);
+                log.Info("Reached PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
+
+                if (!ModelState.IsValid)
+                {
+                    log.Error("A ModelState isn't valid error occured in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
+                    return BadRequest(ModelState);
+                }
+
+                service.Add(mapper.Map<NumberServiceModel>(number));
+                log.Info("Added new Number object in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
+
+                return NoContent();
             }
-
-            service.Add(mapper.Map<NumberServiceModel>(number));
-            log.Info("Added new Number object in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
-
-            return NoContent(); 
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs", e));
+                return NotFound();
+            }
         }
 
         // DELETE: api/Numbers/5
         [HttpDelete("{id}")]
         public IActionResult DeleteNumber(int id)
         {
-            log.Info("Reached DeleteNumber(int id) in NumbersController.cs");
-
-            if (!service.Delete(id))
+            try
             {
-                log.Error("Got null object in DeleteNumber(int id) in NumbersController.cs");
+                log.Info("Reached DeleteNumber(int id) in NumbersController.cs");
+
+                if (!service.Delete(id))
+                {
+                    log.Error("Got null object in DeleteNumber(int id) in NumbersController.cs");
+                    return NotFound();
+                }
+
+                log.Info("Deleted Number object in DeleteNumber(int id) in NumbersController.cs");
+
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                log.Error(string.Format("An exception {0} occured in DeleteNumber(int id) in NumbersController.cs", e));
                 return NotFound();
             }
-
-            log.Info("Deleted Number object in DeleteNumber(int id) in NumbersController.cs");
-
-            return NoContent();
         }
     }
 }
