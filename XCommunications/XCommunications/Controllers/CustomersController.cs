@@ -93,7 +93,7 @@ namespace XCommunications.Controllers
                 if (exists)
                 {
                     log.Info("Modified Customer object in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
-                    return NoContent();
+                    return Ok(customer);
                 }
 
                 log.Error("Customer object with given id doesn't exist! Error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
@@ -124,7 +124,7 @@ namespace XCommunications.Controllers
                 service.Add(mapper.Map<CustomerServiceModel>(customer));
                 log.Info("Added new Customer object in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
 
-                return NoContent();
+                return Ok(customer);
             }
             catch (Exception e)
             {
@@ -149,7 +149,7 @@ namespace XCommunications.Controllers
 
                 log.Info("Deleted Customer object in DeleteCustomer(int id) in CustomersController.cs");
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {

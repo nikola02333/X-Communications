@@ -98,7 +98,7 @@ namespace XCommunications.Controllers
 
                 log.Error("Contract object with given id doesn't exist! Error occured in PutContract(int id, ContractControllerModel contract) in ContractsController.cs");
 
-                return NotFound();
+                return Ok();
             }
             catch (Exception e)
             {
@@ -124,7 +124,7 @@ namespace XCommunications.Controllers
                 service.Add(mapper.Map<ContractServiceModel>(contract));
                 log.Info("Added new Contract object in PostContract([FromBody] ContractControllerModel contract) in ContractsController.cs");
 
-                return NoContent();
+                return Ok(contract);
             }
             catch (Exception e)
             {
@@ -151,7 +151,7 @@ namespace XCommunications.Controllers
 
                 log.Info("Deleted Contract object in DeleteContract(int id) in ContractsController.cs");
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {

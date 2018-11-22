@@ -73,11 +73,11 @@ namespace XCommunications
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-                //options.AddPolicy("AllowSpecificOrigin", builder => builder.WithOrigins("http://localhost:4200/").AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection = @"Server=INTERNSHIP12\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
 
             log.Info("Reached ConfigureServices in Startup.cs");

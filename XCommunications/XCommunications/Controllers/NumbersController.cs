@@ -115,7 +115,7 @@ namespace XCommunications.Controllers
 
                 log.Error("Number object with given id doesn't exist! Error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
 
-                return NotFound();
+                return Ok(number);
             }
             catch (Exception e)
             {
@@ -141,7 +141,7 @@ namespace XCommunications.Controllers
                 service.Add(mapper.Map<NumberServiceModel>(number));
                 log.Info("Added new Number object in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
 
-                return NoContent();
+                return Ok(number);
             }
             catch (Exception e)
             {
@@ -166,7 +166,7 @@ namespace XCommunications.Controllers
 
                 log.Info("Deleted Number object in DeleteNumber(int id) in NumbersController.cs");
 
-                return NoContent();
+                return Ok();
             }
             catch (Exception e)
             {
