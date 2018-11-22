@@ -1,0 +1,54 @@
+<div class="container-fluid h-100 ">
+  <div class="row justify-content-center align-items-center">
+
+    <div id="page" class="col-md-6">
+      <table class="table table-striped">
+        <tr>
+          <th>id</th>
+          <th>name</th>
+          <th>lastname</th>
+        </tr>
+        <tr *ngFor="let user of users" [class.selected]="user === selectedUser" style="cursor: pointer" (click)="onSelect(user)">
+          <td> {{user.id}} </td>
+          <td> {{user.name}} </td>
+          <td> {{user.lastName}}</td>
+        </tr>
+      </table>
+    </div>
+
+
+
+    <div id="page" class="col-md-6">
+      <div *ngIf="selectedUser">
+        <div class="container">
+          <label>Selected user:</label>
+          <div id="page" class="col-md-6">
+            <form #myForm="ngForm">
+              <table class="table table-striped">
+                <tr>
+                  <th>id</th>
+                  <th>name</th>
+                  <th>lastname</th>
+
+                </tr>
+                <tr>
+                  <td> <input [value]="selectedUser.id" (input)="selectedUser.id=$event.target.value">
+                  </td>
+                  <td> <input [value]="selectedUser.name" (input)="selectedUser.name=$event.target.value"></td>
+                  <td> <input [value]="selectedUser.lastname" (input)="selectedUser.lastname=$event.target.value"></td>
+                </tr>
+              </table>
+              <div class="row">
+                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
+                </div>
+                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

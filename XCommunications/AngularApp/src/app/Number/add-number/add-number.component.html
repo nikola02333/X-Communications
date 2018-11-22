@@ -1,0 +1,55 @@
+<div class="container-fluid h-100 ">
+    <div class="row justify-content-center align-items-center">
+    <form [formGroup]="this.numberService.form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <div class="col-md-12">
+            <input formControlName="id" class="form-control" placeholder="Id" [ngClass]="{'is-invalid':submitted && formControls.id.errors}" pattern='[0-9]*'>
+            <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors">
+              <label *ngIf="formControls.id.errors.required">This field is required </label> 
+            <label *ngIf="formControls.id.errors.pattern">This field is required numbers only</label> 
+            </div>
+          </div>
+        </div>
+      <div class="form-group">
+          <div class="col-md-12">
+        <input formControlName="sn" class="form-control" placeholder="Sn" [ngClass]="{'is-invalid':submitted && formControls.sn.errors}" pattern="[0-9]*">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.sn.errors">
+          <label *ngIf="formControls.sn.errors.required">This field is required </label> 
+          <label *ngIf="formControls.sn.errors.pattern">This field is required numbers only</label> 
+        </div>
+      </div>
+      </div>
+      <div class="form-group">
+          <div class="col-md-12">
+        <input formControlName="ndc" class="form-control" placeholder="Ndc" [ngClass]="{'is-invalid':submitted && formControls.ndc.errors}"pattern="[0-9]*">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.ndc.errors">
+          <label *ngIf="formControls.ndc.errors.required">This field is required </label> 
+          <label *ngIf="formControls.ndc.errors.pattern">This field is required numbers only</label>  
+        </div>
+      </div>
+      </div>
+      <div class="form-group">
+          <div class="col-md-12">
+        <input formControlName="cc" class="form-control" placeholder="Cc" [ngClass]="{'is-invalid':submitted && formControls.cc.errors}" pattern="[0-9]*">
+        <div class="invalid-feedback" *ngIf="submitted && formControls.cc.errors">
+          <label *ngIf="formControls.cc.errors.required">This field is required </label> 
+          <label *ngIf="formControls.cc.errors.pattern">This field is required numbers only</label>  
+        </div>
+      </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+        <button  type="submit" class="btn btn-lg btn-block btn-info">
+         <i class="fa fa-floppy-o"> Submit</i>
+       </button>
+       </div>
+       <div class="form-group col-md-6">
+         <button class="btn btn-lg btn-block btn-secendery" type="reset"> 
+             <i class="fa fa-repeat" > Reset</i>
+         </button>
+       </div>
+       </div>
+    </form>
+  </div>
+ 
+</div>

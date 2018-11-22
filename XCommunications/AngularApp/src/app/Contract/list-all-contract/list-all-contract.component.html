@@ -1,0 +1,57 @@
+<div class="container-fluid h-100 ">
+  <div class="row justify-content-center align-items-center">
+
+    <div id="page" class="col-md-6">
+      <table class="table table-striped">
+        <tr>
+          <th>id</th>
+          <th>Customer id</th>
+          <th>Worker id</th>
+          <th>Tarif</th>
+        </tr>
+        <tr *ngFor="let contract of listContract" [class.selected]="contract === selectedContract" style="cursor: pointer"
+          (click)="onSelect(contract)">
+          <td> {{contract.id}} </td>
+          <td> {{contract.customerId}} </td>
+          <td> {{contract.workerId}}</td>
+          <td> {{contract.tarif}}</td>
+        </tr>
+      </table>
+    </div>
+
+
+
+    <div id="page" class="col-md-6">
+      <div *ngIf="selectedContract">
+        <div class="container">
+          <label>Selected contract:</label>
+          <div id="page" class="col-md-6">
+            <form #myForm="ngForm">
+              <table class="table table-striped">
+                <tr>
+                  <th>id</th>
+                  <th>Customer id</th>
+                  <th>Worker id</th>
+                  <th>Tarif</th>
+                </tr>
+                <tr>
+                  <td> <input [value]="selectedContract.id" (input)="selectedContract.id=$event.target.value">
+                  </td>
+                  <td> <input [value]="selectedContract.customerId" (input)="selectedContract.customerId=$event.target.value"></td>
+                  <td> <input [value]="selectedContract.tarif" (input)="selectedContract.tarif=$event.target.value"></td>
+                </tr>
+              </table>
+              <div class="row">
+                <div><button class="btn btn-success" (click)="onClickEdit()">Edit</button>
+                </div>
+                <button class="btn btn-danger" (click)="onClickDelete()">Delete</button>
+              </div>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
