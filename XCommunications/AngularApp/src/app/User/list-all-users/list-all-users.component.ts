@@ -24,7 +24,6 @@ export class ListAllUsersComponent implements OnInit {
 
   onClickDelete() {
     this.service.deleteUser(this.selectedUser.id).subscribe(
-
       x => this.getAllUsers());
     if (this.users.length == 0) {
       this.toastService.info('There are no users');
@@ -34,7 +33,6 @@ export class ListAllUsersComponent implements OnInit {
 
   getAllUsers() {
     this.service.getAll().subscribe((data: Array<Customer>) => {
-
       this.users = data;
       console.log(data);
     }

@@ -37,9 +37,5 @@ export class ListRegistratedUsersComponent implements OnInit {
     }
     );
   }
-
-  onClickEdit() {
-    this.service.updateUser(this.selectedUser = this.selectedUser).subscribe(x => this.getAllUsers());
-  }
 }
 

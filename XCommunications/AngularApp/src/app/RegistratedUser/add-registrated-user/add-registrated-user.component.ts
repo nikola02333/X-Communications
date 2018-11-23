@@ -48,7 +48,6 @@ export class AddRegistratedUserComponent implements OnInit {
 
     if (this.registratedService.form.valid) {
       this.user = new RegistratedUser(form.value.id, form.value.imsi, form.value.customerId, form.value.workerId, form.value.numberId);
-
       this.registratedService.post(this.user).subscribe(
         response => {
           console.log(response);

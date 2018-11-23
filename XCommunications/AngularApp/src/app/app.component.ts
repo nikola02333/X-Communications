@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import { UserServiceService } from '../app/Services/userService/user-service.service';
+import { TestBed, async } from '@angular/core/testing';
+import { APP_BASE_HREF } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  constructor(private server :UserServiceService) {
-  
-    }
-   
+export class AppComponent {   
   title = 'App';
 }

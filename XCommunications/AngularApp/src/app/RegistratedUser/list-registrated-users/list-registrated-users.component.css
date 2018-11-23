@@ -1,0 +1,6 @@
+table, th, td {
+    border: 1px solid black;
+  }
+  #page  {
+    padding:1px; margin:0;
+  }
