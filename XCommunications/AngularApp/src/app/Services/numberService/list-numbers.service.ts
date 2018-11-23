@@ -28,7 +28,6 @@ export class ListNumbersService {
   }
 
   getAllNumbers(): Observable<Number[]> {
-
     return this.http.get<Number[]>(this.baseUrl);
   }
 
@@ -38,5 +37,9 @@ export class ListNumbersService {
 
   updateNumber(number: Number) {
     return this.http.put(this.baseUrl + '/' + number.id, number);
+  }
+
+  getAvailableNumbers():Observable<Number[]>{
+    return this.http.get<Number[]>(this.baseUrl + '/GetAvailableNumber');
   }
 }

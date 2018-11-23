@@ -65,7 +65,7 @@ export class AddRegistratedUserComponent implements OnInit {
   }
 
   getAllSimCards() {
-    this.simCardService.getAllSimCards().subscribe((data: Array<SimCard>) => {
+    this.simCardService.getAvailabeSimCards().subscribe((data: Array<SimCard>) => {
       this.simCards = data;
     });
   }
@@ -83,7 +83,7 @@ export class AddRegistratedUserComponent implements OnInit {
   }
 
   getAllNumbers() {
-    this.numberService.getAllNumbers().subscribe((data: Array<Number>) => {
+    this.numberService.getAvailableNumbers().subscribe((data: Array<Number>) => {
       this.numbers = data;
     });
   }

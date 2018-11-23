@@ -205,7 +205,7 @@ namespace XCommunications.Business.Services
             try
             {
                 log.Info("Reached FindAvailable() in NumbersService.cs");
-                IEnumerable<NumberServiceModel> retVal = unitOfWork.SimcardRepository.GetAll().Select(x => mapper.Map<NumberServiceModel>(x));
+                IEnumerable<NumberServiceModel> retVal = unitOfWork.NumberRepository.GetAll().Select(x => mapper.Map<NumberServiceModel>(x));
                 return retVal.Where(s => s.Status == true);
             }
             catch (Exception e)

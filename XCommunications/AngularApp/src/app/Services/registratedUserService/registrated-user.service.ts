@@ -24,7 +24,6 @@ export class RegistratedUserService {
   });
 
   post(user: RegistratedUser): Observable<RegistratedUser> {
-    debugger
     return this.http.post<RegistratedUser>(this.baseUrl, user);
   }
 

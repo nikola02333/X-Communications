@@ -38,4 +38,8 @@ export class SimCardServiceService {
   updateSimCard(simCard: SimCard) {
     return this.http.put(this.baseUrl + '/' + simCard.imsi, simCard);
   }
+
+  getAvailabeSimCards():Observable<SimCard[]>{
+    return this.http.get<SimCard[]>(this.baseUrl + '/GetAvailableSimcard');
+  }
 }

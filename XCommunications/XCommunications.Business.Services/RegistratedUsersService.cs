@@ -79,6 +79,27 @@ namespace XCommunications.Business.Services
             {
                 RegistratedUser r = null;
                 r = mapper.Map<RegistratedUser>(user);
+
+                Simcard s = null;
+                s = unitOfWork.SimcardRepository.GetById(user.Imsi);
+
+                if (s != null)
+                {
+                    s.Status = false;
+                    unitOfWork.SimcardRepository.Update(s);
+                    log.Info("Modified Simcard object in Update(RegistratedUserServiceModel user) in RegistratedUsersService.cs");
+                }
+
+                Number n = null;
+                n = unitOfWork.NumberRepository.GetById(user.NumberId);
+
+                if (n != null)
+                {
+                    n.Status = false;
+                    unitOfWork.NumberRepository.Update(n);
+                    log.Info("Modified Number object in Update(RegistratedUserServiceModel user) in RegistratedUsersService.cs");
+                }
+
                 unitOfWork.RegistratedRepository.Update(r);
                 log.Info("Modified RegistratedUser object in Update(RegistratedUserServiceModel user) in RegistratedUsersService.cs");
                 return true;
@@ -108,6 +129,27 @@ namespace XCommunications.Business.Services
                 RegistratedUser r = null;
                 r = mapper.Map<RegistratedUser>(user);
                 unitOfWork.RegistratedRepository.Add(r);
+
+                Simcard s = null;
+                s = unitOfWork.SimcardRepository.GetById(user.Imsi);
+
+                if(s != null)
+                {
+                    s.Status = false;
+                    unitOfWork.SimcardRepository.Update(s);
+                    log.Info("Modified Simcard object in Add(RegistratedUserServiceModel user) in RegistratedUsersService.cs");
+                }
+
+                Number n = null;
+                n = unitOfWork.NumberRepository.GetById(user.NumberId);
+
+                if(n != null)
+                {
+                    n.Status = false;
+                    unitOfWork.NumberRepository.Update(n);
+                    log.Info("Modified Number object in Add(RegistratedUserServiceModel user) in RegistratedUsersService.cs");
+                }
+
                 unitOfWork.Commit();
                 log.Info("Added new RegistratedUser object in Add(RegistratedUserServiceModel user) in RegistratedUsersService.cs");
                 return true;
