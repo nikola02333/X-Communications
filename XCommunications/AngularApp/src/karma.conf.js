@@ -3,8 +3,12 @@
 
 module.exports = function (config) {
   config.set({
-    basePath: '',
+    basePath: '__dirname',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    files: [
+      { pattern: 'src/nodelist.js', included: true },
+      { pattern: 'Tests/*.js', included: true }
+    ],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
@@ -26,6 +30,14 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: false
+    singleRun: false,
+    browsers: ['Chrome_without_security'],
+    customLaunchers: {
+      Chrome_without_security: {
+        base: 'Chrome',
+        
+        flags: ['--disable-web-security']
+      }
+    }
   });
 };

@@ -1,7 +1,7 @@
 <div class="container">
     <div class="form1 col-md-6 offset-md-3">
 
-        <form [formGroup]="this.registratedService.form" #userForm="ngForm" (submit)="onSubmit(userForm)" #forma>
+        <form [formGroup]="this.registratedService.form" (submit)="onSubmit()">
             <div class="form-group">
                 <div class="col-md-12">
                     <label>Enter registrated user's id</label>

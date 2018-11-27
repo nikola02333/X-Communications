@@ -1,7 +1,7 @@
 <br/>
 <br/>
 <div class="container-fluid h-100 ">
-  <div class="row justify-content-center align-items-center">
+  <div id="form" class="row justify-content-center align-items-center">
 
     <div id="page" class="col-md-6">
       <table class="table table-striped">
@@ -55,16 +55,11 @@
                    
               </div>
               <div class="modal-footer d-flex justify-content-center">
-                <button class="btn btn-info" (click)="onClickUpdate()"  data-dismiss="modal">Edit</button>
-                <button class="btn btn-danger" (click)="onClickDelete()" data-dismiss="modal">Delete</button>
+                <button id="update" class="btn btn-info" (click)="onClickUpdate()"  data-dismiss="modal">Edit</button>
+                <button id="delete" class="btn btn-danger" (click)="onClickDelete()" data-dismiss="modal">Delete</button>
               </div>
             </div>
           </div>
-
-
-
-
-
 
   </div>
 </div>

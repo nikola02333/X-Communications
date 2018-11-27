@@ -13,7 +13,7 @@ export class UserServiceService {
 
   constructor(private http: HttpClient) { }
 
-  readonly baseUrl = 'https://localhost:44350/api/Customers';
+  readonly baseUrl = 'http://localhost:44350/api/Customers';
   form = new FormGroup({
     fullName: new FormControl('', Validators.required),
     lastname: new FormControl('', Validators.required),

@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddUserComponent } from '../app/User/add-user/add-user.component';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { NgBoostrapDropdownDirective } from './directives/ng-boostrap-dropdown.directive';
 import { ListAllUsersComponent } from '../app/User/list-all-users/list-all-users.component';
 import { UserServiceService } from '../app/Services/userService/user-service.service';
@@ -54,14 +54,14 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
-    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AppRoutingModule,
-    FormsModule,
     ReactiveFormsModule,
+    FormGroup
   ],
   providers: [UserServiceService, SimCardServiceService, ListNumbersService, RegistratedUserService, WorkerService ],
   bootstrap: [AppComponent]

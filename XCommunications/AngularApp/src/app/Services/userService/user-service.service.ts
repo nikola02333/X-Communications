@@ -4,21 +4,22 @@ import { Observable } from 'rxjs';
 import { Customer } from '../../Models/Customer';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
-import { RequestOptions, Request, RequestMethod } from '@angular/http';
-
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
 
-  constructor(private http: HttpClient) { }
+   form:FormGroup;
 
-  readonly baseUrl = 'https://localhost:44350/api/Customers';
-  form = new FormGroup({
-    fullName: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]*')]),
-    lastname: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]*')]),
-    id: new FormControl('', Validators.required),
-  });
+  constructor(private http: HttpClient) { 
+    this.form = new FormGroup({
+      fullName: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]*')]),
+      lastname: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z]*')]),
+      id: new FormControl('', Validators.required),
+    });
+  }
+
+  readonly baseUrl = 'http://localhost:44350/api/Customers';
 
   post(user: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.baseUrl, user);

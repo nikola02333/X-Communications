@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ListNumbersService } from '../../Services/numberService/list-numbers.service';
-
 import { Number } from "src/app/Models/Number";
 import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-add-number',
   templateUrl: './add-number.component.html',

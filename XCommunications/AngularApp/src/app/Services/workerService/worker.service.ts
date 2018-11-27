@@ -10,7 +10,7 @@ export class WorkerService {
 
   constructor(private http: HttpClient) { }
 
-  readonly baseUrl = 'https://localhost:44350/api/Workers';
+  readonly baseUrl = 'http://localhost:44350/api/Workers';
 
   postWorker(worker: Worker): Observable<Worker> {
     return this.http.post<Worker>(this.baseUrl, worker);

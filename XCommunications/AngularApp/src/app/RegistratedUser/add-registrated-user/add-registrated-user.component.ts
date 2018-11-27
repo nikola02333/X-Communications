@@ -2,12 +2,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { RegistratedUserService } from '../../Services/registratedUserService/registrated-user.service';
 import { RegistratedUser } from '../../Models/RegistratedUser';
-import { NgForm } from '@angular/forms';
 import { Customer } from 'src/app/Models/Customer';
 import { SimCard } from 'src/app/Models/SimCard';
 import { Number } from 'src/app/Models/Number';
 import { Worker } from 'src/app/Models/Worker';
-import { getLocaleNumberSymbol } from '@angular/common';
 import { SimCardServiceService } from 'src/app/Services/simCardService/sim-card-service.service';
 import { UserServiceService } from 'src/app/Services/userService/user-service.service';
 import { WorkerService } from 'src/app/Services/workerService/worker.service';
@@ -43,11 +41,11 @@ export class AddRegistratedUserComponent implements OnInit {
     this.getAllNumbers();
   }
 
-  onSubmit(form: NgForm) {
+  onSubmit() {
     this.submitted = true;
 
     if (this.registratedService.form.valid) {
-      this.user = new RegistratedUser(form.value.id, form.value.imsi, form.value.customerId, form.value.workerId, form.value.numberId);
+      this.user = new RegistratedUser(this.registratedService.form.value.id, this.registratedService.form.value.imsi, this.registratedService.form.value.customerId, this.registratedService.form.value.workerId, this.registratedService.form.value.numberId);
       this.registratedService.post(this.user).subscribe(
         response => {
           console.log(response);
@@ -59,7 +57,7 @@ export class AddRegistratedUserComponent implements OnInit {
           this.toastService.success('Inserted successfully', 'X-Communications');
         });
       this.submitted = false;
-      form.resetForm();
+      this.registratedService.form.reset();
     }
   }
 

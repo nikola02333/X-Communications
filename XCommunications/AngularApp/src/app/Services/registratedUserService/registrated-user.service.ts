@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { RequestOptions, Request, RequestMethod } from '@angular/http';
 import { RegistratedUser } from 'src/app/Models/RegistratedUser';
-import { debug } from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +12,7 @@ export class RegistratedUserService {
 
   constructor(private http: HttpClient) { }
 
-  readonly baseUrl = 'https://localhost:44350/api/RegistratedUsers';
+  readonly baseUrl = 'http://localhost:44350/api/RegistratedUsers';
   form = new FormGroup({
     id: new FormControl('', Validators.required),
     imsi: new FormControl('', Validators.required),
@@ -32,12 +30,10 @@ export class RegistratedUserService {
   }
 
   deleteUser(id: number) {
-    debugger
     return this.http.delete(this.baseUrl + '/' + id);
   }
 
   updateUser(user: RegistratedUser) {
-    debugger
     return this.http.put(this.baseUrl + '/' + user.id, user);
   }
 }

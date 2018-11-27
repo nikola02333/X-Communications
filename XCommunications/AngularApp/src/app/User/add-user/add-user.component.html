@@ -1,51 +1,46 @@
 <div class="container">
-    <div class="form1 col-md-6 offset-md-3">
-          
-      <form [formGroup]="this.userService.form" #userForm= "ngForm" (submit)="onSubmit(userForm)" #forma   > 
-          <div class="form-group">
-              <div class="col-md-12">
-            <input formControlName="fullName"  placeholder="First name"class="form-control" [ngClass]="{'is-invalid':submitted && formControls.fullName.errors}">
-            <div class="invalid-feedback" *ngIf="submitted && formControls.fullName.errors">
-                <label *ngIf="formControls.fullName.errors.required">This field is required </label> 
-                <label *ngIf="formControls.fullName.errors.pattern">This field is required letters</label> 
-            
-            </div>
-          </div>
-          </div>
+  <div class="form1 col-md-6 offset-md-3">
 
-          <div class="col-md-12">
-          <div class="form-group">
-            <input formControlName="lastname" class="form-control" placeholder="Last name" [ngClass]="{'is-invalid':submitted && formControls.lastname.errors}">
-            <div class="invalid-feedback" *ngIf="submitted && formControls.lastname.errors">
-                <label *ngIf="formControls.lastname.errors.required">This field is required </label> 
-                <label *ngIf="formControls.lastname.errors.pattern">This field is required letters</label> 
-            </div>
+    <form [formGroup]="this.userService.form" #userForm="ngForm" (submit)="onSubmit(userForm)" #forma>
+      <div class="form-group">
+        <div class="col-md-12">
+          <input formControlName="fullName" name="fullName" placeholder="First name" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.fullName.errors}">
+          <div class="invalid-feedback" *ngIf="submitted && formControls.fullName.errors">
+            <label *ngIf="formControls.fullName.errors.required">This field is required </label>
+            <label *ngIf="formControls.fullName.errors.pattern">This field is required letters</label>
           </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <input formControlName="lastname" class="form-control" placeholder="Last name" [ngClass]="{'is-invalid':submitted && formControls.lastname.errors}">
+          <div class="invalid-feedback" *ngIf="submitted && formControls.lastname.errors">
+            <label *ngIf="formControls.lastname.errors.required">This field is required </label>
+            <label *ngIf="formControls.lastname.errors.pattern">This field is required letters</label>
           </div>
-          <div class="col-md-12">
-          <div class="form-group">
-            <input formControlName="id" placeholder="Id" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.id.errors}" pattern='[0-9]*'>
-            <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors">
-              <label *ngIf="formControls.id.errors.required">This field is required </label> 
-              <label *ngIf="formControls.id.errors.pattern">This field is required numbers only</label> 
-            
-            </div>
-    
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="form-group">
+          <input formControlName="id" placeholder="Id" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.id.errors}"
+            pattern='[0-9]*'>
+          <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors">
+            <label *ngIf="formControls.id.errors.required">This field is required </label>
+            <label *ngIf="formControls.id.errors.pattern">This field is required numbers only</label>
           </div>
-          </div>
-         
-          <div class="form-row">
-           <div class="form-group col-md-6">
-           <button  type="submit" class="btn btn-lg btn-block btn-info">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <button id="saveUser" type="submit" class="btn btn-lg btn-block btn-info">
             <i class="fa fa-floppy-o"> Submit</i>
           </button>
-          </div>
-          <div class="form-group col-md-6">
-            <button class="btn btn-lg btn-block btn-secendery" type="reset"> 
-                <i class="fa fa-repeat" > Discard</i>
-            </button>
-          </div>
-          </div>
+        </div>
+      </div>
+      
     </form>
-    </div>
   </div>
+</div>

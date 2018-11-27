@@ -72,7 +72,12 @@ namespace XCommunications
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+                options.AddPolicy("AllowAllHeaders", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .WithOrigins("http://localhost"));
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -95,7 +100,7 @@ namespace XCommunications
                 app.UseHsts();
             }
 
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors("AllowAllHeaders");
             app.UseHttpsRedirection();
             app.UseMvc();
 

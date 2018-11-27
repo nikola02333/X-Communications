@@ -8,21 +8,33 @@ export class UserServiceMock {
 
     getAll():Array<{}>{
         return [{
-            fullName: 'name',
+            name: 'name',
             lastname: 'lastName',
             id: 0
         }];
     }
 
-    post(){
-        
+    post(customer: Customer){
+        return [{
+            name: 'name',
+            lastname: 'lastName',
+            id: 0
+        }];
     }
 
-    deleteUser(){
-
+    deleteUser(id: number){
+        return [{
+            name: 'name',
+            lastname: 'lastName',
+            id: 0
+        }];
     }
 
-    updateUser(){
-
+    updateUser(customer: Customer){
+        return [{
+            name: 'name',
+            lastname: 'lastName',
+            id: 0
+        }];
     }
 }

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { Contract } from 'src/app/Models/Contract';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
-
 import { FormControl, FormGroup, Validators } from "@angular/forms"
-import { RequestOptions, Request, RequestMethod } from '@angular/http';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +16,7 @@ export class ContractService {
     tarif: new FormControl('', Validators.required)
   });
 
-  readonly baseUrl = 'https://localhost:44350/api/Contracts';
+  readonly baseUrl = 'http://localhost:44350/api/Contracts';
 
   constructor(private http: HttpClient) { }
 

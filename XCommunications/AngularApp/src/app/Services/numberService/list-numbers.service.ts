@@ -3,15 +3,13 @@ import { Number } from 'src/app/Models/Number';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from "@angular/forms"
-import { RequestOptions, Request, RequestMethod } from '@angular/http';
-import { debug } from 'util';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListNumbersService {
 
-  readonly baseUrl = 'https://localhost:44350/api/Numbers';
+  readonly baseUrl = 'http://localhost:44350/api/Numbers';
 
 
   form = new FormGroup({

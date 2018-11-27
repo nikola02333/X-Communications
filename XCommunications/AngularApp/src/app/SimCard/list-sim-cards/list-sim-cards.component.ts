@@ -21,14 +21,11 @@ export class ListSimCardsComponent implements OnInit {
   onClickDelete()
   {
     this.simCardService.deleteSimCard(this.selectedCard).subscribe();
-    this.getAllCards();
   }
 
   onClickUpdate()
   {
     this.simCardService.updateSimCard(this.selectedCard).subscribe();
-
-    this.getAllCards();
     if(this.cards.length==0)
     {
       this.toastService.info('There are no Contract left');
