@@ -72,17 +72,11 @@ namespace XCommunications
 
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllHeaders", builder => builder
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials()
-                    .WithOrigins("http://localhost"));
+                options.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var connection = Configuration.GetConnectionString("DefaultConnection");
-
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
 
             log.Info("Reached ConfigureServices in Startup.cs");
@@ -100,7 +94,7 @@ namespace XCommunications
                 app.UseHsts();
             }
 
-            app.UseCors("AllowAllHeaders");
+            app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseMvc();
 

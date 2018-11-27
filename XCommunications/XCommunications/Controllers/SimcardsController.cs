@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using log4net;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
@@ -12,7 +11,7 @@ using XCommunications.WebAPI.Models;
 namespace XCommunications.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]    
+    [ApiController]
     public class SimcardsController : ControllerBase
     {
         private IMapper mapper;

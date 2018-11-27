@@ -54,7 +54,7 @@ namespace XCommunications.Controllers
                 if (contract == null)
                 {
                     log.Error("Got null object in GetContract(int id) in ContractsController.cs");
-                    return NotFound();
+                    return NotFound("Contract not found");
                 }
 
                 log.Info("Returned Contract object from GetContract(int id) in ContractsController.cs");
@@ -64,7 +64,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in GetContract() in ContractsController.cs", e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -79,31 +79,33 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PutContract(int id, [FromBody] ContractControllerModel contract) in ContractsController.cs");
-                    return BadRequest(ModelState);
+                    return BadRequest();
                 }
 
                 if (id != contract.Id)
                 {
                     log.Error("Contract object isn't matched with given id! Error occured in PutContract(int id, ContractControllerModel contract) in ContractsController.cs");
-                    return BadRequest();
+                    return NotFound();
                 }
 
+
+              
                 bool exists = service.Update(mapper.Map<ContractServiceModel>(contract));
 
                 if (exists)
                 {
                     log.Info("Modified Contract object in PutContract(int id, ContractControllerModel contract) in ContractsController.cs");
-                    return NoContent();
+                    return Ok();
                 }
 
                 log.Error("Contract object with given id doesn't exist! Error occured in PutContract(int id, ContractControllerModel contract) in ContractsController.cs");
 
-                return Ok();
+                return NotFound();
             }
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PutContract(int id, ContractControllerModel contract) in ContractsController.cs", e));
-                return NotFound();
+               return  StatusCode(500);
             }
         }
 
@@ -156,7 +158,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in DeleteContract(int id) in ContractsController.cs", e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
     }

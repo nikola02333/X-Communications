@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using log4net;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
@@ -15,16 +14,17 @@ namespace XCommunications.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private IMapper mapper;
-        private IService<CustomerServiceModel> service;
-        private ILog log;
+        private IMapper _mapper;
+        private IService<CustomerServiceModel> _service;
+        private ILog _log;
 
         public CustomersController(IService<CustomerServiceModel> service, IMapper mapper, ILog log)
         {
-            this.service = service;
-            this.mapper = mapper;
-            this.log = log;
+            this._service = service;
+            this._mapper = mapper;
+            this._log = log;
         }
+
 
         // GET: api/Customers
         [HttpGet]
@@ -32,12 +32,12 @@ namespace XCommunications.Controllers
         {
             try
             {
-                log.Info("Reached GetCustomers() in CustomersController.cs");
-                return service.GetAll().Select(x => mapper.Map<CustomerControllerModel>(x));
+                _log.Info("Reached GetCustomers() in CustomersController.cs");
+                return _service.GetAll().Select(x => _mapper.Map<CustomerControllerModel>(x));
             }
             catch(Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in GetCustomer() in CustomersController.cs", e));
+                _log.Error(string.Format("An exception {0} occured in GetCustomer() in CustomersController.cs", e));
                 return null;
             }
         }
@@ -48,24 +48,25 @@ namespace XCommunications.Controllers
         {
             try
             {
-                log.Info("Reached GetCustomer(int id) in CustomersController.cs");
+                _log.Info("Reached GetCustomer(int id) in CustomersController.cs");
 
-                CustomerControllerModel customer = mapper.Map<CustomerControllerModel>(service.Get(id));
+                
+                CustomerControllerModel customer = _mapper.Map<CustomerControllerModel>(_service.Get(id));
 
                 if (customer == null)
                 {
-                    log.Error("Got null object in GetCustomer(int id) in CustomersController.cs");
+                    _log.Error("Got null object in GetCustomer(int id) in CustomersController.cs");
                     return NotFound();
                 }
 
-                log.Info("Returned Customer object from GetCustomer(int id) in CustomersController.cs");
+                _log.Info("Returned Customer object from GetCustomer(int id) in CustomersController.cs");
 
                 return Ok(customer);
             }
             catch (Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in GetCustomer(int id) in CustomersController.cs", e));
-                return NotFound();
+                _log.Error(string.Format("An exception {0} occured in GetCustomer(int id) in CustomersController.cs", e));
+                return StatusCode(500); //  internalError
             }
         }
 
@@ -75,36 +76,35 @@ namespace XCommunications.Controllers
         {
             try
             {
-                log.Info("Reached PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
+                _log.Info("Reached PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
 
                 if (!ModelState.IsValid)
                 {
-                    log.Error("A ModelState isn't valid error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
-                    return BadRequest(ModelState);
+                    _log.Error("A ModelState isn't valid error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
+                    return BadRequest();
                 }
 
                 if (id != customer.Id)
                 {
-                    log.Error("Customer object isn't matched with given id! Error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
-                    return BadRequest();
+                    _log.Error("Customer object isn't matched with given id! Error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
+                    return NotFound();
                 }
-
-                bool exists = service.Update(mapper.Map<CustomerServiceModel>(customer));
+                bool exists = _service.Update(_mapper.Map<CustomerServiceModel>(customer));
 
                 if (exists)
                 {
-                    log.Info("Modified Customer object in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
+                    _log.Info("Modified Customer object in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
                     return Ok(customer);
                 }
 
-                log.Error("Customer object with given id doesn't exist! Error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
+                _log.Error("Customer object with given id doesn't exist! Error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
 
                 return NotFound();
             }
             catch (Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs", e));
-                return NotFound();
+                _log.Error(string.Format("An exception {0} occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs", e));
+                return StatusCode(500);
             }
         }
 
@@ -114,23 +114,24 @@ namespace XCommunications.Controllers
         {
             try
             {
-                log.Info("Reached PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
-
-                if (!ModelState.IsValid)
+             
+                _log.Info("Reached PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
+               
+           if (!ModelState.IsValid)
                 {
-                    log.Error("A ModelState isn't valid error occured in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
+                    _log.Error("A ModelState isn't valid error occured in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
                     return BadRequest(ModelState);
                 }
-
-                service.Add(mapper.Map<CustomerServiceModel>(customer));
-                log.Info("Added new Customer object in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
+                
+                _service.Add(_mapper.Map<CustomerServiceModel>(customer));
+                _log.Info("Added new Customer object in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
 
                 return Ok(customer);
             }
             catch (Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs", e));
-                return NotFound();
+                _log.Error(string.Format("An exception {0} occured in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs", e));
+                return StatusCode(500);
             }
         }
 
@@ -140,22 +141,23 @@ namespace XCommunications.Controllers
         {
             try
             {
-                log.Info("Reached DeleteCustomer(int id) in CustomersController.cs");
-
-                if (!service.Delete(id))
+                _log.Info("Reached DeleteCustomer(int id) in CustomersController.cs");
+               
+                if (!_service.Delete(id))
                 {
-                    log.Error("Got null object in DeleteCustomer(int id) in CustomersController.cs");
+                    _log.Error("Got null object in DeleteCustomer(int id) in CustomersController.cs");
                     return NotFound();
+                
                 }
 
-                log.Info("Deleted Customer object in DeleteCustomer(int id) in CustomersController.cs");
+                _log.Info("Deleted Customer object in DeleteCustomer(int id) in CustomersController.cs");
 
                 return Ok();
             }
             catch (Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in DeleteCustomer(int id) in CustomersController.cs", e));
-                return NotFound();
+                _log.Error(string.Format("An exception {0} occured in DeleteCustomer(int id) in CustomersController.cs", e));
+                return StatusCode(500);
             }
         }
     }

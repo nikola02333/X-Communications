@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XCommunications.Business.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XCommunications.Business.Interfaces", "XCommunications.Business.Interfaces\XCommunications.Business.Interfaces.csproj", "{D1B865C0-CE98-446E-B42C-81B90EF3FD9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{F9F3EE80-6674-4C47-AE03-FA46EB27068F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{D1B865C0-CE98-446E-B42C-81B90EF3FD9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1B865C0-CE98-446E-B42C-81B90EF3FD9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1B865C0-CE98-446E-B42C-81B90EF3FD9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F3EE80-6674-4C47-AE03-FA46EB27068F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F3EE80-6674-4C47-AE03-FA46EB27068F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F3EE80-6674-4C47-AE03-FA46EB27068F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F3EE80-6674-4C47-AE03-FA46EB27068F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
