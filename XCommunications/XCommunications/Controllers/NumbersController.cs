@@ -56,7 +56,7 @@ namespace XCommunications.Controllers
                 if (number == null)
                 {
                     log.Error("Got null object in GetNumber(int id) in NumbersController.cs");
-                    return NotFound();
+                    return NotFound("Number object not found");
                 }
 
                 log.Info("Returned Number object from GetNumber(int id) in NumbersController.cs");
@@ -66,7 +66,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in GetNumber(int id) in NumbersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -96,7 +96,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
 
                 if (id != number.Id)
@@ -110,17 +110,17 @@ namespace XCommunications.Controllers
                 if (exists)
                 {
                     log.Info("Modified Number object in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
-                    return NoContent();
+                    return Ok();
                 }
 
                 log.Error("Number object with given id doesn't exist! Error occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs");
 
-                return Ok(number);
+                return NotFound();
             }
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PutNumber(int id, NumberControllerModel number) in NumbersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -135,7 +135,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
 
                 service.Add(mapper.Map<NumberServiceModel>(number));
@@ -146,7 +146,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PostNumber([FromBody] NumberControllerModel number) in NumbersController.cs", e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -171,7 +171,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in DeleteNumber(int id) in NumbersController.cs", e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
     }

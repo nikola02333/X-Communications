@@ -79,4 +79,5 @@ describe('AddSimcardComponent', () => {
         comp.onSubmit();
         expect(comp.onSubmit).toHaveBeenCalledTimes(1);
     });
+
 });

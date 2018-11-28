@@ -87,8 +87,6 @@ namespace XCommunications.Controllers
                     log.Error("Contract object isn't matched with given id! Error occured in PutContract(int id, ContractControllerModel contract) in ContractsController.cs");
                     return NotFound();
                 }
-
-
               
                 bool exists = service.Update(mapper.Map<ContractServiceModel>(contract));
 
@@ -105,7 +103,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PutContract(int id, ContractControllerModel contract) in ContractsController.cs", e));
-               return  StatusCode(500);
+                return  StatusCode(500);
             }
         }
 
