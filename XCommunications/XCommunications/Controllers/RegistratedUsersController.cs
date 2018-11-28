@@ -54,7 +54,7 @@ namespace XCommunications.Controllers
                 if (user == null)
                 {
                     log.Error("Got null object in GetRegistrated(int id) in RegistratedUsersController.cs");
-                    return NotFound("Number object not found");
+                    return NotFound("RegistratedUser object not found");
                 }
 
                 log.Info("Returned RegistratedUser object from GetRegistrated(int id) in RegistratedUsersController.cs");
