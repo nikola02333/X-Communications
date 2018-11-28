@@ -60,8 +60,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AppRoutingModule,
-    ReactiveFormsModule,
-    FormGroup
+    ReactiveFormsModule
+    
   ],
   providers: [UserServiceService, SimCardServiceService, ListNumbersService, RegistratedUserService, WorkerService ],
   bootstrap: [AppComponent]
