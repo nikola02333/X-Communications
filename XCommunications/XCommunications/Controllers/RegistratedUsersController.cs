@@ -54,7 +54,7 @@ namespace XCommunications.Controllers
                 if (user == null)
                 {
                     log.Error("Got null object in GetRegistrated(int id) in RegistratedUsersController.cs");
-                    return NotFound();
+                    return NotFound("Number object not found");
                 }
 
                 log.Info("Returned RegistratedUser object from GetRegistrated(int id) in RegistratedUsersController.cs");
@@ -64,7 +64,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in GetRegistrated(int id) in RegistratedUsersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -79,7 +79,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
 
                 if (id != user.Id)
@@ -93,7 +93,7 @@ namespace XCommunications.Controllers
                 if (exists)
                 {
                     log.Info("Modified RegistratedUser object in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
-                    return Ok(user);
+                    return Ok();
                 }
 
                 log.Error("RegistratedUser object with given id doesn't exist! Error occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs");
@@ -103,7 +103,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PutRegistrated(int id, RegistratedUserControllerModel user) in RegistratedUsersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -118,7 +118,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PostRegistrated([FromBody] RegistratedUserControllerModel user) in RegistratedUsersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
 
                 service.Add(mapper.Map<RegistratedUserServiceModel>(user));
@@ -129,7 +129,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PostRegistrated([FromBody] RegistratedUserControllerModel user) in RegistratedUsersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -154,7 +154,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in DeleteRegistrated(int id) in RegistratedUsersController.cs", e));
-                return NoContent();
+                return StatusCode(500);
             }
         }
     }

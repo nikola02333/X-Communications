@@ -42,9 +42,9 @@ namespace XUnitTests
 
             controllersNumbers = new List<NumberControllerModel>()
             {
-                new NumberControllerModel() { Id=1, Ndc=123, Cc=456, Sn=4219940, Status=false },
-                new NumberControllerModel() { Id=1, Ndc=123, Cc=456, Sn=4219940, Status=false },
-                new NumberControllerModel() { Id=1, Ndc=123, Cc=456, Sn=4219940, Status=false }
+                new NumberControllerModel() { Id=1, Ndc=123, Cc=456, Sn=4219940, Status=true },
+                new NumberControllerModel() { Id=1, Ndc=123, Cc=456, Sn=4219940, Status=true },
+                new NumberControllerModel() { Id=1, Ndc=123, Cc=456, Sn=4219940, Status=true }
             };
 
             serviceNumbers = new List<NumberServiceModel>()
@@ -150,11 +150,11 @@ namespace XUnitTests
         //          .Returns(() => availableNumbers[calls])
         //          .Callback(() => calls++);
 
-        //   // Act
-        //   var result = numbersController.GetAvailableNumber();
+        //    // Act
+        //    var result = numbersController.GetAvailableNumber();
 
-        //   // Assert
-        //   var available = new List<NumberControllerModel>(result);
+        //    // Assert
+        //    var available = new List<NumberControllerModel>(result);
 
         //    for (int i = 0; i < 3; i++)
         //    {
@@ -177,7 +177,6 @@ namespace XUnitTests
             var result = numbersController.PutNumber(id, numberController);
 
             // Assert
-            //Assert.True(result.GetType().Equals(typeof(BadRequestResult)));
             var response = result as StatusCodeResult;
             Assert.Equal(400, response.StatusCode);
         }
