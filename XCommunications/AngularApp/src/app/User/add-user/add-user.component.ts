@@ -16,6 +16,8 @@ export class AddUserComponent implements OnInit {
   formControls = this.userService.form.controls;
 
   ngOnInit() {
+    debugger
+    console.log("QQQ")
     //this.formControls= this.userService.form.controls;
   }
 

@@ -44,8 +44,7 @@ export class AddSimcardComponent implements OnInit {
                                    this.formControls.value.iccid,
                                    this.formControls.value.pin,
                                    this.formControls.value.puk,
-                                   false
-      );
+                                   false);
     }
   }
 
