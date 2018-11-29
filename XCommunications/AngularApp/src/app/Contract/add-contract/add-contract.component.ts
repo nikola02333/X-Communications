@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContractService } from '../../Services/contractService/contract.service';
 import { Contract } from '../../Models/Contract';
 import { NgForm } from '@angular/forms';
-
+import { FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-add-contract',
   templateUrl: './add-contract.component.html',
@@ -13,30 +13,56 @@ export class AddContractComponent implements OnInit {
 
   constructor( private contractService: ContractService,private toastService : ToastrService) { }
 
-  submitted: boolean;
+  submitted= false;
+  valid = false;
   Contract: Contract;
-  formControls = this.contractService.form.controls;
+  formControls = new FormGroup({});
+  
   ngOnInit() {
+    this.formControls = this.contractService.form;
   }
   
-  onSubmit(form:NgForm)
+  onSubmit()
   {
+
     this.submitted = true;
-    if(this.contractService.form.valid)
+
+    this.validate();
+    this.makeInstance();
+    this.postNumber();
+
+    this.submitted = true;
+    
+    
+  }
+  makeInstance()
+  {
+     if(this.valid)
+     {
+       this.Contract = new Contract(  this.formControls.value.id,
+                                   this.formControls.value.customerId,
+                                   this.formControls.value.workerId,
+                                   this.formControls.value.tarif,
+                                );}
+  }
+  postNumber()
+  {
+    this.contractService.postContract(this.Contract).subscribe(
+      response => {
+        console.log(response);
+      },
+      err=> {
+        console.log(err);
+      },
+      ()=>{
+        this.toastService.success('Inserted successfully','X-Communications');
+      }); 
+  }
+  validate()
+  {
+    if( this.formControls.valid)
     {
-      this.Contract = new Contract(form.value.id,form.value.customerId,form.value.workerId,form.value.tarif);
-      
-      this.contractService.postContract(this.Contract).subscribe(
-        response => {
-             console.log(response);
-        },
-        err => {
-             console.log(err);
-        },
-        () => {
-          this.toastService.success('Inserted successfully','X-Communications');});  
-          this.submitted=false;
-          form.resetForm();
+      this.valid=true;
     }
   }
 }
