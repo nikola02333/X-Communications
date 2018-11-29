@@ -20,8 +20,7 @@ export class WorkerComponent implements OnInit {
   title = 'X-Communications';
 
   ngOnInit() { 
-    console.log("asdasdasdasd")
-    debugger
+
   }
 
   

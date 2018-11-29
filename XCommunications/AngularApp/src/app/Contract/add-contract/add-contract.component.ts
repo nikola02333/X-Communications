@@ -4,6 +4,7 @@ import { ContractService } from '../../Services/contractService/contract.service
 import { Contract } from '../../Models/Contract';
 import { NgForm } from '@angular/forms';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-contract',
   templateUrl: './add-contract.component.html',
@@ -11,7 +12,10 @@ import { FormGroup } from '@angular/forms';
 })
 export class AddContractComponent implements OnInit {
 
-  constructor( private contractService: ContractService,private toastService : ToastrService) { }
+  constructor( private contractService: ContractService,
+                private toastService : ToastrService,
+                private route:ActivatedRoute,
+                private router:Router) { }
 
   submitted= false;
   valid = false;

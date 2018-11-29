@@ -49,12 +49,7 @@ import { HomeComponent } from './home/home.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AppRoutingModule,
-<<<<<<< HEAD
     ReactiveFormsModule,
-=======
-    ReactiveFormsModule
-    
->>>>>>> 19d9410bfe486507f81f10479cedb2e749bab63f
   ],
   providers: [UserServiceService, SimCardServiceService, ListNumbersService, RegistratedUserService, WorkerService ],
   bootstrap: [AppComponent]

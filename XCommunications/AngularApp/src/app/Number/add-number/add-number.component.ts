@@ -3,6 +3,7 @@ import { ListNumbersService } from '../../Services/numberService/list-numbers.se
 import { Number } from "src/app/Models/Number";
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-number',
   templateUrl: './add-number.component.html',
@@ -10,7 +11,10 @@ import { FormGroup } from '@angular/forms';
 })
 export class AddNumberComponent implements OnInit {
 
-  constructor(private numberService: ListNumbersService, private toastService: ToastrService) { }
+  constructor(private numberService: ListNumbersService, 
+              private toastService: ToastrService,
+              private route:ActivatedRoute,
+              private router:Router) { }
   number: Number;
   submitted= false;
   valid = false;
