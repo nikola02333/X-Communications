@@ -19,7 +19,7 @@ export class UserServiceService {
     });
   }
 
-  readonly baseUrl = 'http://localhost:44350/api/Customers';
+  readonly baseUrl = 'https://localhost:44351/api/Customers';
 
   post(user: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.baseUrl, user);

@@ -12,7 +12,7 @@ export class RegistratedUserService {
 
   constructor(private http: HttpClient) { }
 
-  readonly baseUrl = 'http://localhost:44350/api/RegistratedUsers';
+  readonly baseUrl = 'https://localhost:44351/api/RegistratedUsers';
   form = new FormGroup({
     id: new FormControl('', Validators.required),
     imsi: new FormControl('', Validators.required),

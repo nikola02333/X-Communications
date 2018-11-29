@@ -16,7 +16,7 @@ export class ContractService {
     tarif: new FormControl('', Validators.required)
   });
 
-  readonly baseUrl = 'http://localhost:44350/api/Contracts';
+  readonly baseUrl = 'https://localhost:44351/api/Contracts';
 
   constructor(private http: HttpClient) { }
 

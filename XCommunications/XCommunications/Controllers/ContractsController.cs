@@ -12,6 +12,7 @@ namespace XCommunications.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+  
     public class ContractsController : ControllerBase
     {
         private IMapper mapper;

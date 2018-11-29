@@ -18,7 +18,7 @@ export class WorkerService {
     });
   }
 
-  readonly baseUrl = 'http://localhost:44350/api/Workers';
+  readonly baseUrl = 'https://localhost:44351/api/Workers';
 
   postWorker(worker: Worker): Observable<Worker> {
     return this.http.post<Worker>(this.baseUrl, worker);

@@ -9,7 +9,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms"
 })
 export class SimCardServiceService {
 
-  baseUrl = 'http://localhost:44350/api/Simcards';
+  baseUrl = 'https://localhost:44351/api/Simcards';
   
   form:FormGroup;
 
