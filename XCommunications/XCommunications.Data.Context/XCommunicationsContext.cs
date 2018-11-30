@@ -26,7 +26,7 @@ namespace XCommunications.Data.Context
             if (!optionsBuilder.IsConfigured)
             {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=INTERNSHIP09\\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=INTERNSHIP12\\SQLEXPRESS;Database=XCommunications;Trusted_Connection=True;");
             }
         }
 

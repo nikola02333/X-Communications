@@ -34,7 +34,6 @@ export class AddUserComponent implements OnInit {
         },
         err => {
           this.toastService.error("Something went wrong");
-
           console.log(err);
         },
         () => {

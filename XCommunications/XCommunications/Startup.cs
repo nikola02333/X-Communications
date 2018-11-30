@@ -80,12 +80,14 @@ namespace XCommunications
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            var connection2 = Configuration.GetConnectionString("DefaultConnectionIndentityUserDb");
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection2));
+            //var connection2 = Configuration.GetConnectionString("DefaultConnectionIndentityUserDb");
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection2));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                      .AddEntityFrameworkStores<ApplicationDbContext>()
                      .AddDefaultTokenProviders();
+
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
 
@@ -128,7 +130,9 @@ namespace XCommunications
             {
                 app.UseHsts();
             }
-            SeedDataBase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
+            //SeedDataBase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseAuthentication();

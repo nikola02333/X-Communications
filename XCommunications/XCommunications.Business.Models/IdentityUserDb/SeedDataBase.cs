@@ -11,22 +11,22 @@ namespace XCommunications.Business.Models.Data
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
-            var userMenager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-            context.Database.EnsureCreated();
+            //var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            //var userMenager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            //context.Database.EnsureCreated();
 
-            if (!context.Users.Any())
-            {
-                ApplicationUser user = new ApplicationUser()
-                {
-                    Email = "aaaa@bbbb.com",
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = "nikola"
+            //if (!context.Users.Any())
+            //{
+            //    ApplicationUser user = new ApplicationUser()
+            //    {
+            //        Email = "aaaa@bbbb.com",
+            //        SecurityStamp = Guid.NewGuid().ToString(),
+            //        UserName = "nikola"
                     
-            };
-                userMenager.CreateAsync(user, "Password@123");
+            //};
+            //    userMenager.CreateAsync(user, "Password@123");
 
-            }
+            //}
         }
 
 

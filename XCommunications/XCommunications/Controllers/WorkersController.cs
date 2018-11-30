@@ -81,8 +81,7 @@ namespace XCommunications.Controllers
 
                 return Ok(new
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
+                    token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
 
                 //
@@ -179,7 +178,7 @@ namespace XCommunications.Controllers
             }
             catch (Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in GDeleteWorker(int id) in WorkersController.cs",e));
+                log.Error(string.Format("An exception {0} occured in DeleteWorker(int id) in WorkersController.cs",e));
                 return StatusCode(500);
             }
         }
