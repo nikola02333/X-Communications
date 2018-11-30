@@ -3,31 +3,48 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using log4net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
 using XCommunications.Business.Models.Data;
+using XCommunications.WebAPI.Models;
 
 namespace XCommunications.Controllers
 {
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
+        private IMapper mapper;
+        private IService<WorkerServiceModel> service;
+        private ILog log;
+        //
         private UserManager<ApplicationUser> _userMenager;
         public AuthController(UserManager<ApplicationUser> userMenager)
         {
             this._userMenager = userMenager;
         }
-
+        //
+        public AuthController(IService<WorkerServiceModel> service, IMapper mapper, ILog log)
+        {
+            this.service = service;
+            this.mapper = mapper;
+            this.log = log;
+        }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        //WorkerControllerModel
+        public async Task<IActionResult> Login([FromBody] WorkerControllerModel model)
         {
-            var user = await _userMenager.FindByNameAsync(model.Username);
-
-            if (user != null && await _userMenager.CheckPasswordAsync(user, model.Password))
+           // var user = await _userMenager.FindByNameAsync(model.Username);
+            //
+           WorkerControllerModel worker = mapper.Map<WorkerControllerModel>(service.Get(model.Id));
+          //if(worker.Id == )
+         /*   if (user != null && await _userMenager.CheckPasswordAsync(user, model.Password))
             {
                 var claims = new[]
                 {
@@ -50,7 +67,7 @@ namespace XCommunications.Controllers
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo
                 });
-            }
+            }*/
 
 
             return NoContent();

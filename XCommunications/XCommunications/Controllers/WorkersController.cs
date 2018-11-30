@@ -7,6 +7,10 @@ using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
 using XCommunications.WebAPI.Models;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace XCommunications.Controllers
 {
@@ -58,8 +62,30 @@ namespace XCommunications.Controllers
                 }
 
                 log.Info("Returned Worker object from GetWorker(int id) in WorkersController.cs");
+                //
+                var claims = new[]
+                {
+                    new Claim (JwtRegisteredClaimNames.Sub, worker.Name),
+                    new Claim (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 
-                return Ok(worker);
+                };
+                var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"));
+
+                var token = new JwtSecurityToken(
+                     issuer: "nikola",
+                     audience: "XCommunication",
+                expires: DateTime.UtcNow.AddHours(2),
+                claims: claims,
+                signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                );
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    expiration = token.ValidTo
+                });
+
+                //
             }
             catch (Exception e)
             {
