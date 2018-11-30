@@ -51,6 +51,9 @@ export class AddContractComponent implements OnInit {
   }
   postNumber()
   {
+    if (this.valid)
+    {
+      
     this.contractService.postContract(this.Contract).subscribe(
       response => {
         console.log(response);
@@ -61,6 +64,7 @@ export class AddContractComponent implements OnInit {
       ()=>{
         this.toastService.success('Inserted successfully','X-Communications');
       }); 
+    }
   }
   validate()
   {
