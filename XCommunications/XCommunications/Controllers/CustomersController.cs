@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
@@ -10,7 +11,9 @@ using XCommunications.WebAPI.Models;
 
 namespace XCommunications.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
+  
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -81,7 +84,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     _log.Error("A ModelState isn't valid error occured in PutCustomer(int id, CustomerControllerModel customer) in CustomersController.cs");
-                    return BadRequest();
+                    return BadRequest(); // NotFound
                 }
 
                 if (id != customer.Id)
@@ -120,7 +123,7 @@ namespace XCommunications.Controllers
            if (!ModelState.IsValid)
                 {
                     _log.Error("A ModelState isn't valid error occured in PostCustomer([FromBody] CustomerControllerModel customer) in CustomersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
                 
                 _service.Add(_mapper.Map<CustomerServiceModel>(customer));

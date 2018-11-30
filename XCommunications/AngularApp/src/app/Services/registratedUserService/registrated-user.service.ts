@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { RegistratedUser } from 'src/app/Models/RegistratedUser';
+import { WorkerService } from '../workerService/worker.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,10 @@ import { RegistratedUser } from 'src/app/Models/RegistratedUser';
 
 export class RegistratedUserService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private workerService:WorkerService) { }
 
-  readonly baseUrl = 'http://localhost:44350/api/RegistratedUsers';
+  readonly baseUrl = 'https://localhost:44351/api/RegistratedUsers';
   form = new FormGroup({
     id: new FormControl('', Validators.required),
     imsi: new FormControl('', Validators.required),
@@ -22,18 +24,18 @@ export class RegistratedUserService {
   });
 
   post(user: RegistratedUser): Observable<RegistratedUser> {
-    return this.http.post<RegistratedUser>(this.baseUrl, user);
+    return this.http.post<RegistratedUser>(this.baseUrl, user, this.workerService.getAuthorization());
   }
 
   getAll(): Observable<RegistratedUser[]> {
-    return this.http.get<RegistratedUser[]>(this.baseUrl);
+    return this.http.get<RegistratedUser[]>(this.baseUrl, this.workerService.getAuthorization());
   }
 
   deleteUser(id: number) {
-    return this.http.delete(this.baseUrl + '/' + id);
+    return this.http.delete(this.baseUrl + '/' + id, this.workerService.getAuthorization());
   }
 
   updateUser(user: RegistratedUser) {
-    return this.http.put(this.baseUrl + '/' + user.id, user);
+    return this.http.put(this.baseUrl + '/' + user.id, user, this.workerService.getAuthorization());
   }
 }

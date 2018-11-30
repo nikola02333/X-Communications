@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AddUserComponent } from '../app/User/add-user/add-user.component';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { NgBoostrapDropdownDirective } from './directives/ng-boostrap-dropdown.directive';
 import { ListAllUsersComponent } from '../app/User/list-all-users/list-all-users.component';
@@ -23,19 +22,8 @@ import { AddRegistratedUserComponent } from './RegistratedUser/add-registrated-u
 import { RegistratedUserService } from './Services/registratedUserService/registrated-user.service';
 import { ListRegistratedUsersComponent } from './RegistratedUser/list-registrated-users/list-registrated-users.component';
 import { WorkerService } from './Services/workerService/worker.service';
-
-const appRoutes: Routes = [
-  { path: 'User', component: AddUserComponent },
-  { path: 'UsersList', component: ListAllUsersComponent },
-  { path: 'SimCardsList', component: ListSimCardsComponent },
-  { path: 'NumbersList', component: ListNumbersComponent },
-  { path: 'SimCard', component: AddSimcardComponent },
-  { path: 'AddNumber', component: AddNumberComponent },
-  { path: 'AddContract', component: AddContractComponent },
-  { path: 'ContractsList', component: ListAllContractComponent },
-  { path: 'AddRegistratedUser', component: AddRegistratedUserComponent },
-  { path: 'RegistratedUsersList', component: ListRegistratedUsersComponent }
-];
+import { WorkerComponent } from './worker/worker.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -50,18 +38,18 @@ const appRoutes: Routes = [
     AddContractComponent,
     ListAllContractComponent,
     AddRegistratedUserComponent,
-    ListRegistratedUsersComponent
+    ListRegistratedUsersComponent,
+    WorkerComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     AppRoutingModule,
     ReactiveFormsModule,
-    FormGroup
   ],
   providers: [UserServiceService, SimCardServiceService, ListNumbersService, RegistratedUserService, WorkerService ],
   bootstrap: [AppComponent]

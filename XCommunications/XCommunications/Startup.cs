@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using log4net;
 using XCommunications.Business.Models;
 using XCommunications.WebAPI.Models;
 using XCommunications.Data.Interfaces;
@@ -14,6 +13,11 @@ using XCommunications.Data.Context;
 using XCommunications.Business.Services;
 using XCommunications.Business.Interfaces;
 using XCommunications.Data.Models;
+using XCommunications.Business.Models.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace XCommunications
 {
@@ -76,8 +80,41 @@ namespace XCommunications
             });     // Enables cross-origin request
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //var connection2 = Configuration.GetConnectionString("DefaultConnectionIndentityUserDb");
+            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connection2));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                     .AddEntityFrameworkStores<ApplicationDbContext>()
+                     .AddDefaultTokenProviders();
+
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<XCommunicationsContext>(options => options.UseSqlServer(connection));
+
+
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "XCommunication",
+                    ValidIssuer = "nikola",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"))
+                };
+
+            });
+
+
 
             log.Info("Reached ConfigureServices in Startup.cs");
         }
@@ -94,8 +131,11 @@ namespace XCommunications
                 app.UseHsts();
             }
 
+            //SeedDataBase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
 
             log.Info("Reached Configure in Startup.cs");

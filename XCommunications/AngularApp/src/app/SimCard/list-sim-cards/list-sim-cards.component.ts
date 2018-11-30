@@ -20,17 +20,39 @@ export class ListSimCardsComponent implements OnInit {
 
   onClickDelete()
   {
-    this.simCardService.deleteSimCard(this.selectedCard).subscribe();
+   
+    this.simCardService.deleteSimCard(this.selectedCard).subscribe(
+      response => {
+          console.log(response);
+      },
+      err=> {
+        this.toastService.error("Something went wrong");
+      },
+      () => {
+        this.toastService.info("sim card deleted successfully ");
+        this.getAllCards();
+      }
+    
+     );
+     
   }
 
   onClickUpdate()
   {
-    this.simCardService.updateSimCard(this.selectedCard).subscribe();
-    if(this.cards.length==0)
-    {
-      this.toastService.info('There are no Contract left');
-    }
-  
+ 
+
+     this.simCardService.updateSimCard(this.selectedCard).subscribe(
+        response => {
+            console.log(response);
+        },
+        err=> {
+          this.toastService.error("Something went wrong");
+        },
+        () => {
+          this.toastService.info("sim card edited successfully ");
+          this.getAllCards();
+               });
+       
   }
 
   ngOnInit() {
@@ -42,6 +64,10 @@ export class ListSimCardsComponent implements OnInit {
     this.simCardService.getAllSimCards().subscribe((data:Array<SimCard>) =>
     {
       this.cards=data;
+      if(this.cards.length==0)
+      {
+        this.toastService.info('There are no sim cards');
+      }
       console.log(data);
     });
   }

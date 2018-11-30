@@ -6,7 +6,7 @@ import { WorkerService } from '../app/Services/workerService/worker.service';
 import { RegistratedUserService } from '../app/Services/registratedUserService/registrated-user.service';
 import { ListNumbersService } from '../app/Services/numberService/list-numbers.service';
 import { SimCardServiceService } from '../app/Services/simCardService/sim-card-service.service';
-import { UserServiceService } from '../app/Services/user-service.service';
+import { UserServiceService } from '../app/Services/userService/user-service.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from '../app/app-routing.module';
 import { ToastrModule } from 'ngx-toastr';

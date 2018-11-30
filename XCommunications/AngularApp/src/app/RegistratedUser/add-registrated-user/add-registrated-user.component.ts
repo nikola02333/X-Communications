@@ -10,6 +10,7 @@ import { SimCardServiceService } from 'src/app/Services/simCardService/sim-card-
 import { UserServiceService } from 'src/app/Services/userService/user-service.service';
 import { WorkerService } from 'src/app/Services/workerService/worker.service';
 import { ListNumbersService } from 'src/app/Services/numberService/list-numbers.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-registrated-user',
@@ -24,7 +25,9 @@ export class AddRegistratedUserComponent implements OnInit {
               private customerService: UserServiceService,
               private workerService: WorkerService,
               private numberService: ListNumbersService,
-              private toastService: ToastrService) { }
+              private toastService: ToastrService,
+              private route:ActivatedRoute,
+              private router:Router) { }
 
   submitted: boolean;
   user: RegistratedUser;

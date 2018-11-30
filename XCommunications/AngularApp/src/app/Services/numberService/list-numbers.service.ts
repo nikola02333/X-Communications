@@ -3,13 +3,14 @@ import { Number } from 'src/app/Models/Number';
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { FormControl, FormGroup, Validators } from "@angular/forms"
+import { WorkerService } from '../workerService/worker.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListNumbersService {
 
-  readonly baseUrl = 'http://localhost:44350/api/Numbers';
+  readonly baseUrl = 'https://localhost:44351/api/Numbers';
 
 
   form = new FormGroup({
@@ -18,26 +19,27 @@ export class ListNumbersService {
     ndc: new FormControl('', Validators.required),
     sn: new FormControl('', Validators.required)
   });
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private workerService:WorkerService) { }
 
   postNumber(services: Number): Observable<Number> {
-    return this.http.post<Number>(this.baseUrl, services);
+    return this.http.post<Number>(this.baseUrl, services, this.workerService.getAuthorization());
 
   }
 
   getAllNumbers(): Observable<Number[]> {
-    return this.http.get<Number[]>(this.baseUrl);
+    return this.http.get<Number[]>(this.baseUrl, this.workerService.getAuthorization());
   }
 
   deleteNumber(id: number) {
-    return this.http.delete(this.baseUrl + '/' + id);
+    return this.http.delete(this.baseUrl + '/' + id, this.workerService.getAuthorization());
   }
 
   updateNumber(number: Number) {
-    return this.http.put(this.baseUrl + '/' + number.id, number);
+    return this.http.put(this.baseUrl + '/' + number.id, number, this.workerService.getAuthorization());
   }
 
   getAvailableNumbers():Observable<Number[]>{
-    return this.http.get<Number[]>(this.baseUrl + '/GetAvailableNumber');
+    return this.http.get<Number[]>(this.baseUrl + '/GetAvailableNumber', this.workerService.getAuthorization());
   }
 }

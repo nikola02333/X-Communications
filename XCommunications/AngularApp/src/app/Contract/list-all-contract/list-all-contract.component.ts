@@ -17,37 +17,59 @@ export class ListAllContractComponent implements OnInit {
   }
   private  listContract:  Array<object> = [];  
 
-
   getListContract()
-{
-  this.serviceContract.getAllContract().subscribe(
-
-    (data:  Array<object>) => {
-
-    this.listContract  =  data;
-    console.log(data);
-});
-}
-  onSelect(contract: Contract): void {
-    this.selectedContract = contract;
+  {
+    this.serviceContract.getAllContract().subscribe(
+  
+      (data:  Array<object>) => {
+  
+      this.listContract  =  data;
+      if(this.listContract.length==0)
+          {
+            this.toastService.info('There are no Contract');
+          }
+      console.log(data);
+  });
   }
-
-      onClickDelete()
-      {
-        this.serviceContract.deleteContract(this.selectedContract.id).subscribe();
-
-      
-        this.getListContract();
-        if(this.listContract.length==0)
+    onSelect(contract: Contract): void {
+      this.selectedContract = contract;
+    }
+  
+        onClickDelete()
         {
-          this.toastService.info('There are no Contract left');
+          this.serviceContract.deleteContract(this.selectedContract.id).subscribe(
+            response => {
+              console.log(response);
+         },
+         err => {
+             this.toastService.error("Something went wrong");
+   
+              console.log(err);
+         },
+         () => {
+           this.toastService.success('contract deleted successfully','X-Communications'); 
+           this.getListContract();
+          });
+  
         }
-        
-      }
-      onClickEdit()
-      {
-        this.serviceContract.updateContract(this.selectedContract=this.selectedContract).subscribe();
-        this.getListContract();
-      }
+        onClickEdit()
+        {
+          this.serviceContract.updateContract(this.selectedContract=this.selectedContract).subscribe(
+            response => {
+              console.log(response);
+         },
+         err => {
+             this.toastService.error("Something went wrong");
+   
+              console.log(err);
+         },
+         () => {
+           this.toastService.info('contract edited successfully','X-Communications');
+           this.getListContract();
+          });
+  
+          
+         
+        }
 
 }

@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="form1 col-md-6 offset-md-3">
+      <br/>
+      <form [formGroup]="this.workerService.form" #userForm="ngForm" (submit)="onSubmit(userForm)" #forma>
+        <div class="form-group">
+          <div class="col-md-12">
+            <input formControlName="id" name="id" placeholder="Id" class="form-control" [ngClass]="{'is-invalid':submitted && formControls.id.errors}">
+            <div class="invalid-feedback" *ngIf="submitted && formControls.id.errors">
+              <label *ngIf="formControls.id.errors.required">This field is required </label>
+              <label *ngIf="formControls.id.errors.pattern">This field is required letters</label>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-md-12">
+          <div class="form-group">
+            <input formControlName="email" class="form-control" placeholder="Email" [ngClass]="{'is-invalid':submitted && formControls.email.errors}">
+            <div class="invalid-feedback" *ngIf="submitted && formControls.email.errors">
+              <label *ngIf="formControls.email.errors.required">This field is required </label>
+              <label *ngIf="formControls.email.errors.pattern">This field is required letters</label>
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <button type="submit" class="btn btn-lg btn-block btn-info">
+              <i class="fa fa-floppy-o"> Submit</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

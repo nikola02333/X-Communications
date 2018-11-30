@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { SimCardServiceService } from '../../Services/simCardService/sim-card-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-simcard',
@@ -11,7 +12,10 @@ import { FormGroup } from '@angular/forms';
 })
 export class AddSimcardComponent implements OnInit {
 
-  constructor(private simCardService: SimCardServiceService, private toastService: ToastrService) { }
+  constructor(private simCardService: SimCardServiceService, 
+              private toastService: ToastrService,
+              private route:ActivatedRoute,
+              private router:Router) { }
 
   simcard: SimCard;
   submitted = false;
@@ -44,8 +48,7 @@ export class AddSimcardComponent implements OnInit {
                                    this.formControls.value.iccid,
                                    this.formControls.value.pin,
                                    this.formControls.value.puk,
-                                   false
-      );
+                                   false);
     }
   }
 
@@ -61,5 +64,7 @@ export class AddSimcardComponent implements OnInit {
       () => {
         this.toastService.success('Inserted successfully','X-Communications');
       }); 
+     this.submitted = false;
+      this.simCardService.form.reset();
   }
 }

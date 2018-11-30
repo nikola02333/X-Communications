@@ -7,6 +7,10 @@ using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
 using XCommunications.WebAPI.Models;
 using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace XCommunications.Controllers
 {
@@ -58,13 +62,34 @@ namespace XCommunications.Controllers
                 }
 
                 log.Info("Returned Worker object from GetWorker(int id) in WorkersController.cs");
+                //
+                var claims = new[]
+                {
+                    new Claim (JwtRegisteredClaimNames.Sub, worker.Name),
+                    new Claim (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 
-                return Ok(worker);
+                };
+                var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"));
+
+                var token = new JwtSecurityToken(
+                     issuer: "nikola",
+                     audience: "XCommunication",
+                expires: DateTime.UtcNow.AddHours(2),
+                claims: claims,
+                signingCredentials: new Microsoft.IdentityModel.Tokens.SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                );
+
+                return Ok(new
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token)
+                });
+
+                //
             }
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in GetWorker(int id) in WorkersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -79,7 +104,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
 
                 if (id != worker.Id)
@@ -93,7 +118,7 @@ namespace XCommunications.Controllers
                 if (exists)
                 {
                     log.Info("Modified Worker object in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
-                    return Ok(worker);
+                    return Ok();
                 }
 
                 log.Error("Worker object with given id doesn't exist! Error occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs");
@@ -103,7 +128,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PutWorker(int id, WorkerControllerModel worker) in WorkersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -118,7 +143,7 @@ namespace XCommunications.Controllers
                 if (!ModelState.IsValid)
                 {
                     log.Error("A ModelState isn't valid error occured in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs");
-                    return BadRequest(ModelState);
+                    return StatusCode(400);
                 }
 
                 service.Add(mapper.Map<WorkerServiceModel>(worker));
@@ -129,7 +154,7 @@ namespace XCommunications.Controllers
             catch (Exception e)
             {
                 log.Error(string.Format("An exception {0} occured in PostWorker([FromBody] WorkerControllerModel worker) in WorkersController.cs",e));
-                return NotFound();
+                return StatusCode(500);
             }
         }
 
@@ -153,8 +178,8 @@ namespace XCommunications.Controllers
             }
             catch (Exception e)
             {
-                log.Error(string.Format("An exception {0} occured in GDeleteWorker(int id) in WorkersController.cs",e));
-                return null;
+                log.Error(string.Format("An exception {0} occured in DeleteWorker(int id) in WorkersController.cs",e));
+                return StatusCode(500);
             }
         }
     }

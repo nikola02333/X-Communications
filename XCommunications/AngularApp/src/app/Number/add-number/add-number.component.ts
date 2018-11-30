@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ListNumbersService } from '../../Services/numberService/list-numbers.service';
 import { Number } from "src/app/Models/Number";
 import { ToastrService } from 'ngx-toastr';
-
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-number',
   templateUrl: './add-number.component.html',
@@ -10,34 +11,61 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AddNumberComponent implements OnInit {
 
-  constructor(private numberService: ListNumbersService, private toastService: ToastrService) { }
+  constructor(private numberService: ListNumbersService, 
+              private toastService: ToastrService,
+              private route:ActivatedRoute,
+              private router:Router) { }
   number: Number;
-  submitted: boolean;
-  formControls = this.numberService.form.controls;
+  submitted= false;
+  valid = false;
+  formControls = new FormGroup({});
+
 
   ngOnInit() {
+    this.formControls = this.numberService.form;
   }
 
   onSubmit() {
     this.submitted = true;
 
-    if (this.numberService.form.valid) {
-      this.number = new Number(this.numberService.form.value.id, false, this.numberService.form.value.cc, this.numberService.form.value.ndc, this.numberService.form.value.sn);
-
+    this.validate();
+    this.makeInstance();
+    this.postNumber();
+  
+  }
+validate()
+  {
+    if( this.formControls.valid)
+    {
+      this.valid=true;
+    }
+  }
+   makeInstance()
+    {
+       if(this.valid)
+       {
+         this.number = new Number( this.formControls.value.id,
+                                  false,
+                                  this.formControls.value.cc,
+                                  this.formControls.value.ndc,
+                                  this.formControls.value.sn );
+       }
+    }
+    postNumber()
+    {
       this.numberService.postNumber(this.number).subscribe(
         response => {
           console.log(response);
         },
-        err => {
+        err=> {
           console.log(err);
         },
-        () => {
-          this.toastService.success('Inserted successfully', 'X-Communications');
-        });
-        this.submitted = false;
-        this.numberService.form.reset();
-    }
-  
-  }
-
+        ()=>{
+          this.toastService.success('Inserted successfully','X-Communications');
+        }); 
+      this.submitted = false;
+      this.numberService.form.reset();
+      }
 }
+
+

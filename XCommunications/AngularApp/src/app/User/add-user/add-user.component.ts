@@ -2,6 +2,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from '../../Models/Customer';
 import { UserServiceService } from '../../../app/Services/userService/user-service.service';
+import { ActivatedRoute, Router  } from '@angular/router';
 
 @Component({
   selector: 'app-add-user',
@@ -9,14 +10,16 @@ import { UserServiceService } from '../../../app/Services/userService/user-servi
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
-  constructor(private userService: UserServiceService, private toastService: ToastrService) { }
+  constructor(private userService: UserServiceService, 
+              private toastService: ToastrService,
+              private route:ActivatedRoute,
+              private router:Router) { }
 
   custumer: Customer;
   submitted = false;
   formControls = this.userService.form.controls;
 
   ngOnInit() {
-    //this.formControls= this.userService.form.controls;
   }
 
   onSubmit() {
@@ -31,7 +34,6 @@ export class AddUserComponent implements OnInit {
         },
         err => {
           this.toastService.error("Something went wrong");
-
           console.log(err);
         },
         () => {

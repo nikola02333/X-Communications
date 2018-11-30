@@ -2,11 +2,7 @@
 using log4net;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using XCommunications.Business.Interfaces;
 using XCommunications.Business.Models;
 using XCommunications.Controllers;
@@ -132,10 +128,8 @@ namespace XUnitTests
             {
                 Assert.True(_returnList[i] == _custumerControllerModelList[i]);
             }
-
         }
        
-
         [Fact]
         
         public void PostCustomer_CustomerIsNotNull_ReturnsOkObject()
@@ -166,9 +160,9 @@ namespace XUnitTests
 
             custController.ModelState.AddModelError("key", "error message");
             var result = custController.PostCustomer(_customerControllerModelInvalid);
-
-            Assert.True(result.GetType().Equals(typeof(BadRequestObjectResult)));
-
+           
+            var objectResponse = result as StatusCodeResult;
+            Assert.Equal(400, objectResponse.StatusCode);
         }
         [Fact]
         public void PostCustomer_CustomerIsNull_ReturnInternalError()
