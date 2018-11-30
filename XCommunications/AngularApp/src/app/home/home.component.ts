@@ -47,5 +47,5 @@ export class HomeComponent {
         this.toastService.error("Something went wrong");
         console.log(err);
       });
-    }
   }
+}

@@ -22,7 +22,6 @@ export class ContractService {
   constructor(private http: HttpClient,
               private workerService:WorkerService ) { }
 
-
   postContract(contract: Contract): Observable<Contract> {
     return this.http.post<Contract>(this.baseUrl, contract, this.workerService.getAuthorization());
   }

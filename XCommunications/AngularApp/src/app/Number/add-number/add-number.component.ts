@@ -21,6 +21,7 @@ export class AddNumberComponent implements OnInit {
   formControls = new FormGroup({});
 
 
+
   ngOnInit() {
     this.formControls = this.numberService.form;
   }

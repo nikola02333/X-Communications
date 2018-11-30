@@ -4,7 +4,7 @@
     <form [formGroup]="this.simCardService.form" #simcardForm="ngForm" (submit)="onSubmit(simcardForm)">
       <div class="form-group">
         <div class="col-md-12">
-          <input formControlName="imsi" class="form-control" placeholder="Imsi" [ngClass]="{'is-invalid':submitted && formControls.imsi.errors}"
+          <input formControlName="imsi" name="imsi" class="form-control" placeholder="Imsi" [ngClass]="{'is-invalid':submitted && formControls.imsi.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.imsi.errors ">
             <label *ngIf="formControls.controls.imsi.errors.required">This field is required </label>
@@ -15,7 +15,7 @@
       </div>
       <div class="form-group">
         <div class="col-md-12">
-          <input formControlName="iccid" class="form-control" placeholder="Iccid" [ngClass]="{'is-invalid':submitted && formControls.iccid.errors}"
+          <input formControlName="iccid" name="iccid" class="form-control" placeholder="Iccid" [ngClass]="{'is-invalid':submitted && formControls.iccid.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.iccid.errors ">
             <label *ngIf="formControls.controls.iccid.errors.required">This field is required </label>
@@ -26,7 +26,7 @@
 
       <div class="form-group">
         <div class="form-group col-md-12">
-          <input formControlName="pin" class="form-control" placeholder="Pin" [ngClass]="{'is-invalid':submitted && formControls.pin.errors}"
+          <input formControlName="pin" class="form-control" name="pin" placeholder="Pin" [ngClass]="{'is-invalid':submitted && formControls.pin.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.pin.errors ">
             <label *ngIf="formControls.controls.pin.errors.required">This field is required </label>
@@ -39,7 +39,7 @@
 
       <div class="form-group">
         <div class="form-group col-md-12">
-          <input formControlName="puk" class="form-control" placeholder="Puk" [ngClass]="{'is-invalid':submitted && formControls.puk.errors}"
+          <input formControlName="puk" class="form-control" name="puk" placeholder="Puk" [ngClass]="{'is-invalid':submitted && formControls.puk.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.puk.errors ">
             <label *ngIf="formControls.controls.puk.errors.required">This field is required </label>

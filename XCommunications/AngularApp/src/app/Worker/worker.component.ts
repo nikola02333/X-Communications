@@ -33,5 +33,5 @@ export class WorkerComponent implements OnInit {
     {
       this.router.navigate(['']);
     }
-  }
+  }  
 }

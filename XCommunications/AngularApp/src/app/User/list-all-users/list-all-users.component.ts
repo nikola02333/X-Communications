@@ -40,7 +40,7 @@ export class ListAllUsersComponent implements OnInit {
        
   }
 
-  getAllUsers(){
+   getAllUsers(){
     this.service.getAll().subscribe( ( data: Array<Customer>) => 
     {
       this.users =data;
@@ -68,7 +68,6 @@ export class ListAllUsersComponent implements OnInit {
              this.toastService.success('User editted successfully  ');
              this.getAllUsers();
           }
-
     );
   }
 }

@@ -12,59 +12,67 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddSimcardComponent implements OnInit {
 
-  constructor(private simCardService: SimCardServiceService, 
-              private toastService: ToastrService,
-              private route:ActivatedRoute,
-              private router:Router) { }
+  constructor(private simCardService: SimCardServiceService,
+    private toastService: ToastrService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   simcard: SimCard;
   submitted = false;
   valid = false;
   showSuccessMessage: boolean;
-  formControls = new FormGroup({});
+  formControls = this.simCardService.form.controls;
 
   ngOnInit() {
-    this.formControls = this.simCardService.form;
   }
 
   onSubmit() {
+
     this.submitted = true;
-    this.validate();
-    this.makeInstance();
-    this.postSimCard();
+
+    if (this.simCardService.form.valid) {
+
+      this.submitted = true;
+      debugger
+      this.validate();
+      this.makeInstance();
+
+      this.postSimCard();
+
+    }
   }
 
   validate() {
-    if (this.formControls.valid) 
-    {
+    if (this.simCardService.form.valid) {
       this.valid = true;
     }
   }
+  makeInstance() {
+    if (this.valid) {
+      this.simcard = new SimCard(this.formControls.controls.value.imsi,
+        this.formControls.controls.value.iccid,
+        this.formControls.controls.value.pin,
+        this.formControls.controls.value.puk,
+        false);
 
-  makeInstance(){
-    if(this.valid)
-    {
-        this.simcard = new SimCard(this.formControls.value.imsi,
-                                   this.formControls.value.iccid,
-                                   this.formControls.value.pin,
-                                   this.formControls.value.puk,
-                                   false);
     }
   }
 
-  postSimCard()
-  {
-    this.simCardService.post(this.simcard).subscribe(
-      response => {
-           console.log(response);
-      },
-      err => {
-           console.log(err);
-      },
-      () => {
-        this.toastService.success('Inserted successfully','X-Communications');
-      }); 
-     this.submitted = false;
+  postSimCard() {
+    if (this.valid) {
+
+      this.simCardService.post(this.simcard).subscribe(
+        response => {
+          console.log(response);
+        },
+        err => {
+          console.log(err);
+        },
+        () => {
+          this.toastService.success('Inserted successfully', 'X-Communications');
+        });
+      this.submitted = false;
       this.simCardService.form.reset();
+    }
   }
 }
