@@ -22,26 +22,58 @@ export class ListAllUsersComponent implements OnInit {
     this.getAllUsers();
   }
 
-  onClickDelete() {
+  onClickDelete()
+  {
     this.service.deleteUser(this.selectedUser.id).subscribe(
-      x => this.getAllUsers());
-    if (this.users.length == 0) {
-      this.toastService.info('There are no users');
-    }
-
+        response => {
+            console.log(response);
+        },
+        err=> {
+          this.toastService.error("Something went wrong");
+        },
+        () => {
+          this.toastService.info("user deleted successfully ");
+          this.getAllUsers();
+        }
+      
+       );
+       
   }
 
-  getAllUsers() {
-    this.service.getAll().subscribe((data: Array<Customer>) => {
-      this.users = data;
+
+ 
+
+  getAllUsers(){
+    this.service.getAll().subscribe( ( data: Array<Customer>) => 
+    {
+      this.users =data;
+      if(this.users.length==0)
+      {
+        this.toastService.info('There are no users');
+      }
       console.log(data);
     }
     );
   }
 
-  onClickEdit() {
-    this.service.updateUser(this.selectedUser = this.selectedUser).subscribe(x => this.getAllUsers());
-  }
 
+  onClickEdit()
+  {
+    this.service.updateUser(this.selectedUser=this.selectedUser).subscribe(
+
+          response => {
+              console.log(response);
+          },
+          err=> { console.log(err);
+            this.toastService.error("Something went wrong");
+          }
+          ,
+          () => {
+             this.toastService.success('User editted successfully  ');
+             this.getAllUsers();
+          }
+
+    );
+  }
 }
 

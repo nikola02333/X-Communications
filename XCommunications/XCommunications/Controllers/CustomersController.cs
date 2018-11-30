@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
@@ -11,7 +11,7 @@ using XCommunications.WebAPI.Models;
 
 namespace XCommunications.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
   
     [ApiController]
