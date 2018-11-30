@@ -40,6 +40,9 @@ export class ListAllUsersComponent implements OnInit {
        
   }
 
+
+ 
+
   getAllUsers(){
     this.service.getAll().subscribe( ( data: Array<Customer>) => 
     {
@@ -52,6 +55,7 @@ export class ListAllUsersComponent implements OnInit {
     }
     );
   }
+
 
   onClickEdit()
   {

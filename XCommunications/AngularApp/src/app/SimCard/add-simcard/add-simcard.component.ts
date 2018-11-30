@@ -4,6 +4,7 @@ import { SimCardServiceService } from '../../Services/simCardService/sim-card-se
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { disableBindings } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-add-simcard',
@@ -21,39 +22,50 @@ export class AddSimcardComponent implements OnInit {
   submitted = false;
   valid = false;
   showSuccessMessage: boolean;
-  formControls = new FormGroup({});
+  formControls = this.simCardService.form.controls;
 
   ngOnInit() {
-    this.formControls = this.simCardService.form;
   }
 
   onSubmit() {
+
     this.submitted = true;
+
+    if (this.simCardService.form.valid) {
+
+    this.submitted = true;
+    debugger
     this.validate();
     this.makeInstance();
+    
     this.postSimCard();
+
+    }
   }
 
   validate() {
-    if (this.formControls.valid) 
+    if (this.simCardService.form.valid) 
     {
       this.valid = true;
     }
   }
-
   makeInstance(){
     if(this.valid)
     {
-        this.simcard = new SimCard(this.formControls.value.imsi,
-                                   this.formControls.value.iccid,
-                                   this.formControls.value.pin,
-                                   this.formControls.value.puk,
-                                   false);
+          this.simcard = new SimCard(this.simCardService.form.value.imsi,
+            this.simCardService.form.value.iccid,
+            this.simCardService.form.value.pin,
+            this.simCardService.form.value.puk,
+        false);
     }
+    
   }
 
   postSimCard()
   {
+    if(this.valid)
+    {
+      
     this.simCardService.post(this.simcard).subscribe(
       response => {
            console.log(response);
@@ -65,6 +77,7 @@ export class AddSimcardComponent implements OnInit {
         this.toastService.success('Inserted successfully','X-Communications');
       }); 
      this.submitted = false;
-      this.simCardService.form.reset();
+     this.simCardService.form.reset();
+    }
   }
 }

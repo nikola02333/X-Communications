@@ -18,20 +18,12 @@ export class WorkerComponent implements OnInit {
               private router:Router) { }
 
   title = 'X-Communications';
-  worker: WorkerComponent;
-  loggedOut=false;
+
 
   ngOnInit() { 
-
+   
+  
   }
 
-  logout()
-  {
-    this.loggedOut = this.workerService.logout();
-
-    if(this.loggedOut)
-    {
-      this.router.navigate(['']);
-    }
-  }
+  
 }

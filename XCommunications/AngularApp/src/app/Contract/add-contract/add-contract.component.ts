@@ -20,10 +20,9 @@ export class AddContractComponent implements OnInit {
   submitted= false;
   valid = false;
   Contract: Contract;
-  formControls = new FormGroup({});
+  formControls = this.contractService.form.controls;
   
   ngOnInit() {
-    this.formControls = this.contractService.form;
   }
   
   onSubmit()
@@ -43,14 +42,16 @@ export class AddContractComponent implements OnInit {
   {
      if(this.valid)
      {
-       this.Contract = new Contract(  this.formControls.value.id,
-                                   this.formControls.value.customerId,
-                                   this.formControls.value.workerId,
-                                   this.formControls.value.tarif,
+       this.Contract = new Contract(  this.contractService.form.value.id,
+                                      this.contractService.form.value.customerId,
+                                      this.contractService.form.value.workerId,
+                                      this.contractService.form.value.tarif,
                                 );}
   }
   postNumber()
   {
+    if(this.valid)
+    {
     this.contractService.postContract(this.Contract).subscribe(
       response => {
         console.log(response);
@@ -62,9 +63,10 @@ export class AddContractComponent implements OnInit {
         this.toastService.success('Inserted successfully','X-Communications');
       }); 
   }
+}
   validate()
   {
-    if( this.formControls.valid)
+    if( this.contractService.form.valid)
     {
       this.valid=true;
     }

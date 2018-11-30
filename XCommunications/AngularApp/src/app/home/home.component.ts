@@ -21,10 +21,6 @@ export class HomeComponent {
   formControls = this.workerService.form.controls;
   loggedIn = false;
 
-  ngOnInit() {
-    this.workerService.form.reset();
-  }
-
   onSubmit() {
     this.submitted = true;
 
@@ -36,15 +32,13 @@ export class HomeComponent {
   }
 
   login(worker: Worker) {
-    this.workerService.login(this.worker).subscribe(
-      response => {
-        localStorage.setItem('token', response);
-        this.loggedIn = true;
-        this.router.navigate(['Worker']);
-      },
-      err => {
-        this.toastService.error("Something went wrong");
-        console.log(err);
-      });
+    this.loggedIn = this.workerService.login(this.worker);
+
+    if (this.loggedIn) {
+      debugger
+      this.router.navigate(['Worker']);
     }
+
+
   }
+}

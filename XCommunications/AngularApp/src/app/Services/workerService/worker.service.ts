@@ -8,11 +8,10 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
   providedIn: 'root'
 })
 export class WorkerService {
-  token: string;
-  deleted = false;
-  form: FormGroup;
 
-  constructor(private http: HttpClient) {
+  form:FormGroup;
+
+  constructor(private http: HttpClient) { 
     this.form = new FormGroup({
       id: new FormControl('', [Validators.required, Validators.pattern('[0-9]*')]),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -37,12 +36,8 @@ export class WorkerService {
     return this.http.put(this.baseUrl + '/' + worker.id, worker);
   }
 
-  login(worker: Worker): Observable<any> {
-    return this.http.get(this.baseUrl + '/' + worker.id, {responseType: 'text'});
-  }
-
-  logout(): boolean {
-    localStorage.clear();
+  login(worker: Worker):boolean {
     return true;
+    //return this.http.login(this.baseUrl + '/', worker);
   }
 }
