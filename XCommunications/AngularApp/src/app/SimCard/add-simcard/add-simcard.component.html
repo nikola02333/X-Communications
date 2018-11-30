@@ -7,8 +7,8 @@
           <input formControlName="imsi" name="imsi" class="form-control" placeholder="Imsi" [ngClass]="{'is-invalid':submitted && formControls.imsi.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.imsi.errors ">
-            <label *ngIf="formControls.controls.imsi.errors.required">This field is required </label>
-            <label *ngIf="formControls.controls.imsi.errors.pattern">This field is required numbers only</label>
+            <label *ngIf="formControls.imsi.errors.required">This field is required </label>
+            <label *ngIf="formControls.imsi.errors.pattern">This field is required numbers only</label>
           </div>
         </div>
 
@@ -18,8 +18,8 @@
           <input formControlName="iccid" name="iccid" class="form-control" placeholder="Iccid" [ngClass]="{'is-invalid':submitted && formControls.iccid.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.iccid.errors ">
-            <label *ngIf="formControls.controls.iccid.errors.required">This field is required </label>
-            <label *ngIf="formControls.controls.iccid.errors.pattern">This field is required numbers only</label>
+            <label *ngIf="formControls.iccid.errors.required">This field is required </label>
+            <label *ngIf="formControls.iccid.errors.pattern">This field is required numbers only</label>
           </div>
         </div>
       </div>
@@ -29,10 +29,10 @@
           <input formControlName="pin" class="form-control" name="pin" placeholder="Pin" [ngClass]="{'is-invalid':submitted && formControls.pin.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.pin.errors ">
-            <label *ngIf="formControls.controls.pin.errors.required">This field is required </label>
-            <label *ngIf="formControls.controls.pin.errors.pattern">This field is required numbers only</label>
-            <label *ngIf="formControls.controls.pin.errors.minlength">This field is required 4 numbers</label>
-            <label *ngIf="formControls.controls.pin.errors.maxlength">This field is required 4 numbers</label>
+            <label *ngIf="formControls.pin.errors.required">This field is required </label>
+            <label *ngIf="formControls.pin.errors.pattern">This field is required numbers only</label>
+            <label *ngIf="formControls.pin.errors.minlength">This field is required 4 numbers</label>
+            <label *ngIf="formControls.pin.errors.maxlength">This field is required 4 numbers</label>
           </div>
         </div>
       </div>
@@ -42,10 +42,10 @@
           <input formControlName="puk" class="form-control" name="puk" placeholder="Puk" [ngClass]="{'is-invalid':submitted && formControls.puk.errors}"
             pattern='[0-9]*'>
           <div class="invalid-feedback" *ngIf="submitted && formControls.puk.errors ">
-            <label *ngIf="formControls.controls.puk.errors.required">This field is required </label>
-            <label *ngIf="formControls.controls.puk.errors.pattern">This field is required numbers only</label>
-            <label *ngIf="formControls.controls.puk.errors.minlength">This field is required 4 numbers</label>
-            <label *ngIf="formControls.controls.puk.errors.maxlength">This field is required 4 numbers</label>
+            <label *ngIf="formControls.puk.errors.required">This field is required </label>
+            <label *ngIf="formControls.puk.errors.pattern">This field is required numbers only</label>
+            <label *ngIf="formControls.puk.errors.minlength">This field is required 4 numbers</label>
+            <label *ngIf="formControls.puk.errors.maxlength">This field is required 4 numbers</label>
           </div>
         </div>
       </div>

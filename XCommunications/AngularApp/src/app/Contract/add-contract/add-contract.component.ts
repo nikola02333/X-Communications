@@ -20,10 +20,10 @@ export class AddContractComponent implements OnInit {
   submitted= false;
   valid = false;
   Contract: Contract;
-  formControls = new FormGroup({});
-  
+  formControls =  this.contractService.form.controls;
+
   ngOnInit() {
-    this.formControls = this.contractService.form;
+    this.formControls = this.contractService.form.controls;
   }
   
   onSubmit()
@@ -43,10 +43,10 @@ export class AddContractComponent implements OnInit {
   {
      if(this.valid)
      {
-       this.Contract = new Contract(  this.formControls.value.id,
-                                   this.formControls.value.customerId,
-                                   this.formControls.value.workerId,
-                                   this.formControls.value.tarif,
+       this.Contract = new Contract(  this.contractService.form.value.id,
+                                      this.contractService.form.value.customerId,
+                                      this.contractService.form.value.workerId,
+                                      this.contractService.form.value.tarif,
                                 );}
   }
   postNumber()

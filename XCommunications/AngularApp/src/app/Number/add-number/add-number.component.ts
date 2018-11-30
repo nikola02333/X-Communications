@@ -18,12 +18,12 @@ export class AddNumberComponent implements OnInit {
   number: Number;
   submitted= false;
   valid = false;
-  formControls = new FormGroup({});
+  formControls = this.numberService.form.controls;
 
 
 
   ngOnInit() {
-    this.formControls = this.numberService.form;
+    this.formControls = this.numberService.form.controls;
   }
 
   onSubmit() {
@@ -45,11 +45,11 @@ validate()
     {
        if(this.valid)
        {
-         this.number = new Number( this.formControls.value.id,
-                                  false,
-                                  this.formControls.value.cc,
-                                  this.formControls.value.ndc,
-                                  this.formControls.value.sn );
+        this.number = new Number( this.numberService.form.value.id,
+          false,
+          this.numberService.form.value.cc,
+          this.numberService.form.value.ndc,
+          this.numberService.form.value.sn );
        }
     }
     postNumber()
