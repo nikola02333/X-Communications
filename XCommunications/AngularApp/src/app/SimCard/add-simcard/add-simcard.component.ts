@@ -64,5 +64,7 @@ export class AddSimcardComponent implements OnInit {
       () => {
         this.toastService.success('Inserted successfully','X-Communications');
       }); 
+     this.submitted = false;
+      this.simCardService.form.reset();
   }
 }
