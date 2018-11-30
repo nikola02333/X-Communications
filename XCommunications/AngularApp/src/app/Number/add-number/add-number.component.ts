@@ -31,25 +31,6 @@ export class AddNumberComponent implements OnInit {
     this.validate();
     this.makeInstance();
     this.postNumber();
-
-
-
-    if (this.numberService.form.valid) {
-      this.number = new Number(this.numberService.form.value.id, false, this.numberService.form.value.cc, this.numberService.form.value.ndc, this.numberService.form.value.sn);
-
-      this.numberService.postNumber(this.number).subscribe(
-        response => {
-          console.log(response);
-        },
-        err => {
-          console.log(err);
-        },
-        () => {
-          this.toastService.success('Inserted successfully', 'X-Communications');
-        });
-        this.submitted = false;
-        this.numberService.form.reset();
-    }
   
   }
 validate()
@@ -82,6 +63,8 @@ validate()
         ()=>{
           this.toastService.success('Inserted successfully','X-Communications');
         }); 
+      this.submitted = false;
+      this.numberService.form.reset();
       }
 }
 
